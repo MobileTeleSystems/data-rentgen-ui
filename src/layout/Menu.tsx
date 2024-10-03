@@ -29,38 +29,23 @@ const Menu = ({ dense = false }: MenuProps) => {
             }}
         >
             <MenuItemLink
-                to="/locations"
-                state={{ _scrollToTop: true }}
-                primaryText={translate(`resources.locations.name`, {
-                    smart_count: 2,
-                })}
-                leftIcon={<WarehouseIcon />}
-                dense={dense}
-            />
-            <MenuItemLink
                 to="/datasets"
                 state={{ _scrollToTop: true }}
-                primaryText={translate(`resources.datasets.name`, {
-                    smart_count: 2,
-                })}
+                primaryText={translate(`pos.menu.datasets`)}
                 leftIcon={<DatasetIcon />}
                 dense={dense}
             />
             <MenuItemLink
                 to="/jobs"
                 state={{ _scrollToTop: true }}
-                primaryText={translate(`resources.jobs.name`, {
-                    smart_count: 2,
-                })}
+                primaryText={translate(`pos.menu.jobs`)}
                 leftIcon={<TaskIcon />}
                 dense={dense}
             />
             <MenuItemLink
                 to="/runs"
                 state={{ _scrollToTop: true }}
-                primaryText={translate(`resources.runs.name`, {
-                    smart_count: 2,
-                })}
+                primaryText={translate(`pos.menu.runs`)}
                 leftIcon={<PlayArrowIcon />}
                 dense={dense}
             />
