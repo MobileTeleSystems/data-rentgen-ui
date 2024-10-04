@@ -1,19 +1,23 @@
 import { ReactElement } from "react";
 import { List, Datagrid, TextField, WrapperField } from "react-admin";
-import DatasetLocationIcon from "./DatasetLocationIcon";
+import JobIcon from "./JobIcon";
+import JobLocationIcon from "./JobLocationIcon";
 
-const DatasetGrid = (): ReactElement => {
+const JobGrid = (): ReactElement => {
     return (
         <List>
             <Datagrid bulkActionButtons={false}>
+                <WrapperField source="type">
+                    <JobIcon />
+                </WrapperField>
+                <TextField source="name" />
                 <WrapperField source="location.type">
-                    <DatasetLocationIcon />
+                    <JobLocationIcon />
                 </WrapperField>
                 <TextField source="location.name" />
-                <TextField source="name" />
             </Datagrid>
         </List>
     );
 };
 
-export default DatasetGrid;
+export default JobGrid;

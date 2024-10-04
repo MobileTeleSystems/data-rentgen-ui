@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import webfontDownload from "vite-plugin-webfont-dl";
+import svgr from "vite-plugin-svgr";
 import path from "path";
 
 // https://vitejs.dev/config/
@@ -17,6 +18,14 @@ export default defineConfig({
         ]),
         react(),
         alias(),
+        svgr({
+            svgrOptions: {
+                plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx"],
+                svgoConfig: {
+                    floatPrecision: 2,
+                },
+            },
+        }),
         visualizer({
             open: process.env.NODE_ENV !== "CI",
             filename: "./dist/stats.html",
@@ -24,7 +33,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            "@themes": path.resolve(__dirname, "src/themes"),
+            "@assets": path.resolve(__dirname, "assets"),
             "@": path.resolve(__dirname, "src"),
         },
     },

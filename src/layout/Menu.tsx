@@ -1,8 +1,5 @@
 import { Box } from "@mui/material";
-import TaskIcon from "@mui/icons-material/Task";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import DatasetIcon from "@mui/icons-material/Dataset";
-import WarehouseIcon from "@mui/icons-material/Warehouse";
 
 import {
     MenuProps,
@@ -10,6 +7,8 @@ import {
     useTranslate,
     MenuItemLink,
 } from "react-admin";
+import { Settings } from "@mui/icons-material";
+import { DatasetIcon } from "@/components/icons";
 
 const Menu = ({ dense = false }: MenuProps) => {
     const [open] = useSidebarState();
@@ -39,7 +38,7 @@ const Menu = ({ dense = false }: MenuProps) => {
                 to="/jobs"
                 state={{ _scrollToTop: true }}
                 primaryText={translate(`pos.menu.jobs`)}
-                leftIcon={<TaskIcon />}
+                leftIcon={<Settings />}
                 dense={dense}
             />
             <MenuItemLink

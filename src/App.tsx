@@ -10,9 +10,10 @@ import authProvider from "./authProvider";
 import defaultDataProvider from "./dataProvider";
 import englishMessages from "./i18n/en";
 import { Layout } from "./layout";
-import { mainLightTheme, mainDarkTheme } from "@themes/main";
+import { mainLightTheme, mainDarkTheme } from "@/themes/main";
 import { Login } from "./components/login";
 import { DatasetGrid, DatasetShow } from "./components/dataset";
+import { JobGrid, JobShow } from "./components/job";
 
 const store = localStorageStore(undefined, "DataRentgen");
 
@@ -41,7 +42,7 @@ const App = () => {
                     list={DatasetGrid}
                     show={DatasetShow}
                 />
-                <Resource name="jobs" />
+                <Resource name="jobs" list={JobGrid} show={JobShow} />
                 <Resource name="runs" />
             </Admin>
         </StoreContextProvider>
