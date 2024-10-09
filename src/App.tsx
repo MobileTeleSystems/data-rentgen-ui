@@ -9,9 +9,10 @@ import {
 import authProvider from "./authProvider";
 import defaultDataProvider from "./dataProvider";
 import englishMessages from "./i18n/en";
-import { Login } from "./components";
 import { Layout } from "./layout";
-import { mainLightTheme, mainDarkTheme } from "./themes/main";
+import { mainLightTheme, mainDarkTheme } from "@themes/main";
+import { Login } from "./components/login";
+import { DatasetGrid, DatasetShow } from "./components/dataset";
 
 const store = localStorageStore(undefined, "DataRentgen");
 
@@ -35,8 +36,11 @@ const App = () => {
                 darkTheme={mainDarkTheme}
                 defaultTheme="light"
             >
-                <Resource name="locations" />
-                <Resource name="datasets" />
+                <Resource
+                    name="datasets"
+                    list={DatasetGrid}
+                    show={DatasetShow}
+                />
                 <Resource name="jobs" />
                 <Resource name="runs" />
             </Admin>

@@ -4,13 +4,8 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["src/*"],
-            "@widgets/*": ["src/widgets/*"],
             "@themes/*": ["src/themes/*"],
-            "@shared/*": ["src/shared/*"],
-            "@i18n/*": ["src/i18n/*"],
-            "@hooks/*": ["src/hooks/*"],
-            "@features/*": ["src/features/*"],
-            "@entities/*": ["src/entities/*"]
+            "@i18n/*": ["src/i18n/*"]
         },
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,

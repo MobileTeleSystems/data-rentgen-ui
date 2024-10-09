@@ -40,6 +40,9 @@ const customEnglishMessages: TranslationMessages = {
             title: "Run %{reference}",
         },
     },
+    errors: {
+        fetch: "Cannot fetch %{resource}",
+    },
 };
 
 export default customEnglishMessages;
