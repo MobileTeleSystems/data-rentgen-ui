@@ -32,6 +32,12 @@ const defaultDataProvider: DataProvider = {
             );
         }
 
+        if (params.filter) {
+            for (const field in params.filter) {
+                url.searchParams.append(field, params.filter[field]);
+            }
+        }
+
         return new Promise((resolve, reject) => {
             return fetch(url.toString(), {
                 method: "GET",
@@ -79,7 +85,7 @@ const defaultDataProvider: DataProvider = {
                 .then(({ status, body }) => {
                     const json = parseJSON(status, body, reject);
                     if (json.items.length === 0) {
-                        reject(new Error("Not found"));
+                        return reject(new Error("Not found"));
                     }
                     return resolve({ data: json.items[0] });
                 });
