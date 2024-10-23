@@ -15,6 +15,7 @@ import { Login } from "./components/login";
 import { DatasetList, DatasetShow } from "./components/dataset";
 import { JobList, JobShow } from "./components/job";
 import { RunList, RunShow } from "./components/run";
+import { OperationShow } from "./components/operation";
 
 const store = localStorageStore(undefined, "DataRentgen");
 
@@ -45,6 +46,7 @@ const App = () => {
                 />
                 <Resource name="jobs" list={JobList} show={JobShow} />
                 <Resource name="runs" list={RunList} show={RunShow} />
+                <Resource name="operations" show={OperationShow} />
             </Admin>
         </StoreContextProvider>
     );

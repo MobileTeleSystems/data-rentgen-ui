@@ -89,6 +89,9 @@ const customEnglishMessages: TranslationMessages = {
                     type: "Location Type",
                 },
             },
+            sections: {
+                runs: "Runs",
+            },
             filters: {
                 search_query: {
                     label: "Search",
@@ -131,6 +134,7 @@ const customEnglishMessages: TranslationMessages = {
                 attempt: "Attempt",
                 external_url: "External URL",
                 logs_url: "Logs URL",
+                operations: "Operations",
             },
             filters: {
                 since: {
@@ -145,7 +149,49 @@ const customEnglishMessages: TranslationMessages = {
                     label: "Search",
                     helperText: "Filter by applicationId",
                 },
-                search_button: "Search",
+                apply_button: "Apply",
+            },
+        },
+        operations: {
+            name: "Operation |||| Operations",
+            amount: "1 operation |||| %{smart_count} operations",
+            title: "Operation %{reference}",
+            fields: {
+                id: "Operation ID",
+                created_at: "Created at",
+                run_id: "Run ID",
+                position: "Position",
+                name: "Name",
+                group: "Group",
+                description: "Description",
+                origin: "Origin",
+                status: "Status",
+                started_at: "Started at",
+                ended_at: "Ended at",
+            },
+            sections: {
+                created: "Created",
+                by_run: "By Run",
+                external: "External",
+                name: "Name",
+                position: "Position",
+                group: "Group",
+                description: "Description",
+                started: "Started",
+                ended: "Ended",
+                when: "When",
+                duration: "Duration",
+            },
+            filters: {
+                since: {
+                    label: "Since",
+                    helperText: "Include only operations created after",
+                },
+                until: {
+                    label: "Until",
+                    helperText: "Include only operations created before",
+                },
+                apply_button: "Apply",
             },
         },
     },

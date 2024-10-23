@@ -2,8 +2,8 @@ import { ReactElement } from "react";
 import {
     Show,
     SimpleShowLayout,
-    TabbedShowLayout,
     TextField,
+    useTranslate,
     WithRecord,
     WrapperField,
 } from "react-admin";
@@ -14,6 +14,7 @@ import JobLocationIconWithText from "./JobLocationIcon";
 import { RunListForJob } from "../run";
 
 const JobShow = (): ReactElement => {
+    const translate = useTranslate();
     return (
         <Show resource="jobs">
             <SimpleShowLayout>
@@ -26,9 +27,10 @@ const JobShow = (): ReactElement => {
                     <JobLocationIconWithText />
                 </WrapperField>
                 <TextField source="location.name" />
-                <Divider />
+
+                <Divider>{translate("resources.jobs.sections.runs")}</Divider>
+
                 <WithRecord
-                    label="Runs"
                     render={(record) => <RunListForJob jobId={record.id} />}
                 />
             </SimpleShowLayout>
