@@ -1,4 +1,4 @@
 import JobShow from "./JobShow";
-import JobGrid from "./JobGrid";
+import JobList from "./JobList";
 
-export { JobShow, JobGrid };
+export { JobShow, JobList };

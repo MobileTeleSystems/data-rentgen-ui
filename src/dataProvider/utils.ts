@@ -17,10 +17,12 @@ const parseJSON = (
     try {
         json = JSON.parse(body);
     } catch (e) {
-        reject(e);
+        return reject(e);
     }
     if (status < 200 || status >= 400) {
-        reject(new HttpError((json && json.message) || body, status, json));
+        return reject(
+            new HttpError((json && json.message) || body, status, json),
+        );
     }
     return json;
 };
