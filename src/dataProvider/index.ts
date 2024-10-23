@@ -1,6 +1,7 @@
 import {
     DataProvider,
     GetListParams,
+    GetManyParams,
     GetOneParams,
     QueryFunctionContext,
 } from "react-admin";
@@ -43,8 +44,8 @@ const defaultDataProvider: DataProvider = {
                 method: "GET",
                 signal,
             })
-                .then(parseResponse)
                 .catch((error) => reject(error))
+                .then(parseResponse)
                 .then(({ status, body }) => {
                     const json = parseJSON(status, body, reject);
                     return resolve({
@@ -58,7 +59,38 @@ const defaultDataProvider: DataProvider = {
                 });
         });
     },
-    getMany: () => Promise.resolve({ data: [] }),
+    getMany: (
+        resource: string,
+        params: GetManyParams & QueryFunctionContext,
+        signal?: AbortSignal,
+    ) => {
+        const url = new URL(`${BACKEND_SERVER_URL}/v1/${resource}`);
+
+        for (const k in params.meta) {
+            url.searchParams.append(k, params.meta[k]);
+        }
+
+        // datasets -> dataset_id
+        const resourceOne = resource.slice(0, -1);
+        params.ids.forEach((id) => {
+            url.searchParams.append(`${resourceOne}_id`, id.toString());
+        });
+
+        return new Promise((resolve, reject) => {
+            return fetch(url.toString(), {
+                method: "GET",
+                signal,
+            })
+                .then(parseResponse)
+                .catch((error) => reject(error))
+                .then(({ status, body }) => {
+                    const json = parseJSON(status, body, reject);
+                    return resolve({
+                        data: json.items,
+                    });
+                });
+        });
+    },
     getManyReference: () => Promise.resolve({ data: [], total: 0 }),
     getOne: (
         resource: string,

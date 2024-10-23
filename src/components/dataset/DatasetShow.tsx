@@ -10,7 +10,7 @@ import DatasetLocationIcon from "./DatasetLocationIcon";
 
 const DatasetShow = (): ReactElement => {
     return (
-        <Show>
+        <Show resource="datasets">
             <SimpleShowLayout>
                 <TextField source="id" />
                 <WrapperField source="location.type">

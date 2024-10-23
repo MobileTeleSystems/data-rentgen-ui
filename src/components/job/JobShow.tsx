@@ -1,11 +1,21 @@
 import { ReactElement } from "react";
-import { Show, SimpleShowLayout, TextField, WrapperField } from "react-admin";
+import {
+    Show,
+    SimpleShowLayout,
+    TabbedShowLayout,
+    TextField,
+    WithRecord,
+    WrapperField,
+} from "react-admin";
+import Divider from "@mui/material/Divider";
+
 import JobIconWithText from "./JobIcon";
 import JobLocationIconWithText from "./JobLocationIcon";
+import { RunListForJob } from "../run";
 
 const JobShow = (): ReactElement => {
     return (
-        <Show>
+        <Show resource="jobs">
             <SimpleShowLayout>
                 <TextField source="id" />
                 <WrapperField source="type">
@@ -16,6 +26,11 @@ const JobShow = (): ReactElement => {
                     <JobLocationIconWithText />
                 </WrapperField>
                 <TextField source="location.name" />
+                <Divider />
+                <WithRecord
+                    label="Runs"
+                    render={(record) => <RunListForJob jobId={record.id} />}
+                />
             </SimpleShowLayout>
         </Show>
     );

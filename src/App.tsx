@@ -12,8 +12,9 @@ import englishMessages from "./i18n/en";
 import { Layout } from "./layout";
 import { mainLightTheme, mainDarkTheme } from "@/themes/main";
 import { Login } from "./components/login";
-import { DatasetGrid, DatasetShow } from "./components/dataset";
-import { JobGrid, JobShow } from "./components/job";
+import { DatasetList, DatasetShow } from "./components/dataset";
+import { JobList, JobShow } from "./components/job";
+import { RunList, RunShow } from "./components/run";
 
 const store = localStorageStore(undefined, "DataRentgen");
 
@@ -39,11 +40,11 @@ const App = () => {
             >
                 <Resource
                     name="datasets"
-                    list={DatasetGrid}
+                    list={DatasetList}
                     show={DatasetShow}
                 />
-                <Resource name="jobs" list={JobGrid} show={JobShow} />
-                <Resource name="runs" />
+                <Resource name="jobs" list={JobList} show={JobShow} />
+                <Resource name="runs" list={RunList} show={RunShow} />
             </Admin>
         </StoreContextProvider>
     );

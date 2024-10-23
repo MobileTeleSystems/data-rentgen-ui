@@ -1,4 +1,4 @@
 import DatasetShow from "./DatasetShow";
-import DatasetGrid from "./DatasetGrid";
+import DatasetList from "./DatasetList";
 
-export { DatasetShow, DatasetGrid };
+export { DatasetShow, DatasetList };

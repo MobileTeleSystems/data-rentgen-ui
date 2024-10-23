@@ -3,27 +3,34 @@ import {
     List,
     TextField,
     WrapperField,
-    TopToolbar,
-    SelectColumnsButton,
     DatagridConfigurable,
     SearchInput,
     minLength,
+    useTranslate,
 } from "react-admin";
+import { ListActions } from "@/components/base";
 import DatasetLocationIcon from "./DatasetLocationIcon";
 
-const DatasetGridActions = () => (
-    <TopToolbar>
-        <SelectColumnsButton />
-    </TopToolbar>
-);
+const DatasetList = (): ReactElement => {
+    const translate = useTranslate();
 
-const datasetFilters = [
-    <SearchInput source="search_query" alwaysOn validate={minLength(3)} />,
-];
+    const datasetFilters = [
+        <SearchInput
+            source="search_query"
+            alwaysOn
+            validate={minLength(3)}
+            placeholder={translate(
+                "resources.datasets.filters.search_query.placeholder",
+            )}
+        />,
+    ];
 
-const DatasetGrid = (): ReactElement => {
     return (
-        <List actions={<DatasetGridActions />} filters={datasetFilters}>
+        <List
+            actions={<ListActions />}
+            filters={datasetFilters}
+            resource="datasets"
+        >
             <DatagridConfigurable bulkActionButtons={false}>
                 <WrapperField source="location.type" sortable={false}>
                     <DatasetLocationIcon />
@@ -35,4 +42,4 @@ const DatasetGrid = (): ReactElement => {
     );
 };
 
-export default DatasetGrid;
+export default DatasetList;
