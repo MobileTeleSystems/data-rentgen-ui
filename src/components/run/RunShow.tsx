@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import { ReactElement } from "react";
 import {
     DateField,
@@ -9,11 +9,16 @@ import {
     SimpleShowLayout,
     TextField,
     UrlField,
+    useTranslate,
+    WithRecord,
     WrapperField,
 } from "react-admin";
 import { DurationField, StatusField } from "@/components/base";
+import { OperationListForRun } from "../operation";
 
 const RunShow = (): ReactElement => {
+    const translate = useTranslate();
+
     return (
         <Show>
             <SimpleShowLayout>
@@ -87,6 +92,14 @@ const RunShow = (): ReactElement => {
                         </Labeled>
                     </Stack>
                 </Labeled>
+
+                <Divider>
+                    {translate("resources.runs.sections.operations")}
+                </Divider>
+
+                <WithRecord
+                    render={(record) => <OperationListForRun run={record} />}
+                />
             </SimpleShowLayout>
         </Show>
     );

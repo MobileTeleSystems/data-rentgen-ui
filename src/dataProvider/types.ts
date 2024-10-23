@@ -65,9 +65,27 @@ interface RunResponseV1 extends RaRecord {
     persistent_log_url: string | null;
 }
 
+type OperationTypeResponseV1 = "BATCH" | "STREAMING";
+
+interface OperationResponseV1 extends RaRecord {
+    kind: "OPERATION";
+    id: string;
+    created_at: string;
+    run_id: string;
+    type: OperationTypeResponseV1;
+    name: string;
+    position: string | null;
+    group: string | null;
+    description: string | null;
+    status: StatusResponseV1;
+    started_at: string | null;
+    ended_at: string | null;
+}
+
 export type {
     LocationResponseV1,
     DatasetResponseV1,
     JobResponseV1,
     RunResponseV1,
+    OperationResponseV1,
 };
