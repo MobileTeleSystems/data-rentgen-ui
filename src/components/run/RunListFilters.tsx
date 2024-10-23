@@ -93,7 +93,7 @@ const RunListFilters = ({
                             color="primary"
                             type="submit"
                         >
-                            {translate("resources.runs.filters.search_button")}
+                            {translate("resources.runs.filters.apply_button")}
                         </Button>
                     </Box>
                 </Box>

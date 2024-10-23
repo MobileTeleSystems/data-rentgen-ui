@@ -31,19 +31,32 @@ const RunList = (): ReactElement => {
             queryOptions={{ enabled }}
         >
             <DatagridConfigurable bulkActionButtons={false}>
-                <DateField source="created_at" showTime={true} />
-                <ReferenceField source="job_id" reference="jobs" />
-                <StatusField source="status" />
+                <DateField
+                    source="created_at"
+                    showTime={true}
+                    sortable={false}
+                />
+                <ReferenceField
+                    source="job_id"
+                    reference="jobs"
+                    sortable={false}
+                />
+                <StatusField source="status" sortable={false} />
                 <DurationField
                     source="duration"
                     start_field="started_at"
                     end_field="ended_at"
+                    sortable={false}
                 />
-                <WrapperField source="started_by_user">
+                <WrapperField source="started_by_user" sortable={false}>
                     <TextField source="started_by_user.name" />
                 </WrapperField>
-                <RunExternalIdField source="external_id" />
-                <ReferenceField source="parent_run_id" reference="runs" />
+                <RunExternalIdField source="external_id" sortable={false} />
+                <ReferenceField
+                    source="parent_run_id"
+                    reference="runs"
+                    sortable={false}
+                />
             </DatagridConfigurable>
         </List>
     );
