@@ -6,7 +6,7 @@ import {
     WithRecord,
     WrapperField,
 } from "react-admin";
-import DatasetLocationIcon from "./DatasetLocationIcon";
+import { LocationIconWithType } from "@/components/location";
 
 const DatasetShow = (): ReactElement => {
     return (
@@ -14,7 +14,11 @@ const DatasetShow = (): ReactElement => {
             <SimpleShowLayout>
                 <TextField source="id" />
                 <WrapperField source="location.type">
-                    <DatasetLocationIcon />
+                    <WithRecord
+                        render={(record) => (
+                            <LocationIconWithType location={record.location} />
+                        )}
+                    />
                 </WrapperField>
                 <TextField source="location.name" />
                 <TextField source="name" />

@@ -72,13 +72,9 @@ const customEnglishMessages: TranslationMessages = {
             amount: "1 job |||| %{smart_count} jobs",
             title: "Job %{reference}",
             types: {
-                airflow: {
-                    task: "Airflow Task",
-                    dag: "Airflow DAG",
-                },
-                spark: {
-                    application: "Spark Application",
-                },
+                airflow_task: "Airflow Task",
+                airflow_dag: "Airflow DAG",
+                spark_application: "Spark Application",
             },
             fields: {
                 id: "Job ID",
@@ -106,9 +102,9 @@ const customEnglishMessages: TranslationMessages = {
             fields: {
                 id: "Run ID",
                 created_at: "Created at",
-                job_id: "Job ID",
+                job: "Job",
                 status: "Status",
-                parent_run_id: "Parent Run ID",
+                parent_run: "Parent Run",
                 started_at: "Started at",
                 started_by_user: "Started by user",
                 start_reason: "Start reason",

@@ -4,7 +4,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { Box, Button } from "@mui/material";
 import { useListContext } from "react-admin";
 
-const OperationListFilters = () => {
+const OperationRaListFilters = () => {
     const translate = useTranslate();
     const { filterValues, setFilters } = useListContext();
     const form = useForm({ defaultValues: filterValues });
@@ -53,4 +53,4 @@ const OperationListFilters = () => {
     );
 };
 
-export default OperationListFilters;
+export default OperationRaListFilters;

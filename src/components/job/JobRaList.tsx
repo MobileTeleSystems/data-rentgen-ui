@@ -7,12 +7,13 @@ import {
     minLength,
     DatagridConfigurable,
     useTranslate,
+    WithRecord,
 } from "react-admin";
 import { ListActions } from "@/components/base";
-import JobIcon from "./JobIcon";
-import JobLocationIcon from "./JobLocationIcon";
+import JobIcon from "./JobIconWithType";
+import { LocationIconWithType } from "@/components/location";
 
-const JobList = (): ReactElement => {
+const JobRaList = (): ReactElement => {
     const translate = useTranslate();
 
     const jobFilters = [
@@ -30,11 +31,15 @@ const JobList = (): ReactElement => {
         <List actions={<ListActions />} filters={jobFilters} resource="jobs">
             <DatagridConfigurable bulkActionButtons={false}>
                 <WrapperField source="type" sortable={false}>
-                    <JobIcon />
+                    <WithRecord render={(record) => <JobIcon job={record} />} />
                 </WrapperField>
                 <TextField source="name" sortable={false} />
                 <WrapperField source="location.type" sortable={false}>
-                    <JobLocationIcon />
+                    <WithRecord
+                        render={(record) => (
+                            <LocationIconWithType location={record.location} />
+                        )}
+                    />
                 </WrapperField>
                 <TextField source="location.name" sortable={false} />
             </DatagridConfigurable>
@@ -42,4 +47,4 @@ const JobList = (): ReactElement => {
     );
 };
 
-export default JobList;
+export default JobRaList;

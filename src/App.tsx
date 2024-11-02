@@ -11,11 +11,15 @@ import defaultDataProvider from "./dataProvider";
 import englishMessages from "./i18n/en";
 import { Layout } from "./layout";
 import { mainLightTheme, mainDarkTheme } from "@/themes/main";
-import { Login } from "./components/login";
-import { DatasetList, DatasetShow } from "./components/dataset";
-import { JobList, JobShow } from "./components/job";
-import { RunList, RunShow } from "./components/run";
-import { OperationShow } from "./components/operation";
+import { Login } from "@/components/login";
+import {
+    DatasetRaList,
+    DatasetRaRepr,
+    DatasetRaShow,
+} from "@/components/dataset";
+import { JobRaList, JobRaShow, JobRaRepr } from "@/components/job";
+import { RunRaList, RunRaShow } from "@/components/run";
+import { OperationRaShow } from "@/components/operation";
 
 const store = localStorageStore(undefined, "DataRentgen");
 
@@ -41,12 +45,18 @@ const App = () => {
             >
                 <Resource
                     name="datasets"
-                    list={DatasetList}
-                    show={DatasetShow}
+                    list={DatasetRaList}
+                    show={DatasetRaShow}
+                    recordRepresentation={<DatasetRaRepr />}
                 />
-                <Resource name="jobs" list={JobList} show={JobShow} />
-                <Resource name="runs" list={RunList} show={RunShow} />
-                <Resource name="operations" show={OperationShow} />
+                <Resource
+                    name="jobs"
+                    list={JobRaList}
+                    show={JobRaShow}
+                    recordRepresentation={<JobRaRepr />}
+                />
+                <Resource name="runs" list={RunRaList} show={RunRaShow} />
+                <Resource name="operations" show={OperationRaShow} />
             </Admin>
         </StoreContextProvider>
     );

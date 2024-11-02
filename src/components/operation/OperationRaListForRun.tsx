@@ -3,18 +3,19 @@ import {
     List,
     DatagridConfigurable,
     DateField,
-    WrapperField,
     TextField,
     FunctionField,
 } from "react-admin";
 
-import { Stack } from "@mui/material";
-
 import { DurationField, StatusField, ListActions } from "@/components/base";
 import { RunResponseV1 } from "@/dataProvider/types";
-import OperationListFilters from "./OperationListFilters";
+import OperationRaListFilters from "./OperationRaListFilters";
 
-const OperationListForRun = ({ run }: { run: RunResponseV1 }): ReactElement => {
+const OperationRaListForRun = ({
+    run,
+}: {
+    run: RunResponseV1;
+}): ReactElement => {
     return (
         <List
             resource="operations"
@@ -22,16 +23,16 @@ const OperationListForRun = ({ run }: { run: RunResponseV1 }): ReactElement => {
             filterDefaultValues={{ since: run.created_at }}
             actions={
                 <ListActions>
-                    <OperationListFilters />
+                    <OperationRaListFilters />
                 </ListActions>
             }
             title={false}
-            /* Reset filters on every RunShow page */
+            /* Reset filters on every RunRaShow page */
             disableSyncWithLocation
         >
             <DatagridConfigurable bulkActionButtons={false}>
                 <DateField source="created_at" showTime={true} />
-                {/* Do not show run, as we already in RunShow page*/}
+                {/* Do not show run, as we already in RunRaShow page*/}
                 <TextField source="position" sortable={false} />
                 <TextField source="group" sortable={false} />
                 <FunctionField
@@ -51,4 +52,4 @@ const OperationListForRun = ({ run }: { run: RunResponseV1 }): ReactElement => {
     );
 };
 
-export default OperationListForRun;
+export default OperationRaListForRun;

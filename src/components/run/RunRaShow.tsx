@@ -14,9 +14,9 @@ import {
     WrapperField,
 } from "react-admin";
 import { DurationField, StatusField } from "@/components/base";
-import { OperationListForRun } from "../operation";
+import { OperationRaListForRun } from "@/components/operation";
 
-const RunShow = (): ReactElement => {
+const RunRaShow = (): ReactElement => {
     const translate = useTranslate();
 
     return (
@@ -98,11 +98,11 @@ const RunShow = (): ReactElement => {
                 </Divider>
 
                 <WithRecord
-                    render={(record) => <OperationListForRun run={record} />}
+                    render={(record) => <OperationRaListForRun run={record} />}
                 />
             </SimpleShowLayout>
         </Show>
     );
 };
 
-export default RunShow;
+export default RunRaShow;

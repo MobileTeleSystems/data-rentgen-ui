@@ -1,4 +1,6 @@
-import JobShow from "./JobShow";
-import JobList from "./JobList";
+import JobRaShow from "./JobRaShow";
+import JobRaList from "./JobRaList";
+import JobRaRepr from "./JobRaRepr";
+import JobIconWithType from "./JobIconWithType";
 
-export { JobShow, JobList };
+export { JobRaShow, JobRaList, JobRaRepr, JobIconWithType };
