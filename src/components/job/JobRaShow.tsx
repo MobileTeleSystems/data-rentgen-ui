@@ -7,35 +7,42 @@ import {
     WithRecord,
     WrapperField,
 } from "react-admin";
-import Divider from "@mui/material/Divider";
+import { Divider } from "@mui/material";
 
-import JobIconWithText from "./JobIcon";
-import JobLocationIconWithText from "./JobLocationIcon";
-import { RunListForJob } from "../run";
+import JobIconWithType from "./JobIconWithType";
+import { RunRaListForJob } from "@/components/run";
+import { LocationIconWithType } from "@/components/location";
 
-const JobShow = (): ReactElement => {
+const JobRaShow = (): ReactElement => {
     const translate = useTranslate();
     return (
         <Show resource="jobs">
             <SimpleShowLayout>
                 <TextField source="id" />
                 <WrapperField source="type">
-                    <JobIconWithText />
+                    <WithRecord
+                        render={(record) => <JobIconWithType job={record} />}
+                    />
                 </WrapperField>
                 <TextField source="name" />
+
                 <WrapperField source="location.type">
-                    <JobLocationIconWithText />
+                    <WithRecord
+                        render={(record) => (
+                            <LocationIconWithType location={record.location} />
+                        )}
+                    />
                 </WrapperField>
                 <TextField source="location.name" />
 
                 <Divider>{translate("resources.jobs.sections.runs")}</Divider>
 
                 <WithRecord
-                    render={(record) => <RunListForJob jobId={record.id} />}
+                    render={(record) => <RunRaListForJob jobId={record.id} />}
                 />
             </SimpleShowLayout>
         </Show>
     );
 };
 
-export default JobShow;
+export default JobRaShow;

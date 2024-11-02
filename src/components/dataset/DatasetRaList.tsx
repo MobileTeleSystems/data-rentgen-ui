@@ -2,14 +2,15 @@ import { ReactElement } from "react";
 import {
     List,
     TextField,
-    WrapperField,
     DatagridConfigurable,
     SearchInput,
     minLength,
     useTranslate,
+    WithRecord,
+    WrapperField,
 } from "react-admin";
 import { ListActions } from "@/components/base";
-import DatasetLocationIcon from "./DatasetLocationIcon";
+import { LocationIconWithType } from "@/components/location";
 
 const DatasetList = (): ReactElement => {
     const translate = useTranslate();
@@ -33,7 +34,11 @@ const DatasetList = (): ReactElement => {
         >
             <DatagridConfigurable bulkActionButtons={false}>
                 <WrapperField source="location.type" sortable={false}>
-                    <DatasetLocationIcon />
+                    <WithRecord
+                        render={(record) => (
+                            <LocationIconWithType location={record.location} />
+                        )}
+                    />
                 </WrapperField>
                 <TextField source="location.name" sortable={false} />
                 <TextField source="name" sortable={false} />

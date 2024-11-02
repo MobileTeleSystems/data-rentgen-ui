@@ -9,10 +9,10 @@ import {
 } from "react-admin";
 
 import { DurationField, StatusField, ListActions } from "@/components/base";
-import RunExternalIdField from "./RunExternalIdField";
-import RunListFilters from "./RunListFilters";
+import RunRaExternalId from "./RunRaExternalId";
+import RunRaListFilters from "./RunRaListFilters";
 
-const RunListForJob = ({ jobId }: { jobId: number }): ReactElement => {
+const RunRaListForJob = ({ jobId }: { jobId: number }): ReactElement => {
     // Hack to avoid sending any network requests until user passed all required filters
     // See https://github.com/marmelab/react-admin/issues/10286
     const [enabled, setEnabled] = useState(false);
@@ -23,7 +23,7 @@ const RunListForJob = ({ jobId }: { jobId: number }): ReactElement => {
             filter={{ job_id: jobId }}
             actions={
                 <ListActions>
-                    <RunListFilters
+                    <RunRaListFilters
                         isReadyCallback={setEnabled}
                         requiredFilters={["since"]}
                     />
@@ -51,7 +51,7 @@ const RunListForJob = ({ jobId }: { jobId: number }): ReactElement => {
                 <WrapperField source="started_by_user" sortable={false}>
                     <TextField source="started_by_user.name" />
                 </WrapperField>
-                <RunExternalIdField source="external_id" sortable={false} />
+                <RunRaExternalId source="external_id" sortable={false} />
                 <ReferenceField
                     source="parent_run_id"
                     reference="runs"
@@ -62,4 +62,4 @@ const RunListForJob = ({ jobId }: { jobId: number }): ReactElement => {
     );
 };
 
-export default RunListForJob;
+export default RunRaListForJob;

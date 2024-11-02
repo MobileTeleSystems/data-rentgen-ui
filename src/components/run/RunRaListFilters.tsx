@@ -12,15 +12,15 @@ const weekAgo = (): Date => {
     return result;
 };
 
-type RunListFiltersProps = {
+type RunRaListFiltersProps = {
     isReadyCallback: (enabled: boolean) => void;
     requiredFilters: string[];
 };
 
-const RunListFilters = ({
+const RunRaListFilters = ({
     isReadyCallback,
     requiredFilters = ["since", "search_query"],
-}: RunListFiltersProps) => {
+}: RunRaListFiltersProps) => {
     const translate = useTranslate();
     const { filterValues, setFilters } = useListContext();
     const form = useForm({ defaultValues: filterValues });
@@ -102,4 +102,4 @@ const RunListFilters = ({
     );
 };
 
-export default RunListFilters;
+export default RunRaListFilters;

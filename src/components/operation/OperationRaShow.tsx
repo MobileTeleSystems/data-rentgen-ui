@@ -10,7 +10,7 @@ import {
 } from "react-admin";
 import { DurationField, StatusField } from "@/components/base";
 
-const OperationShow = (): ReactElement => {
+const OperationRaShow = (): ReactElement => {
     return (
         <Show>
             <SimpleShowLayout>
@@ -64,4 +64,4 @@ const OperationShow = (): ReactElement => {
     );
 };
 
-export default OperationShow;
+export default OperationRaShow;
