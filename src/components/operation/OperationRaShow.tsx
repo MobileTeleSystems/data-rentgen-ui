@@ -6,9 +6,11 @@ import {
     ReferenceField,
     Show,
     SimpleShowLayout,
+    TabbedShowLayout,
     TextField,
 } from "react-admin";
 import { DurationField, StatusField } from "@/components/base";
+import OperationRaLineage from "./OperationRaLineage";
 
 const OperationRaShow = (): ReactElement => {
     return (
@@ -51,14 +53,16 @@ const OperationRaShow = (): ReactElement => {
                             <DateField source="ended_at" showTime={true} />
                         </Labeled>
                         <Labeled label="resources.operations.sections.duration">
-                            <DurationField
-                                source="duration"
-                                start_field="started_at"
-                                end_field="ended_at"
-                            />
+                            <DurationField source="duration" />
                         </Labeled>
                     </Stack>
                 </Labeled>
+
+                <TabbedShowLayout>
+                    <TabbedShowLayout.Tab label="resources.operations.tabs.lineage">
+                        <OperationRaLineage />
+                    </TabbedShowLayout.Tab>
+                </TabbedShowLayout>
             </SimpleShowLayout>
         </Show>
     );

@@ -2,19 +2,18 @@ import { ReactElement } from "react";
 import {
     Show,
     SimpleShowLayout,
+    TabbedShowLayout,
     TextField,
-    useTranslate,
     WithRecord,
     WrapperField,
 } from "react-admin";
-import { Divider } from "@mui/material";
 
 import JobIconWithType from "./JobIconWithType";
+import JobLineage from "./JobRaLineage";
 import { RunRaListForJob } from "@/components/run";
 import { LocationIconWithType } from "@/components/location";
 
 const JobRaShow = (): ReactElement => {
-    const translate = useTranslate();
     return (
         <Show resource="jobs">
             <SimpleShowLayout>
@@ -35,11 +34,22 @@ const JobRaShow = (): ReactElement => {
                 </WrapperField>
                 <TextField source="location.name" />
 
-                <Divider>{translate("resources.jobs.sections.runs")}</Divider>
+                <TabbedShowLayout>
+                    <TabbedShowLayout.Tab label="resources.jobs.tabs.runs">
+                        <WithRecord
+                            render={(record) => (
+                                <RunRaListForJob jobId={record.id} />
+                            )}
+                        />
+                    </TabbedShowLayout.Tab>
 
-                <WithRecord
-                    render={(record) => <RunRaListForJob jobId={record.id} />}
-                />
+                    <TabbedShowLayout.Tab
+                        label="resources.jobs.tabs.lineage"
+                        path="lineage"
+                    >
+                        <JobLineage />
+                    </TabbedShowLayout.Tab>
+                </TabbedShowLayout>
             </SimpleShowLayout>
         </Show>
     );

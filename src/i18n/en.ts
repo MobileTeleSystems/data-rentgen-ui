@@ -60,6 +60,9 @@ const customEnglishMessages: TranslationMessages = {
                     type: "Location Type",
                 },
             },
+            tabs: {
+                lineage: "Lineage",
+            },
             filters: {
                 search_query: {
                     label: "Search",
@@ -85,8 +88,9 @@ const customEnglishMessages: TranslationMessages = {
                     type: "Location Type",
                 },
             },
-            sections: {
+            tabs: {
                 runs: "Runs",
+                lineage: "Lineage",
             },
             filters: {
                 search_query: {
@@ -130,7 +134,10 @@ const customEnglishMessages: TranslationMessages = {
                 attempt: "Attempt",
                 external_url: "External URL",
                 logs_url: "Logs URL",
+            },
+            tabs: {
                 operations: "Operations",
+                lineage: "Lineage",
             },
             filters: {
                 since: {
@@ -178,6 +185,9 @@ const customEnglishMessages: TranslationMessages = {
                 when: "When",
                 duration: "Duration",
             },
+            tabs: {
+                lineage: "Lineage",
+            },
             filters: {
                 since: {
                     label: "Since",
@@ -193,6 +203,37 @@ const customEnglishMessages: TranslationMessages = {
     },
     errors: {
         fetch: "Cannot fetch %{resource}",
+    },
+    lineage: {
+        filters: {
+            since: {
+                label: "Since",
+                helperText: "Include only events created after",
+            },
+            until: {
+                label: "Until",
+                helperText: "Include only events created before",
+            },
+            depth: {
+                label: "Depth",
+                helperText: "How many levels of events to include",
+            },
+            direction: {
+                label: "Direction",
+                helperText: "Include only events with specific direction",
+                both: "Downstream & upstream",
+                downstream: "Downstream",
+                upstream: "Upstream",
+            },
+            granularity: {
+                label: "Granularity",
+                helperText: "Include only events with specific granularity",
+                job: "Job",
+                run: "Run",
+                operation: "Operation",
+            },
+        },
+        build_button: "Build lineage graph",
     },
 };
 

@@ -1,4 +1,4 @@
-import { Divider, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { ReactElement } from "react";
 import {
     DateField,
@@ -7,18 +7,17 @@ import {
     RichTextField,
     Show,
     SimpleShowLayout,
+    TabbedShowLayout,
     TextField,
     UrlField,
-    useTranslate,
     WithRecord,
     WrapperField,
 } from "react-admin";
 import { DurationField, StatusField } from "@/components/base";
 import { OperationRaListForRun } from "@/components/operation";
+import RunRaLineage from "./RunRaLineage";
 
 const RunRaShow = (): ReactElement => {
-    const translate = useTranslate();
-
     return (
         <Show>
             <SimpleShowLayout>
@@ -67,11 +66,7 @@ const RunRaShow = (): ReactElement => {
                             <RichTextField source="end_reason" />
                         </Labeled>
                         <Labeled label="resources.runs.sections.duration">
-                            <DurationField
-                                source="duration"
-                                start_field="started_at"
-                                end_field="ended_at"
-                            />
+                            <DurationField source="duration" />
                         </Labeled>
                     </Stack>
                 </Labeled>
@@ -93,13 +88,22 @@ const RunRaShow = (): ReactElement => {
                     </Stack>
                 </Labeled>
 
-                <Divider>
-                    {translate("resources.runs.sections.operations")}
-                </Divider>
+                <TabbedShowLayout>
+                    <TabbedShowLayout.Tab label="resources.runs.tabs.operations">
+                        <WithRecord
+                            render={(record) => (
+                                <OperationRaListForRun run={record} />
+                            )}
+                        />
+                    </TabbedShowLayout.Tab>
 
-                <WithRecord
-                    render={(record) => <OperationRaListForRun run={record} />}
-                />
+                    <TabbedShowLayout.Tab
+                        label="resources.runs.tabs.lineage"
+                        path="lineage"
+                    >
+                        <RunRaLineage />
+                    </TabbedShowLayout.Tab>
+                </TabbedShowLayout>
             </SimpleShowLayout>
         </Show>
     );

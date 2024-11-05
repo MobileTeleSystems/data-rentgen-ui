@@ -42,12 +42,7 @@ const RunRaListForJob = ({ jobId }: { jobId: number }): ReactElement => {
                 />
                 {/* Do not show job, as we already in JobShow page*/}
                 <StatusField source="status" sortable={false} />
-                <DurationField
-                    source="duration"
-                    start_field="started_at"
-                    end_field="ended_at"
-                    sortable={false}
-                />
+                <DurationField source="duration" sortable={false} />
                 <WrapperField source="started_by_user" sortable={false}>
                     <TextField source="started_by_user.name" />
                 </WrapperField>

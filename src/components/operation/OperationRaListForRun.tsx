@@ -41,12 +41,7 @@ const OperationRaListForRun = ({
                     sortable={false}
                 />
                 <StatusField source="status" sortable={false} />
-                <DurationField
-                    source="duration"
-                    start_field="started_at"
-                    end_field="ended_at"
-                    sortable={false}
-                />
+                <DurationField source="duration" sortable={false} />
             </DatagridConfigurable>
         </List>
     );

@@ -82,10 +82,88 @@ interface OperationResponseV1 extends RaRecord {
     ended_at: string | null;
 }
 
+type EntityTypeLineageResponseV1 = "DATASET" | "JOB" | "RUN" | "OPERATION";
+
+interface RelationEndpointLineageResponseV1 {
+    kind: EntityTypeLineageResponseV1;
+    id: number | string;
+}
+
+interface BaseRelationLineageResponseV1 {
+    kind: string;
+    from: RelationEndpointLineageResponseV1;
+    to: RelationEndpointLineageResponseV1;
+}
+
+interface InputRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {
+    kind: "INPUT";
+}
+
+type OutputRelationTypeLineageResponseV1 =
+    | "ALTER"
+    | "CREATE"
+    | "DROP"
+    | "OVERWRITE"
+    | "RENAME"
+    | "TRUNCATE";
+
+interface OutputRelationLineageResponseV1
+    extends BaseRelationLineageResponseV1 {
+    kind: "OUTPUT";
+    type: OutputRelationTypeLineageResponseV1;
+}
+
+interface ParentRelationLineageResponseV1
+    extends BaseRelationLineageResponseV1 {
+    kind: "PARENT";
+}
+
+type SymlinkRelationTypeLineageResponseV1 = "METASTORE" | "WAREHOUSE";
+
+interface SymlinkRelationLineageResponseV1
+    extends BaseRelationLineageResponseV1 {
+    kind: "SYMLINK";
+    type: SymlinkRelationTypeLineageResponseV1;
+}
+
+type LineageRelationResponseV1 =
+    | InputRelationLineageResponseV1
+    | OutputRelationLineageResponseV1
+    | ParentRelationLineageResponseV1
+    | SymlinkRelationLineageResponseV1;
+
+type LineageNodeResponseV1 =
+    | DatasetResponseV1
+    | JobResponseV1
+    | RunResponseV1
+    | OperationResponseV1;
+
+type LineageResponseV1 = {
+    nodes: LineageNodeResponseV1[];
+    relations: LineageRelationResponseV1[];
+};
+
 export type {
     LocationResponseV1,
     DatasetResponseV1,
     JobResponseV1,
     RunResponseV1,
     OperationResponseV1,
+    LineageNodeResponseV1,
+    LineageRelationResponseV1,
+    LineageResponseV1,
+    UserResponseV1,
+    StatusResponseV1,
+    StartReasonResponseV1,
+    JobTypeResponseV1,
+    OperationTypeResponseV1,
+    EntityTypeLineageResponseV1,
+    RelationEndpointLineageResponseV1,
+    BaseRelationLineageResponseV1,
+    InputRelationLineageResponseV1,
+    OutputRelationLineageResponseV1,
+    OutputRelationTypeLineageResponseV1,
+    ParentRelationLineageResponseV1,
+    SymlinkRelationLineageResponseV1,
+    SymlinkRelationTypeLineageResponseV1,
 };
