@@ -4,8 +4,10 @@
     "private": true,
     "type": "module",
     "dependencies": {
+        "@dagrejs/dagre": "^1.1.4",
         "@mui/icons-material": "^5.16.7",
         "@mui/material": "^5.16.7",
+        "@xyflow/react": "^12.3.2",
         "clsx": "^2.1.1",
         "date-fns": "^3.6.0",
         "inflection": "^3.0.0",

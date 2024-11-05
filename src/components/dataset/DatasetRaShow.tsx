@@ -3,10 +3,12 @@ import {
     Show,
     SimpleShowLayout,
     TextField,
+    TabbedShowLayout,
     WithRecord,
     WrapperField,
 } from "react-admin";
 import { LocationIconWithType } from "@/components/location";
+import DatasetRaLineage from "./DatasetRaLineage";
 
 const DatasetShow = (): ReactElement => {
     return (
@@ -27,6 +29,12 @@ const DatasetShow = (): ReactElement => {
                         record.format && <TextField source="format" />
                     }
                 />
+
+                <TabbedShowLayout>
+                    <TabbedShowLayout.Tab label="resources.datasets.tabs.lineage">
+                        <DatasetRaLineage />
+                    </TabbedShowLayout.Tab>
+                </TabbedShowLayout>
             </SimpleShowLayout>
         </Show>
     );

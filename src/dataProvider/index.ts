@@ -8,6 +8,12 @@ import {
 import BACKEND_SERVER_URL from "./url";
 import { parseJSON, parseResponse } from "./utils";
 
+type GetLineageParams = {
+    id: number | string;
+    filter?: any;
+    meta?: any;
+};
+
 const defaultDataProvider: DataProvider = {
     // @ts-ignore
     create: () => Promise.resolve({ data: { id: 0 } }),
@@ -17,7 +23,6 @@ const defaultDataProvider: DataProvider = {
     getList: (
         resource: string,
         params: GetListParams & QueryFunctionContext,
-        signal?: AbortSignal,
     ) => {
         const url = new URL(`${BACKEND_SERVER_URL}/v1/${resource}`);
 
@@ -38,6 +43,8 @@ const defaultDataProvider: DataProvider = {
                 url.searchParams.append(field, params.filter[field]);
             }
         }
+
+        const signal = params.signal;
 
         return new Promise((resolve, reject) => {
             return fetch(url.toString(), {
@@ -62,7 +69,6 @@ const defaultDataProvider: DataProvider = {
     getMany: (
         resource: string,
         params: GetManyParams & QueryFunctionContext,
-        signal?: AbortSignal,
     ) => {
         const url = new URL(`${BACKEND_SERVER_URL}/v1/${resource}`);
 
@@ -75,6 +81,8 @@ const defaultDataProvider: DataProvider = {
         params.ids.forEach((id) => {
             url.searchParams.append(`${resourceOne}_id`, id.toString());
         });
+
+        const signal = params.signal;
 
         return new Promise((resolve, reject) => {
             return fetch(url.toString(), {
@@ -92,11 +100,7 @@ const defaultDataProvider: DataProvider = {
         });
     },
     getManyReference: () => Promise.resolve({ data: [], total: 0 }),
-    getOne: (
-        resource: string,
-        params: GetOneParams & QueryFunctionContext,
-        signal?: AbortSignal,
-    ) => {
+    getOne: (resource: string, params: GetOneParams & QueryFunctionContext) => {
         const url = new URL(`${BACKEND_SERVER_URL}/v1/${resource}`);
 
         for (const k in params.meta) {
@@ -106,6 +110,8 @@ const defaultDataProvider: DataProvider = {
         // datasets -> dataset_id
         const resourceOne = resource.slice(0, -1);
         url.searchParams.append(`${resourceOne}_id`, params.id.toString());
+
+        const signal = params.signal;
 
         return new Promise((resolve, reject) => {
             return fetch(url.toString(), {
@@ -120,6 +126,42 @@ const defaultDataProvider: DataProvider = {
                         return reject(new Error("Not found"));
                     }
                     return resolve({ data: json.items[0] });
+                });
+        });
+    },
+    getLineage: (
+        resource: string,
+        params: GetLineageParams & QueryFunctionContext,
+    ) => {
+        const url = new URL(`${BACKEND_SERVER_URL}/v1/${resource}/lineage`);
+        url.searchParams.append("start_node_id", params.id.toString());
+
+        for (const k in params.meta) {
+            url.searchParams.append(k, params.meta[k]);
+        }
+
+        for (const k in params.filter) {
+            if (params.filter[k]) {
+                const filter = JSON.stringify(params.filter[k]).replaceAll(
+                    /(^")|("$)/g,
+                    "",
+                );
+                url.searchParams.append(k, filter);
+            }
+        }
+
+        const signal = params.signal;
+
+        return new Promise((resolve, reject) => {
+            return fetch(url.toString(), {
+                method: "GET",
+                signal,
+            })
+                .then(parseResponse)
+                .catch((error) => reject(error))
+                .then(({ status, body }) => {
+                    const json = parseJSON(status, body, reject);
+                    return resolve(json);
                 });
         });
     },
