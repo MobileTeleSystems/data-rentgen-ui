@@ -13,7 +13,7 @@ To explore the source code, start with [src/App.tsx](./src/App.tsx).
 After having cloned the Rentgen repository, run the following commands at the root directory:
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -32,7 +32,7 @@ npm run prettier-format
 Run the following command at the root directory:
 
 ```bash
-npx eslint --fix
+npm run lint
 ```
 
 ### How to install pre-commit hooks

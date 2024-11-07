@@ -1,0 +1,10 @@
+.git/
+.github/
+.dockerignore
+.gitignore
+./docker/Dockerfile
+*docker-compose*
+
+.husky/
+node_modules/
+dist/
