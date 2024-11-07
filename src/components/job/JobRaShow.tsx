@@ -5,34 +5,25 @@ import {
     TabbedShowLayout,
     TextField,
     WithRecord,
-    WrapperField,
 } from "react-admin";
 
-import JobIconWithType from "./JobIconWithType";
 import JobLineage from "./JobRaLineage";
 import { RunRaListForJob } from "@/components/run";
-import { LocationIconWithType } from "@/components/location";
+import {
+    LocationRaNameWithLinkField,
+    LocationRaTypeWithIconField,
+} from "@/components/location";
+import JobRaTypeField from "./JobRaTypeField";
 
 const JobRaShow = (): ReactElement => {
     return (
         <Show resource="jobs">
             <SimpleShowLayout>
                 <TextField source="id" />
-                <WrapperField source="type">
-                    <WithRecord
-                        render={(record) => <JobIconWithType job={record} />}
-                    />
-                </WrapperField>
-                <TextField source="name" />
+                <JobRaTypeField source="type" />
 
-                <WrapperField source="location.type">
-                    <WithRecord
-                        render={(record) => (
-                            <LocationIconWithType location={record.location} />
-                        )}
-                    />
-                </WrapperField>
-                <TextField source="location.name" />
+                <LocationRaTypeWithIconField source="location.type" />
+                <LocationRaNameWithLinkField source="location.name" />
 
                 <TabbedShowLayout>
                     <TabbedShowLayout.Tab label="resources.jobs.tabs.runs">

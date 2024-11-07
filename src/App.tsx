@@ -13,6 +13,11 @@ import { Layout } from "./layout";
 import { mainLightTheme, mainDarkTheme } from "@/themes/main";
 import { Login } from "@/components/login";
 import {
+    LocationRaList,
+    LocationRaShow,
+    LocationRaRepr,
+} from "@/components/location";
+import {
     DatasetRaList,
     DatasetRaRepr,
     DatasetRaShow,
@@ -20,6 +25,8 @@ import {
 import { JobRaList, JobRaShow, JobRaRepr } from "@/components/job";
 import { RunRaList, RunRaShow } from "@/components/run";
 import { OperationRaShow } from "@/components/operation";
+import { PlayArrow, Public, Settings } from "@mui/icons-material";
+import { DatasetIcon } from "@/components/icons";
 
 const store = localStorageStore(undefined, "DataRentgen");
 
@@ -44,18 +51,32 @@ const App = () => {
                 defaultTheme="light"
             >
                 <Resource
+                    name="locations"
+                    icon={Public}
+                    list={LocationRaList}
+                    show={LocationRaShow}
+                    recordRepresentation={<LocationRaRepr />}
+                />
+                <Resource
                     name="datasets"
+                    icon={DatasetIcon}
                     list={DatasetRaList}
                     show={DatasetRaShow}
                     recordRepresentation={<DatasetRaRepr />}
                 />
                 <Resource
                     name="jobs"
+                    icon={Settings}
                     list={JobRaList}
                     show={JobRaShow}
                     recordRepresentation={<JobRaRepr />}
                 />
-                <Resource name="runs" list={RunRaList} show={RunRaShow} />
+                <Resource
+                    name="runs"
+                    icon={PlayArrow}
+                    list={RunRaList}
+                    show={RunRaShow}
+                />
                 <Resource name="operations" show={OperationRaShow} />
             </Admin>
         </StoreContextProvider>
