@@ -1,5 +1,5 @@
 import AppBar from "./AppBar";
 import Layout from "./Layout";
-import Menu from "./Menu";
+import Menu from "./AppMenu";
 
 export { AppBar, Layout, Menu };

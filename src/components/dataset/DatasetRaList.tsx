@@ -6,13 +6,14 @@ import {
     SearchInput,
     minLength,
     useTranslate,
-    WithRecord,
-    WrapperField,
 } from "react-admin";
 import { ListActions } from "@/components/base";
-import { LocationIconWithType } from "@/components/location";
+import {
+    LocationRaNameWithLinkField,
+    LocationRaTypeWithIconField,
+} from "@/components/location";
 
-const DatasetList = (): ReactElement => {
+const DatasetRaList = (): ReactElement => {
     const translate = useTranslate();
 
     const datasetFilters = [
@@ -33,18 +34,18 @@ const DatasetList = (): ReactElement => {
             resource="datasets"
         >
             <DatagridConfigurable bulkActionButtons={false}>
-                <WrapperField source="location.type" sortable={false}>
-                    <WithRecord
-                        render={(record) => (
-                            <LocationIconWithType location={record.location} />
-                        )}
-                    />
-                </WrapperField>
-                <TextField source="location.name" sortable={false} />
+                <LocationRaTypeWithIconField
+                    source="location.type"
+                    sortable={false}
+                />
+                <LocationRaNameWithLinkField
+                    source="location.name"
+                    sortable={false}
+                />
                 <TextField source="name" sortable={false} />
             </DatagridConfigurable>
         </List>
     );
 };
 
-export default DatasetList;
+export default DatasetRaList;

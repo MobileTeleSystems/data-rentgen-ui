@@ -13,6 +13,7 @@ const customEnglishMessages: TranslationMessages = {
             dark: "Dark",
         },
         menu: {
+            locations: "Locations",
             datasets: "Datasets",
             jobs: "Jobs",
             runs: "Runs",
@@ -45,6 +46,18 @@ const customEnglishMessages: TranslationMessages = {
                 http: "HTTP",
                 https: "HTTPS",
                 local: "Local",
+            },
+            fields: {
+                id: "Location ID",
+                type: "Location name",
+                name: "Location name",
+                external_id: "External ID",
+            },
+            filters: {
+                search_query: {
+                    label: "Search",
+                    placeholder: "Filter by name or address",
+                },
             },
         },
         datasets: {

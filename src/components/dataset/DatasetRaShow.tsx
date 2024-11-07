@@ -5,24 +5,21 @@ import {
     TextField,
     TabbedShowLayout,
     WithRecord,
-    WrapperField,
 } from "react-admin";
-import { LocationIconWithType } from "@/components/location";
+import {
+    LocationRaNameWithLinkField,
+    LocationRaTypeWithIconField,
+} from "@/components/location";
 import DatasetRaLineage from "./DatasetRaLineage";
 
-const DatasetShow = (): ReactElement => {
+const DatasetRaShow = (): ReactElement => {
     return (
         <Show resource="datasets">
             <SimpleShowLayout>
                 <TextField source="id" />
-                <WrapperField source="location.type">
-                    <WithRecord
-                        render={(record) => (
-                            <LocationIconWithType location={record.location} />
-                        )}
-                    />
-                </WrapperField>
-                <TextField source="location.name" />
+                <LocationRaTypeWithIconField source="location.type" />
+                <LocationRaNameWithLinkField source="location.name" />
+
                 <TextField source="name" />
                 <WithRecord
                     render={(record) =>
@@ -40,4 +37,4 @@ const DatasetShow = (): ReactElement => {
     );
 };
 
-export default DatasetShow;
+export default DatasetRaShow;
