@@ -8,21 +8,10 @@ const parseResponse = (response: any) =>
         body: text,
     }));
 
-const parseJSON = (
-    status: number,
-    body: string,
-    reject: (error: any) => void,
-) => {
-    let json;
-    try {
-        json = JSON.parse(body);
-    } catch (e) {
-        return reject(e);
-    }
+const parseJSON = (status: number, body: string) => {
+    let json = JSON.parse(body);
     if (status < 200 || status >= 400) {
-        return reject(
-            new HttpError((json && json.message) || body, status, json),
-        );
+        throw new HttpError((json && json.message) || body, status, json);
     }
     return json;
 };

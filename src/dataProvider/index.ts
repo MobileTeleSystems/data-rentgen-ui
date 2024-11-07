@@ -5,13 +5,20 @@ import {
     GetOneParams,
     QueryFunctionContext,
 } from "react-admin";
-import BACKEND_SERVER_URL from "./url";
 import { parseJSON, parseResponse } from "./utils";
+
+const API_URL = "http://localhost:8000";
 
 type GetLineageParams = {
     id: number | string;
     filter?: any;
     meta?: any;
+};
+
+const getURL = (path: string) => {
+    // if API_URL is relative, resolve it to absolute URL using current window location
+    const baseUrl = window.location.toString();
+    return new URL(API_URL + path, baseUrl);
 };
 
 const defaultDataProvider: DataProvider = {
@@ -24,7 +31,7 @@ const defaultDataProvider: DataProvider = {
         resource: string,
         params: GetListParams & QueryFunctionContext,
     ) => {
-        const url = new URL(`${BACKEND_SERVER_URL}/v1/${resource}`);
+        const url = getURL(`/v1/${resource}`);
 
         for (const k in params.meta) {
             url.searchParams.append(k, params.meta[k]);
@@ -46,31 +53,28 @@ const defaultDataProvider: DataProvider = {
 
         const signal = params.signal;
 
-        return new Promise((resolve, reject) => {
-            return fetch(url.toString(), {
-                method: "GET",
-                signal,
-            })
-                .catch((error) => reject(error))
-                .then(parseResponse)
-                .then(({ status, body }) => {
-                    const json = parseJSON(status, body, reject);
-                    return resolve({
-                        data: json.items,
-                        total: json.meta.total_count,
-                        pageInfo: {
-                            hasNextPage: json.meta.has_next,
-                            hasPreviousPage: json.meta.has_previous,
-                        },
-                    });
-                });
-        });
+        return fetch(url.toString(), {
+            method: "GET",
+            signal,
+        })
+            .then(parseResponse)
+            .then(({ status, body }) => {
+                const json = parseJSON(status, body);
+                return {
+                    data: json.items,
+                    total: json.meta.total_count,
+                    pageInfo: {
+                        hasNextPage: json.meta.has_next,
+                        hasPreviousPage: json.meta.has_previous,
+                    },
+                };
+            });
     },
     getMany: (
         resource: string,
         params: GetManyParams & QueryFunctionContext,
     ) => {
-        const url = new URL(`${BACKEND_SERVER_URL}/v1/${resource}`);
+        const url = getURL(`/v1/${resource}`);
 
         for (const k in params.meta) {
             url.searchParams.append(k, params.meta[k]);
@@ -84,24 +88,21 @@ const defaultDataProvider: DataProvider = {
 
         const signal = params.signal;
 
-        return new Promise((resolve, reject) => {
-            return fetch(url.toString(), {
-                method: "GET",
-                signal,
-            })
-                .then(parseResponse)
-                .catch((error) => reject(error))
-                .then(({ status, body }) => {
-                    const json = parseJSON(status, body, reject);
-                    return resolve({
-                        data: json.items,
-                    });
-                });
-        });
+        return fetch(url.toString(), {
+            method: "GET",
+            signal,
+        })
+            .then(parseResponse)
+            .then(({ status, body }) => {
+                const json = parseJSON(status, body);
+                return {
+                    data: json.items,
+                };
+            });
     },
     getManyReference: () => Promise.resolve({ data: [], total: 0 }),
     getOne: (resource: string, params: GetOneParams & QueryFunctionContext) => {
-        const url = new URL(`${BACKEND_SERVER_URL}/v1/${resource}`);
+        const url = getURL(`/v1/${resource}`);
 
         for (const k in params.meta) {
             url.searchParams.append(k, params.meta[k]);
@@ -113,27 +114,24 @@ const defaultDataProvider: DataProvider = {
 
         const signal = params.signal;
 
-        return new Promise((resolve, reject) => {
-            return fetch(url.toString(), {
-                method: "GET",
-                signal,
-            })
-                .then(parseResponse)
-                .catch((error) => reject(error))
-                .then(({ status, body }) => {
-                    const json = parseJSON(status, body, reject);
-                    if (json.items.length === 0) {
-                        return reject(new Error("Not found"));
-                    }
-                    return resolve({ data: json.items[0] });
-                });
-        });
+        return fetch(url.toString(), {
+            method: "GET",
+            signal,
+        })
+            .then(parseResponse)
+            .then(({ status, body }) => {
+                const json = parseJSON(status, body);
+                if (json.items.length === 0) {
+                    throw new Error("Not found");
+                }
+                return { data: json.items[0] };
+            });
     },
     getLineage: (
         resource: string,
         params: GetLineageParams & QueryFunctionContext,
     ) => {
-        const url = new URL(`${BACKEND_SERVER_URL}/v1/${resource}/lineage`);
+        const url = getURL(`/v1/${resource}/lineage`);
         url.searchParams.append("start_node_id", params.id.toString());
 
         for (const k in params.meta) {
@@ -152,18 +150,12 @@ const defaultDataProvider: DataProvider = {
 
         const signal = params.signal;
 
-        return new Promise((resolve, reject) => {
-            return fetch(url.toString(), {
-                method: "GET",
-                signal,
-            })
-                .then(parseResponse)
-                .catch((error) => reject(error))
-                .then(({ status, body }) => {
-                    const json = parseJSON(status, body, reject);
-                    return resolve(json);
-                });
-        });
+        return fetch(url.toString(), {
+            method: "GET",
+            signal,
+        })
+            .then(parseResponse)
+            .then(({ status, body }) => parseJSON(status, body));
     },
     // @ts-ignore
     update: () => Promise.resolve({ data: {} }),

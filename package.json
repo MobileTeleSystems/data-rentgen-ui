@@ -22,7 +22,9 @@
     },
     "scripts": {
         "dev": "vite",
+        "prod": "vite --host 0.0.0.0",
         "build": "tsc && vite build",
+        "lint": "eslint --fix",
         "type-check": "tsc",
         "preview": "vite preview",
         "prettier-format": "prettier --config .prettierrc 'src/**/*.tsx' 'src/**/*.ts' --write",
