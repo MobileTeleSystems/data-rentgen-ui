@@ -8,6 +8,8 @@ import {
     Card,
     CardActions,
     CircularProgress,
+    Stack,
+    Typography,
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import {
@@ -18,6 +20,7 @@ import {
     useLogin,
     useNotify,
 } from "react-admin";
+import { DataRentgenIcon } from "../icons";
 
 interface FormValues {
     username?: string;
@@ -64,17 +67,15 @@ const Login = () => {
                 }}
             >
                 <Card sx={{ minWidth: 300, marginTop: "6em" }}>
-                    <Box
+                    <Stack
+                        direction="column"
                         sx={{
-                            margin: "1em",
-                            display: "flex",
-                            justifyContent: "center",
+                            alignItems: "center",
                         }}
                     >
-                        <Avatar sx={{ bgcolor: "secondary.main" }}>
-                            <LockIcon />
-                        </Avatar>
-                    </Box>
+                        <DataRentgenIcon />
+                        <Typography variant="h5">Data.Rentgen</Typography>
+                    </Stack>
                     <Box
                         sx={{
                             marginTop: "1em",

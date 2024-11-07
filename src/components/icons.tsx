@@ -12,6 +12,7 @@ import OracleIcon from "@assets/icons/oracle.svg?react";
 import PostgreSQLIcon from "@assets/icons/postgresql.svg?react";
 import TeradataIcon from "@assets/icons/teradata.svg?react";
 import DatasetIcon from "@assets/icons/dataset.svg?react";
+import DataRentgenIcon from "@assets/icons/data-rentgen.svg?react";
 
 export {
     ApacheAirflowIcon,
@@ -28,4 +29,5 @@ export {
     PostgreSQLIcon,
     TeradataIcon,
     DatasetIcon,
+    DataRentgenIcon,
 };
