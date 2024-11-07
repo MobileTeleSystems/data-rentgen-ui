@@ -150,6 +150,7 @@ const customEnglishMessages: TranslationMessages = {
             },
             tabs: {
                 operations: "Operations",
+                child_runs: "Child runs",
                 lineage: "Lineage",
             },
             filters: {
