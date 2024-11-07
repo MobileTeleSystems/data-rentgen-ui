@@ -16,6 +16,7 @@ import {
 import { DurationField, StatusField } from "@/components/base";
 import { OperationRaListForRun } from "@/components/operation";
 import RunRaLineage from "./RunRaLineage";
+import RunRaListForParentRun from "./RunRaListForParentRun";
 
 const RunRaShow = (): ReactElement => {
     return (
@@ -93,6 +94,14 @@ const RunRaShow = (): ReactElement => {
                         <WithRecord
                             render={(record) => (
                                 <OperationRaListForRun run={record} />
+                            )}
+                        />
+                    </TabbedShowLayout.Tab>
+
+                    <TabbedShowLayout.Tab label="resources.runs.tabs.child_runs">
+                        <WithRecord
+                            render={(record) => (
+                                <RunRaListForParentRun parentRun={record} />
                             )}
                         />
                     </TabbedShowLayout.Tab>
