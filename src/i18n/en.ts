@@ -49,7 +49,7 @@ const customEnglishMessages: TranslationMessages = {
             },
             fields: {
                 id: "Location ID",
-                type: "Location name",
+                type: "Location type",
                 name: "Location name",
                 external_id: "External ID",
             },
