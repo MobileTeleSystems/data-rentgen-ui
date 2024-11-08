@@ -4,6 +4,7 @@ import {
     GetManyParams,
     GetOneParams,
     QueryFunctionContext,
+    UpdateParams,
 } from "react-admin";
 import { parseJSON, parseResponse } from "./utils";
 
@@ -51,11 +52,9 @@ const defaultDataProvider: DataProvider = {
             }
         }
 
-        const signal = params.signal;
-
         return fetch(url.toString(), {
             method: "GET",
-            signal,
+            signal: params.signal,
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -86,11 +85,9 @@ const defaultDataProvider: DataProvider = {
             url.searchParams.append(`${resourceOne}_id`, id.toString());
         });
 
-        const signal = params.signal;
-
         return fetch(url.toString(), {
             method: "GET",
-            signal,
+            signal: params.signal,
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -112,11 +109,9 @@ const defaultDataProvider: DataProvider = {
         const resourceOne = resource.slice(0, -1);
         url.searchParams.append(`${resourceOne}_id`, params.id.toString());
 
-        const signal = params.signal;
-
         return fetch(url.toString(), {
             method: "GET",
-            signal,
+            signal: params.signal,
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -148,17 +143,28 @@ const defaultDataProvider: DataProvider = {
             }
         }
 
-        const signal = params.signal;
-
         return fetch(url.toString(), {
             method: "GET",
-            signal,
+            signal: params.signal,
         })
             .then(parseResponse)
             .then(({ status, body }) => parseJSON(status, body));
     },
-    // @ts-ignore
-    update: () => Promise.resolve({ data: {} }),
+    update: (resource: string, params: UpdateParams) => {
+        const url = getURL(`/v1/${resource}/${params.id}`);
+
+        return fetch(url.toString(), {
+            method: "PATCH",
+            body: JSON.stringify(params.data),
+            headers: { "Content-Type": "application/json" },
+        })
+            .then(parseResponse)
+            .then(({ status, body }) => {
+                return {
+                    data: parseJSON(status, body),
+                };
+            });
+    },
     updateMany: () => Promise.resolve({}),
 };
 

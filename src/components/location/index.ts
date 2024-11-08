@@ -4,6 +4,7 @@ import LocationType from "./LocationType";
 import LocationRaRepr from "./LocationRaRepr";
 import LocationRaList from "./LocationRaList";
 import LocationRaShow from "./LocationRaShow";
+import LocationRaEdit from "./LocationRaEdit";
 import LocationRaTypeWithIconField from "./LocationRaTypeWithIconField";
 import LocationRaNameWithLinkField from "./LocationRaNameWithLinkField";
 
@@ -14,6 +15,7 @@ export {
     LocationRaRepr,
     LocationRaList,
     LocationRaShow,
+    LocationRaEdit,
     LocationRaTypeWithIconField,
     LocationRaNameWithLinkField,
 };

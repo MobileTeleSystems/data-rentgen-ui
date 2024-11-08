@@ -16,6 +16,7 @@ import {
     LocationRaList,
     LocationRaShow,
     LocationRaRepr,
+    LocationRaEdit,
 } from "@/components/location";
 import {
     DatasetRaList,
@@ -55,6 +56,7 @@ const App = () => {
                     icon={Public}
                     list={LocationRaList}
                     show={LocationRaShow}
+                    edit={LocationRaEdit}
                     recordRepresentation={<LocationRaRepr />}
                 />
                 <Resource
