@@ -97,6 +97,9 @@ interface BaseRelationLineageResponseV1 {
 
 interface InputRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {
     kind: "INPUT";
+    num_rows: number | null;
+    num_bytes: number | null;
+    num_files: number | null;
 }
 
 type OutputRelationTypeLineageResponseV1 =
@@ -111,6 +114,9 @@ interface OutputRelationLineageResponseV1
     extends BaseRelationLineageResponseV1 {
     kind: "OUTPUT";
     type: OutputRelationTypeLineageResponseV1;
+    num_rows: number | null;
+    num_bytes: number | null;
+    num_files: number | null;
 }
 
 interface ParentRelationLineageResponseV1
