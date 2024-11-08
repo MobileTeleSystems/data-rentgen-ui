@@ -1,4 +1,4 @@
-FROM node:23.1.0 AS build
+FROM --platform=linux/amd64 node:23.1.0 AS build
 
 # set working directory
 WORKDIR /app
