@@ -9,6 +9,9 @@ import {
 } from "@/dataProvider/types";
 import { Edge, MarkerType } from "@xyflow/react";
 import { getNodeId } from "./getGraphNodes";
+import formatBytes from "@/utils/bytes";
+import formatNumberApprox from "@/utils/numbers";
+import { Chip } from "@mui/material";
 
 const STOKE_THICK = 3;
 const STOKE_THIN = 1;
@@ -27,6 +30,7 @@ const getMinimalEdge = (
         id: getEdgeId(relation),
         source: getNodeId(relation.from),
         target: getNodeId(relation.to),
+        type: "baseEdge",
         // @ts-ignore
         data: relation,
         markerEnd: {
@@ -71,8 +75,8 @@ const getOutputEdge = (
 
     return {
         ...getMinimalEdge(relation, raw_response),
+        type: "ioEdge",
         animated: true,
-        label: relation.type,
         markerEnd: {
             type: MarkerType.ArrowClosed,
             color: color,
@@ -80,6 +84,9 @@ const getOutputEdge = (
         style: {
             strokeWidth: STOKE_THICK,
             stroke: color,
+        },
+        labelStyle: {
+            backgroundColor: color,
         },
     };
 };
@@ -91,6 +98,7 @@ const getInputEdge = (
     const color = "green";
     return {
         ...getMinimalEdge(relation, raw_response),
+        type: "ioEdge",
         animated: true,
         markerEnd: {
             type: MarkerType.ArrowClosed,
@@ -99,6 +107,9 @@ const getInputEdge = (
         style: {
             strokeWidth: STOKE_THICK,
             stroke: color,
+        },
+        labelStyle: {
+            backgroundColor: color,
         },
     };
 };
@@ -139,6 +150,8 @@ const getSymlinkEdge = (
         (r) => r.kind == "OUTPUT" || r.kind == "SYMLINK",
     );
 
+    const color = "purple";
+
     return {
         ...getMinimalEdge(relation, raw_response),
         label: "SYMLINK",
@@ -150,15 +163,18 @@ const getSymlinkEdge = (
             : getNodeId(relation.to),
         markerStart: {
             type: MarkerType.ArrowClosed,
-            color: "purple",
+            color: color,
         },
         markerEnd: {
             type: MarkerType.ArrowClosed,
-            color: "purple",
+            color: color,
         },
         style: {
             strokeWidth: STOKE_THIN,
-            stroke: "purple",
+            stroke: color,
+        },
+        labelStyle: {
+            backgroundColor: color,
         },
     };
 };

@@ -10,9 +10,15 @@ import {
 } from "@xyflow/react";
 import { DatasetNode, JobNode, RunNode, OperationNode } from "./nodes";
 import { useEffect } from "react";
+import { BaseEdge, IOEdge } from "./edges";
 
 export const MIN_ZOOM_VALUE = 0.1;
 export const MAX_ZOOM_VALUE = 2.5;
+
+const edgeTypes = {
+    ioEdge: IOEdge,
+    baseEdge: BaseEdge,
+};
 
 const nodeTypes = {
     datasetNode: DatasetNode,
@@ -33,6 +39,7 @@ const LineageGraph = (props: ReactFlowProps) => {
     return (
         <ReactFlow
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
             nodesFocusable={true}
             elementsSelectable={true}
             nodesConnectable={false}
