@@ -5,6 +5,7 @@ import {
     Show,
     SimpleShowLayout,
     TextField,
+    UrlField,
     WithRecord,
     WrapperField,
 } from "react-admin";
@@ -27,7 +28,7 @@ const LocationRaShow = (): ReactElement => {
 
                 <ArrayField source="addresses">
                     <Datagrid bulkActionButtons={false}>
-                        <TextField source="url" />
+                        <UrlField source="url" />
                     </Datagrid>
                 </ArrayField>
             </SimpleShowLayout>
