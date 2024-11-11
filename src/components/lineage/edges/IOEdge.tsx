@@ -45,15 +45,15 @@ const IOEdge = ({
                             style={props.labelStyle}
                         />
                     ) : null}
-                    {data.num_rows && (
+                    {data.num_rows && data.num_rows > 0 && (
                         <Typography>
                             {formatNumberApprox(data.num_rows)} rows
                         </Typography>
                     )}
-                    {data.num_bytes && (
+                    {data.num_bytes && data.num_bytes > 0 && (
                         <Typography>{formatBytes(data.num_bytes)}</Typography>
                     )}
-                    {data.num_files && (
+                    {data.num_files && data.num_files > 0 && (
                         <Typography>
                             {formatNumberApprox(data.num_files)} files
                         </Typography>
