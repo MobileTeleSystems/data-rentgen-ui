@@ -23,6 +23,13 @@ const IOEdge = ({
 }): ReactElement => {
     const [edgePath, labelX, labelY] = getBezierPath(props);
 
+    const hasContent =
+        data.type || data.num_rows || data.num_bytes || data.num_files;
+
+    if (!hasContent) {
+        return <BaseEdge id={id} path={edgePath} {...props} />;
+    }
+
     return (
         <>
             <BaseEdge id={id} path={edgePath} {...props} />
