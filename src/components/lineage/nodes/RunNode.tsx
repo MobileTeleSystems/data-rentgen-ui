@@ -12,7 +12,7 @@ import {
     Stack,
     Typography,
 } from "@mui/material";
-import BaseNode from "./BaseNode";
+import BaseNode from "./base_node/BaseNode";
 import { RunIcon } from "@/components/run";
 import { formatDate, getDurationText } from "@/utils/datetime";
 import { statusToThemeColor } from "@/utils/color";

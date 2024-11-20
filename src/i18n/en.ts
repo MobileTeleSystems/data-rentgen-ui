@@ -72,6 +72,14 @@ const customEnglishMessages: TranslationMessages = {
                     name: "Location Name",
                     type: "Location Type",
                 },
+                schema: {
+                    name: "Projected Schema",
+                    field: {
+                        name: "Field",
+                        type: "Type",
+                        description: "Description",
+                    },
+                },
             },
             tabs: {
                 lineage: "Lineage",

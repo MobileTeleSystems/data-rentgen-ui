@@ -5,7 +5,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 import { JobResponseV1 } from "@/dataProvider/types";
 import { Button, CardHeader } from "@mui/material";
-import BaseNode from "./BaseNode";
+import BaseNode from "./base_node/BaseNode";
 import { JobIconWithType } from "@/components/job";
 
 export type JobNode = Node<JobResponseV1, "jobNode">;

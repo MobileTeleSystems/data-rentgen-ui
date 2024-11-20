@@ -95,11 +95,24 @@ interface BaseRelationLineageResponseV1 {
     to: RelationEndpointLineageResponseV1;
 }
 
+type IORelationSchemaV1 = {
+    id: number;
+    fields: IORelationSchemaFieldV1[];
+};
+
+type IORelationSchemaFieldV1 = {
+    name: string | null;
+    type: string | null;
+    description: string | null;
+    fields: IORelationSchemaFieldV1[];
+};
+
 interface InputRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {
     kind: "INPUT";
     num_rows: number | null;
     num_bytes: number | null;
     num_files: number | null;
+    schema: IORelationSchemaV1 | null;
 }
 
 type OutputRelationTypeLineageResponseV1 =
@@ -113,10 +126,11 @@ type OutputRelationTypeLineageResponseV1 =
 interface OutputRelationLineageResponseV1
     extends BaseRelationLineageResponseV1 {
     kind: "OUTPUT";
-    type: OutputRelationTypeLineageResponseV1;
+    type: OutputRelationTypeLineageResponseV1 | null;
     num_rows: number | null;
     num_bytes: number | null;
     num_files: number | null;
+    schema: IORelationSchemaV1 | null;
 }
 
 interface ParentRelationLineageResponseV1
@@ -167,6 +181,8 @@ export type {
     RelationEndpointLineageResponseV1,
     BaseRelationLineageResponseV1,
     InputRelationLineageResponseV1,
+    IORelationSchemaFieldV1,
+    IORelationSchemaV1,
     OutputRelationLineageResponseV1,
     OutputRelationTypeLineageResponseV1,
     ParentRelationLineageResponseV1,

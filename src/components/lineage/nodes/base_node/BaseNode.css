@@ -1,0 +1,11 @@
+.react-flow__node.selected .MuiCard-root {
+    --xy-selection-background-color: #ebf2fd;
+    background-color: var(
+        --xy-selection-background-color,
+        var(--xy-selection-background-color-default)
+    );
+    border-color: var(
+        --xy-selection-border,
+        var(--xy-selection-border-default)
+    );
+}
