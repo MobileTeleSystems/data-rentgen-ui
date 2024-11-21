@@ -8,11 +8,12 @@ const formatNumberApprox = (value: number, decimals = 2): string => {
     if (value < step) return value.toString();
 
     const i = Math.floor(Math.log(value) / Math.log(step));
-    const suffix = translate(`units.numbers.${suffixes[i]}`, {
-        _: suffixes[i],
+    const suffix = suffixes[i - 1];
+    const suffixTranslation = translate(`units.numbers.${suffix}`, {
+        _: suffix,
     });
     const roundedValue = value / Math.pow(step, i);
-    return roundedValue.toFixed(decimals) + suffix;
+    return roundedValue.toFixed(decimals) + suffixTranslation;
 };
 
 export default formatNumberApprox;
