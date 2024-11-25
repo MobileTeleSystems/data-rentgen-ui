@@ -118,7 +118,7 @@ const getSymlinkEdge = (
     relation: SymlinkRelationLineageResponseV1,
     raw_response: LineageResponseV1,
 ): Edge | null => {
-    if (relation.type == "METASTORE") {
+    if (relation.type == "WAREHOUSE") {
         // having 2 edges between same nodes leads to confusing cross links like those:
         //
         // >HDFS<
@@ -132,17 +132,17 @@ const getSymlinkEdge = (
         return null;
     }
 
-    // if target node has only outputs (e.g. HDFS is a source for all jobs/runs/... in this graph),
+    // if target node has only outputs (e.g. Hive is a source for all jobs/runs/... in this graph),
     // draw symlink on the left, to replace complex graphs like these:
     //
     //     /--> Job
-    // HDFS
+    // Hive
     //     \
-    //      <-> Hive
+    //      <-> HDFS
     //
     // with more simple graphs, like these:
     //
-    // Hive <-> HDFS -> Job
+    // HDFS <-> Hive -> Job
     const targetRelations = raw_response.relations.filter(
         (r) => r.to.id == relation.to.id || r.from.id == relation.to.id,
     );
