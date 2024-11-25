@@ -28,7 +28,7 @@ const LocationRaShow = (): ReactElement => {
 
                 <ArrayField source="addresses">
                     <Datagrid bulkActionButtons={false}>
-                        <UrlField source="url" />
+                        <UrlField source="url" target="_blank" />
                     </Datagrid>
                 </ArrayField>
             </SimpleShowLayout>

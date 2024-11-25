@@ -81,10 +81,16 @@ const RunRaShow = (): ReactElement => {
                             <TextField source="attempt" />
                         </Labeled>
                         <Labeled label="resources.runs.sections.external_url">
-                            <UrlField source="running_log_url" />
+                            <UrlField
+                                source="running_log_url"
+                                target="_blank"
+                            />
                         </Labeled>
                         <Labeled label="resources.runs.sections.logs_url">
-                            <UrlField source="persistent_log_url" />
+                            <UrlField
+                                source="persistent_log_url"
+                                target="_blank"
+                            />
                         </Labeled>
                     </Stack>
                 </Labeled>
