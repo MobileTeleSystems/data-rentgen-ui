@@ -40,7 +40,7 @@ const authProvider: AuthProvider = {
         const status = error.status;
         if (status === 401 || status === 403) {
             localStorage.removeItem("token");
-            throw new Error();
+            throw new Error(error.statusText);
         }
         return Promise.resolve();
     },
@@ -49,9 +49,12 @@ const authProvider: AuthProvider = {
     getPermissions: () => Promise.resolve(),
     getIdentity: () => {
         const user = localStorage.getItem("username");
+        if (!user) {
+            return Promise.reject();
+        }
         return Promise.resolve({
             id: "user",
-            fullName: user ? user : "userNotSet",
+            fullName: user,
             // TODO: add avatar example
             avatar: "./avatar.svg",
         });
