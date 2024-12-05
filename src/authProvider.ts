@@ -42,6 +42,7 @@ const authProvider: AuthProvider = {
             localStorage.removeItem("token");
             throw new Error();
         }
+        return Promise.resolve();
     },
     checkAuth: () =>
         localStorage.getItem("username") ? Promise.resolve() : Promise.reject(),
