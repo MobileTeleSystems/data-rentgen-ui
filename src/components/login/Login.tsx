@@ -83,9 +83,7 @@ const Login = () => {
                             justifyContent: "center",
                             color: (theme) => theme.palette.grey[500],
                         }}
-                    >
-                        Hint: demo / demo
-                    </Box>
+                    ></Box>
                     <Box sx={{ padding: "0 1em 1em 1em" }}>
                         <Box sx={{ marginTop: "1em" }}>
                             <TextInput

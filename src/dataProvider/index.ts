@@ -6,20 +6,12 @@ import {
     QueryFunctionContext,
     UpdateParams,
 } from "react-admin";
-import { parseJSON, parseResponse } from "./utils";
-
-const API_URL = "http://localhost:8000";
+import { parseJSON, parseResponse, getURL } from "./utils";
 
 type GetLineageParams = {
     id: number | string;
     filter?: any;
     meta?: any;
-};
-
-const getURL = (path: string) => {
-    // if API_URL is relative, resolve it to absolute URL using current window location
-    const baseUrl = window.location.toString();
-    return new URL(API_URL + path, baseUrl);
 };
 
 const defaultDataProvider: DataProvider = {
@@ -51,10 +43,16 @@ const defaultDataProvider: DataProvider = {
                 url.searchParams.append(field, params.filter[field]);
             }
         }
+        const token = localStorage.getItem("token");
+        const headers = new Headers();
+        if (token) {
+            headers.set("Authorization", `Bearer ${token}`);
+        }
 
         return fetch(url.toString(), {
             method: "GET",
             signal: params.signal,
+            headers: headers,
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -84,10 +82,16 @@ const defaultDataProvider: DataProvider = {
         params.ids.forEach((id) => {
             url.searchParams.append(`${resourceOne}_id`, id.toString());
         });
+        const token = localStorage.getItem("token");
+        const headers = new Headers();
+        if (token) {
+            headers.set("Authorization", `Bearer ${token}`);
+        }
 
         return fetch(url.toString(), {
             method: "GET",
             signal: params.signal,
+            headers: headers,
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -108,10 +112,16 @@ const defaultDataProvider: DataProvider = {
         // datasets -> dataset_id
         const resourceOne = resource.slice(0, -1);
         url.searchParams.append(`${resourceOne}_id`, params.id.toString());
+        const token = localStorage.getItem("token");
+        const headers = new Headers();
+        if (token) {
+            headers.set("Authorization", `Bearer ${token}`);
+        }
 
         return fetch(url.toString(), {
             method: "GET",
             signal: params.signal,
+            headers: headers,
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -142,10 +152,16 @@ const defaultDataProvider: DataProvider = {
                 url.searchParams.append(k, filter);
             }
         }
+        const token = localStorage.getItem("token");
+        const headers = new Headers();
+        if (token) {
+            headers.set("Authorization", `Bearer ${token}`);
+        }
 
         return fetch(url.toString(), {
             method: "GET",
             signal: params.signal,
+            headers: headers,
         })
             .then(parseResponse)
             .then(({ status, body }) => parseJSON(status, body));
@@ -153,10 +169,17 @@ const defaultDataProvider: DataProvider = {
     update: (resource: string, params: UpdateParams) => {
         const url = getURL(`/v1/${resource}/${params.id}`);
 
+        const token = localStorage.getItem("token");
+        const headers = new Headers();
+        if (token) {
+            headers.set("Authorization", `Bearer ${token}`);
+        }
+        headers.set("Content-Type", "application/json");
+
         return fetch(url.toString(), {
             method: "PATCH",
             body: JSON.stringify(params.data),
-            headers: { "Content-Type": "application/json" },
+            headers: headers,
         })
             .then(parseResponse)
             .then(({ status, body }) => {
