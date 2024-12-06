@@ -24,4 +24,12 @@ const getURL = (path: string) => {
     return new URL(API_URL + path, baseUrl);
 };
 
-export { parseResponse, parseJSON, getURL };
+const addTokenHeader = (headers: Headers) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+    }
+    return headers;
+};
+
+export { parseResponse, parseJSON, getURL, addTokenHeader };

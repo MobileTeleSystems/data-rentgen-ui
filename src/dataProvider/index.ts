@@ -6,7 +6,7 @@ import {
     QueryFunctionContext,
     UpdateParams,
 } from "react-admin";
-import { parseJSON, parseResponse, getURL } from "./utils";
+import { parseJSON, parseResponse, getURL, addTokenHeader } from "./utils";
 
 type GetLineageParams = {
     id: number | string;
@@ -43,11 +43,9 @@ const defaultDataProvider: DataProvider = {
                 url.searchParams.append(field, params.filter[field]);
             }
         }
-        const token = localStorage.getItem("token");
-        const headers = new Headers();
-        if (token) {
-            headers.set("Authorization", `Bearer ${token}`);
-        }
+
+        var headers = new Headers();
+        headers = addTokenHeader(headers);
 
         return fetch(url.toString(), {
             method: "GET",
@@ -82,11 +80,9 @@ const defaultDataProvider: DataProvider = {
         params.ids.forEach((id) => {
             url.searchParams.append(`${resourceOne}_id`, id.toString());
         });
-        const token = localStorage.getItem("token");
-        const headers = new Headers();
-        if (token) {
-            headers.set("Authorization", `Bearer ${token}`);
-        }
+
+        var headers = new Headers();
+        headers = addTokenHeader(headers);
 
         return fetch(url.toString(), {
             method: "GET",
@@ -112,11 +108,9 @@ const defaultDataProvider: DataProvider = {
         // datasets -> dataset_id
         const resourceOne = resource.slice(0, -1);
         url.searchParams.append(`${resourceOne}_id`, params.id.toString());
-        const token = localStorage.getItem("token");
-        const headers = new Headers();
-        if (token) {
-            headers.set("Authorization", `Bearer ${token}`);
-        }
+
+        var headers = new Headers();
+        headers = addTokenHeader(headers);
 
         return fetch(url.toString(), {
             method: "GET",
@@ -152,11 +146,9 @@ const defaultDataProvider: DataProvider = {
                 url.searchParams.append(k, filter);
             }
         }
-        const token = localStorage.getItem("token");
-        const headers = new Headers();
-        if (token) {
-            headers.set("Authorization", `Bearer ${token}`);
-        }
+
+        var headers = new Headers();
+        headers = addTokenHeader(headers);
 
         return fetch(url.toString(), {
             method: "GET",
@@ -169,11 +161,8 @@ const defaultDataProvider: DataProvider = {
     update: (resource: string, params: UpdateParams) => {
         const url = getURL(`/v1/${resource}/${params.id}`);
 
-        const token = localStorage.getItem("token");
-        const headers = new Headers();
-        if (token) {
-            headers.set("Authorization", `Bearer ${token}`);
-        }
+        var headers = new Headers();
+        headers = addTokenHeader(headers);
         headers.set("Content-Type", "application/json");
 
         return fetch(url.toString(), {
