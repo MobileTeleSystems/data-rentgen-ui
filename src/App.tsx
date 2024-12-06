@@ -50,6 +50,7 @@ const App = () => {
                 lightTheme={mainLightTheme}
                 darkTheme={mainDarkTheme}
                 defaultTheme="light"
+                requireAuth
             >
                 <Resource
                     name="locations"

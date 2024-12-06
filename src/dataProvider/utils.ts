@@ -16,4 +16,20 @@ const parseJSON = (status: number, body: string) => {
     return json;
 };
 
-export { parseResponse, parseJSON };
+const API_URL = "http://localhost:8000";
+
+const getURL = (path: string) => {
+    // if API_URL is relative, resolve it to absolute URL using current window location
+    const baseUrl = window.location.toString();
+    return new URL(API_URL + path, baseUrl);
+};
+
+const addTokenHeader = (headers: Headers) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+    }
+    return headers;
+};
+
+export { parseResponse, parseJSON, getURL, addTokenHeader };

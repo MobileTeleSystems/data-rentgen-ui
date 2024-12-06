@@ -6,20 +6,12 @@ import {
     QueryFunctionContext,
     UpdateParams,
 } from "react-admin";
-import { parseJSON, parseResponse } from "./utils";
-
-const API_URL = "http://localhost:8000";
+import { parseJSON, parseResponse, getURL, addTokenHeader } from "./utils";
 
 type GetLineageParams = {
     id: number | string;
     filter?: any;
     meta?: any;
-};
-
-const getURL = (path: string) => {
-    // if API_URL is relative, resolve it to absolute URL using current window location
-    const baseUrl = window.location.toString();
-    return new URL(API_URL + path, baseUrl);
 };
 
 const defaultDataProvider: DataProvider = {
@@ -52,9 +44,13 @@ const defaultDataProvider: DataProvider = {
             }
         }
 
+        var headers = new Headers();
+        headers = addTokenHeader(headers);
+
         return fetch(url.toString(), {
             method: "GET",
             signal: params.signal,
+            headers: headers,
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -85,9 +81,13 @@ const defaultDataProvider: DataProvider = {
             url.searchParams.append(`${resourceOne}_id`, id.toString());
         });
 
+        var headers = new Headers();
+        headers = addTokenHeader(headers);
+
         return fetch(url.toString(), {
             method: "GET",
             signal: params.signal,
+            headers: headers,
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -109,9 +109,13 @@ const defaultDataProvider: DataProvider = {
         const resourceOne = resource.slice(0, -1);
         url.searchParams.append(`${resourceOne}_id`, params.id.toString());
 
+        var headers = new Headers();
+        headers = addTokenHeader(headers);
+
         return fetch(url.toString(), {
             method: "GET",
             signal: params.signal,
+            headers: headers,
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -143,9 +147,13 @@ const defaultDataProvider: DataProvider = {
             }
         }
 
+        var headers = new Headers();
+        headers = addTokenHeader(headers);
+
         return fetch(url.toString(), {
             method: "GET",
             signal: params.signal,
+            headers: headers,
         })
             .then(parseResponse)
             .then(({ status, body }) => parseJSON(status, body));
@@ -153,10 +161,14 @@ const defaultDataProvider: DataProvider = {
     update: (resource: string, params: UpdateParams) => {
         const url = getURL(`/v1/${resource}/${params.id}`);
 
+        var headers = new Headers();
+        headers = addTokenHeader(headers);
+        headers.set("Content-Type", "application/json");
+
         return fetch(url.toString(), {
             method: "PATCH",
             body: JSON.stringify(params.data),
-            headers: { "Content-Type": "application/json" },
+            headers: headers,
         })
             .then(parseResponse)
             .then(({ status, body }) => {
