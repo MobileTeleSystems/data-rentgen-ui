@@ -10,6 +10,7 @@ const parseResponse = (response: any) =>
 
 const parseJSON = (status: number, body: string) => {
     let json = JSON.parse(body);
+
     if (status < 200 || status >= 400) {
         throw new HttpError((json && json.message) || body, status, json);
     }

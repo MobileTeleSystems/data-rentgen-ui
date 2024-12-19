@@ -51,6 +51,7 @@ const defaultDataProvider: DataProvider = {
             method: "GET",
             signal: params.signal,
             headers: headers,
+            credentials: "include",
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -88,6 +89,7 @@ const defaultDataProvider: DataProvider = {
             method: "GET",
             signal: params.signal,
             headers: headers,
+            credentials: "include",
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -116,6 +118,7 @@ const defaultDataProvider: DataProvider = {
             method: "GET",
             signal: params.signal,
             headers: headers,
+            credentials: "include",
         })
             .then(parseResponse)
             .then(({ status, body }) => {
@@ -154,6 +157,7 @@ const defaultDataProvider: DataProvider = {
             method: "GET",
             signal: params.signal,
             headers: headers,
+            credentials: "include",
         })
             .then(parseResponse)
             .then(({ status, body }) => parseJSON(status, body));
@@ -169,6 +173,7 @@ const defaultDataProvider: DataProvider = {
             method: "PATCH",
             body: JSON.stringify(params.data),
             headers: headers,
+            credentials: "include",
         })
             .then(parseResponse)
             .then(({ status, body }) => {
