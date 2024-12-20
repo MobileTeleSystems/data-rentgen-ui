@@ -37,13 +37,12 @@ const authProvider: AuthProvider = {
         const status = error.status;
         if (status === 401) {
             localStorage.removeItem("token");
-            localStorage.removeItem("username");
             throw new Error(error.statusText);
         }
         return Promise.resolve();
     },
     checkAuth: () =>
-        localStorage.getItem("token") ? Promise.resolve() : Promise.reject(),
+        localStorage.getItem("username") ? Promise.resolve() : Promise.reject(),
     getPermissions: () => Promise.resolve(),
     getIdentity: () => {
         const user = localStorage.getItem("username");
