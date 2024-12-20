@@ -21,9 +21,6 @@ const keycloakAuthProvider: AuthProvider = {
                     localStorage.setItem("username", json.name);
                     window.location.href = "/";
                 }
-            })
-            .catch((e) => {
-                console.error(e);
             });
     },
     logout: () => {

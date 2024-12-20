@@ -26,9 +26,6 @@ const authProvider: AuthProvider = {
             .then((token) => {
                 localStorage.setItem("token", token);
                 localStorage.setItem("username", username);
-            })
-            .catch((e) => {
-                console.error(e);
             });
     },
     logout: () => {
