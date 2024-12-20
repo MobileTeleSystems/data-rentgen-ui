@@ -2,7 +2,7 @@ import authProvider from "../dummyAuth";
 import { keycloakAuthProvider } from "../keycloakAuth";
 import { Login, keycloakLoginForm } from "@/components/login";
 
-const AUTH_PROVIDER = "dummyAuthProvider";
+let AUTH_PROVIDER = "dummyAuthProvider";
 
 const getAuthProvider = () => {
     switch (AUTH_PROVIDER) {
