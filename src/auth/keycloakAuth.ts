@@ -19,14 +19,13 @@ const keycloakAuthProvider: AuthProvider = {
                 }
                 if (status >= 200 && status < 300) {
                     localStorage.setItem("username", json.name);
-                    window.location.href = "/";
                 }
+                return Promise.resolve();
             });
     },
     logout: () => {
         // TODO Change this method after adding /logout endpoint on backend
         localStorage.removeItem("username");
-        window.location.href = "/#/login";
         return Promise.resolve();
     },
     checkAuth: () =>
