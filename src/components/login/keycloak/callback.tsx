@@ -5,7 +5,7 @@ import { CircularProgress } from "@mui/material";
 
 import { getURL } from "@/dataProvider/utils";
 
-const Callback = () => {
+const KeycloakAuthCallback = () => {
     const params = useLocation();
     const url = getURL("/v1/auth/callback" + params["search"]);
     const requestOptions = {
@@ -32,4 +32,4 @@ const Callback = () => {
     return <CircularProgress size={25} thickness={2} />;
 };
 
-export default Callback;
+export default KeycloakAuthCallback;

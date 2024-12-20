@@ -1,4 +1,4 @@
-import keycloakLogin from "./keycloak_login";
-import Callback from "./callback";
+import keycloakLoginForm from "./keycloak_login";
+import KeycloakAuthCallback from "./callback";
 
-export { keycloakLogin, Callback };
+export { keycloakLoginForm, KeycloakAuthCallback };

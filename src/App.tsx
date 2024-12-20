@@ -10,7 +10,7 @@ import defaultDataProvider from "./dataProvider";
 import englishMessages from "./i18n/en";
 import { Layout } from "./layout";
 import { mainLightTheme, mainDarkTheme } from "@/themes/main";
-import { getAuthProvider, Callback } from "@/components/login";
+import { getAuthProvider, KeycloakAuthCallback } from "@/components/login";
 import {
     LocationRaList,
     LocationRaShow,
@@ -85,7 +85,10 @@ const App = () => {
                     <Resource name="operations" show={OperationRaShow} />
                 </Admin>
                 <Routes>
-                    <Route path="/auth/callback" element={<Callback />} />
+                    <Route
+                        path="/auth/callback"
+                        element={<KeycloakAuthCallback />}
+                    />
                 </Routes>
             </BrowserRouter>
         </StoreContextProvider>

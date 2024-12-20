@@ -14,6 +14,7 @@ const keycloakAuthProvider: AuthProvider = {
             .then(({ status, body }) => {
                 const json = JSON.parse(body);
                 if (status === 401 && json.error.code === "auth_redirect") {
+                    // Redirect to Keycloak login page
                     window.location.href = json.error.details;
                 }
                 if (status >= 200 && status < 300) {
@@ -35,6 +36,7 @@ const keycloakAuthProvider: AuthProvider = {
         localStorage.getItem("username") ? Promise.resolve() : Promise.reject(),
     checkError: (error) => {
         if (error.body.error.code === "auth_redirect") {
+            // Redirect to Keycloak login page
             window.location.href = error.body.error.details;
         }
         throw error;

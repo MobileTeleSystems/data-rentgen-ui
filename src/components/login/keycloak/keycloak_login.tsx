@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import {
     Box,
     Button,
@@ -12,8 +10,7 @@ import {
 import { Form, useTranslate, useAuthProvider } from "react-admin";
 import { DataRentgenIcon } from "../../icons";
 
-const keycloakLogin = () => {
-    const [loading] = useState(false);
+const keycloakLoginForm = () => {
     const translate = useTranslate();
 
     const authProvider = useAuthProvider();
@@ -59,12 +56,9 @@ const keycloakLogin = () => {
                             variant="contained"
                             type="submit"
                             color="primary"
-                            disabled={loading}
                             fullWidth
                         >
-                            {loading && (
-                                <CircularProgress size={25} thickness={2} />
-                            )}
+                            {<CircularProgress size={25} thickness={2} />}
                             {translate("ra.auth.sign_in")}
                         </Button>
                     </CardActions>
@@ -74,4 +68,4 @@ const keycloakLogin = () => {
     );
 };
 
-export default keycloakLogin;
+export default keycloakLoginForm;

@@ -1,7 +1,7 @@
 import Login from "./Login";
 import authProvider from "@/authProvider";
 import { keycloakAuthProvider } from "@/auth/keycloakAuth";
-import { keycloakLogin, Callback } from "./keycloak";
+import { keycloakLoginForm, KeycloakAuthCallback } from "./keycloak";
 
 const AUTH_PROVIDER = "dummyAuthProvider";
 
@@ -10,7 +10,7 @@ const getAuthProvider = () => {
         case "keycloakAuthProvider":
             return {
                 provider: keycloakAuthProvider,
-                loginPage: keycloakLogin,
+                loginPage: keycloakLoginForm,
             };
         default:
             return {
@@ -20,4 +20,4 @@ const getAuthProvider = () => {
     }
 };
 
-export { getAuthProvider, Callback };
+export { getAuthProvider, KeycloakAuthCallback };
