@@ -10,7 +10,8 @@ import defaultDataProvider from "./dataProvider";
 import englishMessages from "./i18n/en";
 import { Layout } from "./layout";
 import { mainLightTheme, mainDarkTheme } from "@/themes/main";
-import { getAuthProvider, KeycloakAuthCallback } from "@/components/login";
+import { KeycloakAuthCallback } from "@/components/login";
+import { getAuthProvider } from "./auth/utils/getAuthProvider";
 import {
     LocationRaList,
     LocationRaShow,

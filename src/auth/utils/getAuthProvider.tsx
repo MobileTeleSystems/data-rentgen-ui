@@ -1,7 +1,6 @@
-import Login from "./Login";
-import authProvider from "@/authProvider";
-import { keycloakAuthProvider } from "@/auth/keycloakAuth";
-import { keycloakLoginForm } from "./keycloak";
+import authProvider from "../dummyAuth";
+import { keycloakAuthProvider } from "../keycloakAuth";
+import { Login, keycloakLoginForm } from "@/components/login";
 
 const AUTH_PROVIDER = "dummyAuthProvider";
 

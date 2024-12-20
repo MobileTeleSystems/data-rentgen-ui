@@ -58,7 +58,6 @@ const keycloakLoginForm = () => {
                             color="primary"
                             fullWidth
                         >
-                            {<CircularProgress size={25} thickness={2} />}
                             {translate("ra.auth.sign_in")}
                         </Button>
                     </CardActions>
