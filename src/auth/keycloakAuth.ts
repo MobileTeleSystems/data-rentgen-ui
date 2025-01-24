@@ -20,6 +20,7 @@ const keycloakAuthProvider: AuthProvider = {
                 if (status >= 200 && status < 300) {
                     localStorage.setItem("username", json.name);
                 }
+                window.location.href = "/locations";
                 return Promise.resolve();
             });
     },

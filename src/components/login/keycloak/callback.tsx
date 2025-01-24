@@ -20,7 +20,7 @@ const KeycloakAuthCallback = () => {
                 if (response.status < 200 || response.status >= 300) {
                     throw new Error(response.statusText);
                 }
-                window.location.href = "/";
+                window.location.href = "/locations";
             })
             .catch((e) => {
                 console.error(e);
