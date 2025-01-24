@@ -87,7 +87,7 @@ const App = () => {
                 </Admin>
                 <Routes>
                     <Route
-                        path="/auth/callback"
+                        path="/auth-callback"
                         element={<KeycloakAuthCallback />}
                     />
                 </Routes>
