@@ -5,7 +5,7 @@ import {
     StoreContextProvider,
     Resource,
 } from "react-admin";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import defaultDataProvider from "./dataProvider";
 import englishMessages from "./i18n/en";
 import { Layout } from "./layout";
@@ -40,7 +40,7 @@ const authProvider = getAuthProvider();
 const App = () => {
     return (
         <StoreContextProvider value={store}>
-            <BrowserRouter>
+            <HashRouter>
                 <Admin
                     title=""
                     dataProvider={defaultDataProvider}
@@ -91,7 +91,7 @@ const App = () => {
                         element={<KeycloakAuthCallback />}
                     />
                 </Routes>
-            </BrowserRouter>
+            </HashRouter>
         </StoreContextProvider>
     );
 };
