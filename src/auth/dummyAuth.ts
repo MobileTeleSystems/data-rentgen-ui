@@ -1,4 +1,4 @@
-import { AuthProvider } from "react-admin";
+import { AuthProvider, HttpError } from "react-admin";
 
 import { getURL } from "@/dataProvider/utils";
 
@@ -18,7 +18,11 @@ const authProvider: AuthProvider = {
         return fetch(getURL("/v1/auth/token"), requestOptions)
             .then((response) => {
                 if (response.status < 200 || response.status >= 300) {
-                    throw new Error(response.statusText);
+                    throw new HttpError(
+                        response.statusText,
+                        response.status,
+                        response.body,
+                    );
                 }
                 return response.json();
             })
@@ -37,12 +41,12 @@ const authProvider: AuthProvider = {
         const status = error.status;
         if (status === 401) {
             localStorage.removeItem("token");
-            throw new Error(error.statusText);
+            throw error;
         }
         return Promise.resolve();
     },
     checkAuth: () =>
-        localStorage.getItem("username") ? Promise.resolve() : Promise.reject(),
+        localStorage.getItem("token") ? Promise.resolve() : Promise.reject(),
     getPermissions: () => Promise.resolve(),
     getIdentity: () => {
         const user = localStorage.getItem("username");

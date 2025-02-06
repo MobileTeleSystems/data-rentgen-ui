@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 
 import { getURL } from "@/dataProvider/utils";
+import { HttpError } from "react-admin";
 
 const KeycloakAuthCallback = () => {
     const params = useLocation();
@@ -18,7 +19,11 @@ const KeycloakAuthCallback = () => {
         fetch(url.toString(), requestOptions)
             .then((response) => {
                 if (response.status < 200 || response.status >= 300) {
-                    throw new Error(response.statusText);
+                    throw new HttpError(
+                        response.statusText,
+                        response.status,
+                        response.body,
+                    );
                 }
                 window.location.href = "/";
             })
