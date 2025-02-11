@@ -101,7 +101,7 @@ type IORelationSchemaV1 = {
 };
 
 type IORelationSchemaFieldV1 = {
-    name: string | null;
+    name: string;
     type: string | null;
     description: string | null;
     fields: IORelationSchemaFieldV1[];
@@ -109,6 +109,7 @@ type IORelationSchemaFieldV1 = {
 
 interface InputRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {
     kind: "INPUT";
+    last_interaction_at: string;
     num_rows: number | null;
     num_bytes: number | null;
     num_files: number | null;
@@ -126,6 +127,7 @@ type OutputRelationTypeLineageResponseV1 =
 interface OutputRelationLineageResponseV1
     extends BaseRelationLineageResponseV1 {
     kind: "OUTPUT";
+    last_interaction_at: string;
     type: OutputRelationTypeLineageResponseV1 | null;
     num_rows: number | null;
     num_bytes: number | null;
