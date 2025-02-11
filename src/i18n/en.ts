@@ -73,7 +73,8 @@ const customEnglishMessages: TranslationMessages = {
                     type: "Location Type",
                 },
                 schema: {
-                    name: "Projected Schema",
+                    input: "Input schema (projected) |||| Latest of %{smart_count} input schemas (projected)",
+                    output: "Output Schema |||| Latest of %{smart_count} output schemas",
                     field: {
                         name: "Field",
                         type: "Type",
