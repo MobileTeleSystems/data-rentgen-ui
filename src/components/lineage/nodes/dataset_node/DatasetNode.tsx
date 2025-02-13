@@ -1,14 +1,9 @@
-import { NodeProps, Node, useReactFlow } from "@xyflow/react";
+import { NodeProps, Node } from "@xyflow/react";
 import { useCreatePath, useTranslate } from "react-admin";
 import { ReactElement, memo } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
-import {
-    DatasetResponseV1,
-    InputRelationLineageResponseV1,
-    IORelationSchemaV1,
-    OutputRelationLineageResponseV1,
-} from "@/dataProvider/types";
+import { DatasetResponseV1 } from "@/dataProvider/types";
 import { LocationIconWithType } from "@/components/location";
 import { Button, CardHeader, Typography } from "@mui/material";
 import BaseNode from "../base_node/BaseNode";
@@ -18,7 +13,6 @@ export type DatasetNode = Node<DatasetResponseV1, "datasetNode">;
 
 const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
     const translate = useTranslate();
-    const reactFlow = useReactFlow();
 
     let title = props.data.name;
     const subheader = `${props.data.location.type}://${props.data.location.name}`;
@@ -32,59 +26,6 @@ const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
         type: "show",
         id: props.data.id,
     });
-
-    const outputSchemas = reactFlow
-        .getEdges()
-        .filter(
-            (edge) => edge.data?.kind == "OUTPUT" && edge.target === props.id,
-        )
-        // @ts-expect-error Explicit cast
-        .map((edge) => edge.data as OutputRelationLineageResponseV1)
-        // sort by last_interaction_at descending
-        .toSorted((a, b) =>
-            a.last_interaction_at < b.last_interaction_at ? 1 : -1,
-        )
-        .map((output) => output.schema)
-        .filter((schema) => schema !== null)
-        // keep unique schemas only
-        .filter(
-            (schema, index, array) =>
-                array.findIndex((item) => item.id == schema.id) == index,
-        );
-
-    const inputSchemas = reactFlow
-        .getEdges()
-        .filter(
-            (edge) => edge.data?.kind == "INPUT" && edge.source === props.id,
-        )
-        // @ts-expect-error Explicit cast
-        .map((edge) => edge.data as InputRelationLineageResponseV1)
-        // sort by last_interaction_at descending
-        .toSorted((a, b) =>
-            a.last_interaction_at < b.last_interaction_at ? 1 : -1,
-        )
-        .map((input) => input.schema)
-        .filter((schema) => schema !== null)
-        // keep unique schemas only
-        .filter(
-            (schema, index, array) =>
-                array.findIndex((item) => item.id == schema.id) == index,
-        );
-
-    // prefer output schema as there is high chance that it describes all the columns properly.
-    // read interactions may select only a subset of columns.
-    let schema: IORelationSchemaV1 | undefined = undefined;
-    let schemaFrom: string = "input";
-    let schemaCount = 0;
-    if (outputSchemas.length > 0) {
-        schema = outputSchemas.at(0);
-        schemaFrom = "output";
-        schemaCount = outputSchemas.length;
-    } else if (inputSchemas.length > 0) {
-        schema = inputSchemas.at(0);
-        schemaFrom = "input";
-        schemaCount = inputSchemas.length;
-    }
 
     return (
         <BaseNode
@@ -107,15 +48,15 @@ const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
                 />
             }
             expandableContent={
-                schema ? (
+                props.data && props.data.schema ? (
                     <>
                         <Typography sx={{ textAlign: "center" }}>
                             {translate(
-                                `resources.datasets.fields.schema.${schemaFrom}`,
-                                { smart_count: schemaCount },
+                                `resources.datasets.fields.schema.${props.data.schemaFrom}`,
+                                { smart_count: props.data.schemaCount },
                             )}
                         </Typography>
-                        <DatasetSchemaTable fields={schema.fields} />
+                        <DatasetSchemaTable fields={props.data.schema.fields} />
                     </>
                 ) : null
             }
