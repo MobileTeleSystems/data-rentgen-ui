@@ -25,9 +25,11 @@
         "prod": "vite --host 0.0.0.0",
         "build": "tsc && vite build",
         "lint": "eslint --fix",
+        "lint-check": "eslint",
         "type-check": "tsc",
         "preview": "vite preview",
         "prettier-format": "prettier --config .prettierrc 'src/**/*.tsx' 'src/**/*.ts' --write",
+        "prettier-check": "prettier --config .prettierrc 'src/**/*.tsx' 'src/**/*.ts' --check",
         "pre-commit-install": "husky"
     },
     "devDependencies": {
