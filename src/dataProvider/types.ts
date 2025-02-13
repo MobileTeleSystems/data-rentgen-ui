@@ -10,12 +10,36 @@ interface LocationResponseV1 {
     adresses: AddressResponseV1[];
 }
 
+interface LocationDatasetStatisticsResponseV1 {
+    total_datasets: number;
+}
+
+interface LocationJobStatisticsResponseV1 {
+    total_jobs: number;
+}
+
+interface LocationStatisticsResponseV1 {
+    datasets: LocationDatasetStatisticsResponseV1;
+    jobs: LocationJobStatisticsResponseV1;
+}
+
+interface LocationDetailedResponseV1 {
+    id: string;
+    data: LocationResponseV1;
+    statistics: LocationStatisticsResponseV1;
+}
+
 interface DatasetResponseV1 extends RaRecord {
-    id: number;
+    id: string;
     type: string;
     name: string;
     location: LocationResponseV1;
     format: string | null;
+}
+
+interface DatasetDetailedResponseV1 {
+    id: string;
+    data: DatasetResponseV1;
 }
 
 type JobTypeResponseV1 =
@@ -25,10 +49,15 @@ type JobTypeResponseV1 =
     | "UNKNOWN";
 
 interface JobResponseV1 extends RaRecord {
-    id: number;
+    id: string;
     type: JobTypeResponseV1;
     name: string;
     location: LocationResponseV1;
+}
+
+interface JobDetailedResponseV1 {
+    id: string;
+    data: JobResponseV1;
 }
 
 interface UserResponseV1 extends RaRecord {
@@ -48,7 +77,7 @@ type StartReasonResponseV1 = "AUTOMATIC" | "MANUAL";
 interface RunResponseV1 extends RaRecord {
     id: string;
     created_at: string;
-    job_id: number;
+    job_id: string;
     status: StatusResponseV1;
     parent_run_id: string | null;
     started_at: string | null;
@@ -60,6 +89,29 @@ interface RunResponseV1 extends RaRecord {
     attempt: string | null;
     running_log_url: string | null;
     persistent_log_url: string | null;
+}
+
+interface IOStatisticsResponseV1 {
+    total_datasets: number;
+    total_bytes: number;
+    total_rows: number;
+    total_files: number;
+}
+
+interface RunOperationStatisticsResponseV1 {
+    total_operations: number;
+}
+
+interface RunStatisticsResponseV1 {
+    inputs: IOStatisticsResponseV1;
+    outputs: IOStatisticsResponseV1;
+    operations: RunOperationStatisticsResponseV1;
+}
+
+interface RunDetailedResponseV1 {
+    id: string;
+    data: RunResponseV1;
+    statistics: RunStatisticsResponseV1;
 }
 
 type OperationTypeResponseV1 = "BATCH" | "STREAMING";
@@ -78,11 +130,22 @@ interface OperationResponseV1 extends RaRecord {
     ended_at: string | null;
 }
 
+interface OperationStatisticsResponseV1 {
+    inputs: IOStatisticsResponseV1;
+    outputs: IOStatisticsResponseV1;
+}
+
+interface OperationDetailedResponseV1 {
+    id: string;
+    data: OperationResponseV1;
+    statistics: OperationStatisticsResponseV1;
+}
+
 type EntityTypeLineageResponseV1 = "DATASET" | "JOB" | "RUN" | "OPERATION";
 
 interface RelationEndpointLineageResponseV1 {
     kind: EntityTypeLineageResponseV1;
-    id: number | string;
+    id: string | string;
 }
 
 interface BaseRelationLineageResponseV1 {
@@ -90,10 +153,10 @@ interface BaseRelationLineageResponseV1 {
     to: RelationEndpointLineageResponseV1;
 }
 
-interface IORelationSchemaV1 {
-    id: number;
+type IORelationSchemaV1 = {
+    id: string;
     fields: IORelationSchemaFieldV1[];
-}
+};
 
 interface IORelationSchemaFieldV1 {
     name: string;
@@ -160,10 +223,22 @@ interface LineageResponseV1 {
 
 export type {
     LocationResponseV1,
+    LocationDatasetStatisticsResponseV1,
+    LocationJobStatisticsResponseV1,
+    LocationStatisticsResponseV1,
+    LocationDetailedResponseV1,
     DatasetResponseV1,
+    DatasetDetailedResponseV1,
     JobResponseV1,
+    JobDetailedResponseV1,
     RunResponseV1,
+    IOStatisticsResponseV1,
+    RunOperationStatisticsResponseV1,
+    RunStatisticsResponseV1,
+    RunDetailedResponseV1,
     OperationResponseV1,
+    OperationStatisticsResponseV1,
+    OperationDetailedResponseV1,
     UserResponseV1,
     StatusResponseV1,
     StartReasonResponseV1,

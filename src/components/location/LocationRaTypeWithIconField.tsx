@@ -10,7 +10,7 @@ const LocationRaTypeWithIconField = (
     if (!record) {
         return null;
     }
-    return <LocationIconWithType location={record.location} />;
+    return <LocationIconWithType location={record.data.location} />;
 };
 
 export default LocationRaTypeWithIconField;

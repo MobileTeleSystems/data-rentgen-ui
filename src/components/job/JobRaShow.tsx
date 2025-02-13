@@ -20,10 +20,19 @@ const JobRaShow = (): ReactElement => {
         <Show resource="jobs">
             <SimpleShowLayout>
                 <TextField source="id" />
-                <JobRaTypeField source="type" />
+                <JobRaTypeField
+                    source="data.type"
+                    label="resources.jobs.fields.type"
+                />
 
-                <LocationRaTypeWithIconField source="location.type" />
-                <LocationRaNameWithLinkField source="location.name" />
+                <LocationRaTypeWithIconField
+                    source="data.location.type"
+                    label="resources.jobs.fields.location.type"
+                />
+                <LocationRaNameWithLinkField
+                    source="data.location.name"
+                    label="resources.jobs.fields.location.name"
+                />
 
                 <TabbedShowLayout>
                     <TabbedShowLayout.Tab label="resources.jobs.tabs.runs">

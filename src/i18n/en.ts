@@ -136,6 +136,7 @@ const customEnglishMessages: TranslationMessages = {
                 start_reason: "Start reason",
                 ended_at: "Ended at",
                 end_reason: "End reason",
+                duration: "Duration",
                 external_id: "External ID",
                 attempt: "Attempt",
                 running_log_url: "Running log URL",
@@ -194,6 +195,7 @@ const customEnglishMessages: TranslationMessages = {
                 status: "Status",
                 started_at: "Started at",
                 ended_at: "Ended at",
+                duration: "Duration",
             },
             sections: {
                 created: "Created",

@@ -25,9 +25,21 @@ const LocationRaEdit = (): ReactElement => {
         >
             <SimpleForm sanitizeEmptyValues toolbar={<LocationRaEditToolbar />}>
                 <TextInput source="id" disabled />
-                <TextInput source="type" disabled />
-                <TextInput source="name" disabled />
-                <TextInput source="external_id" resettable />
+                <TextInput
+                    source="data.type"
+                    label="resources.locations.fields.type"
+                    disabled
+                />
+                <TextInput
+                    source="data.name"
+                    label="resources.locations.fields.name"
+                    disabled
+                />
+                <TextInput
+                    source="data.external_id"
+                    label="resources.locations.fields.external_id"
+                    resettable
+                />
             </SimpleForm>
         </Edit>
     );

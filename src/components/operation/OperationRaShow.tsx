@@ -17,18 +17,18 @@ const OperationRaShow = (): ReactElement => {
         <Show>
             <SimpleShowLayout>
                 <TextField source="id" />
-                <TextField source="name" />
+                <TextField source="data.name" />
 
                 <Labeled label="resources.operations.sections.external">
                     <Stack direction="row" spacing={3}>
                         <Labeled label="resources.operations.sections.position">
-                            <TextField source="position" />
+                            <TextField source="data.position" />
                         </Labeled>
                         <Labeled label="resources.operations.sections.group">
-                            <TextField source="group" />
+                            <TextField source="data.group" />
                         </Labeled>
                         <Labeled label="resources.operations.sections.description">
-                            <TextField source="description" />
+                            <TextField source="data.description" />
                         </Labeled>
                     </Stack>
                 </Labeled>
@@ -36,21 +36,27 @@ const OperationRaShow = (): ReactElement => {
                 <Labeled label="resources.operations.sections.created">
                     <Stack direction="row" spacing={3}>
                         <Labeled label="resources.operations.sections.when">
-                            <DateField source="created_at" showTime={true} />
+                            <DateField
+                                source="data.created_at"
+                                showTime={true}
+                            />
                         </Labeled>
                         <Labeled label="resources.operations.sections.by_run">
-                            <ReferenceField source="run_id" reference="runs" />
+                            <ReferenceField
+                                source="data.run_id"
+                                reference="runs"
+                            />
                         </Labeled>
                     </Stack>
                 </Labeled>
 
-                <DateField source="started_at" showTime={true} />
+                <DateField source="data.started_at" showTime={true} />
 
                 <StatusField source="status" />
                 <Labeled label="resources.operations.sections.ended">
                     <Stack direction="row" spacing={3}>
                         <Labeled label="resources.operations.sections.when">
-                            <DateField source="ended_at" showTime={true} />
+                            <DateField source="data.ended_at" showTime={true} />
                         </Labeled>
                         <Labeled label="resources.operations.sections.duration">
                             <DurationField source="duration" />

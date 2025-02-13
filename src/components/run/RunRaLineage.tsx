@@ -2,9 +2,10 @@ import { useRecordContext } from "react-admin";
 
 import { LineageView } from "@/components/lineage";
 import { ReactFlowProvider } from "@xyflow/react";
+import { RunDetailedResponseV1 } from "@/dataProvider/types";
 
 const RunLineage = () => {
-    const record = useRecordContext();
+    const record = useRecordContext<RunDetailedResponseV1>();
     if (!record) {
         return null;
     }
@@ -13,7 +14,7 @@ const RunLineage = () => {
             <LineageView
                 resource="runs"
                 recordId={record.id}
-                defaultSince={record.created_at as Date}
+                defaultSince={new Date(record.data.created_at)}
                 granularities={["RUN", "OPERATION"]}
             />
         </ReactFlowProvider>

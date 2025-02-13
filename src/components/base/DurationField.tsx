@@ -8,9 +8,9 @@ const DurationField = (props: FieldProps): ReactElement => {
         <FunctionField
             render={(record) => {
                 return getDurationText({
-                    created_at: record.created_at,
-                    started_at: record.started_at,
-                    ended_at: record.ended_at,
+                    created_at: record.data.created_at,
+                    started_at: record.data.started_at,
+                    ended_at: record.data.ended_at,
                 });
             }}
             {...props}

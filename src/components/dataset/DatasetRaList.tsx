@@ -36,14 +36,20 @@ const DatasetRaList = (): ReactElement => {
         >
             <DatagridConfigurable bulkActionButtons={false}>
                 <LocationRaTypeWithIconField
-                    source="location.type"
+                    source="data.location.type"
+                    label="resources.datasets.fields.location.type"
                     sortable={false}
                 />
                 <LocationRaNameWithLinkField
-                    source="location.name"
+                    source="data.location.name"
+                    label="resources.datasets.fields.location.name"
                     sortable={false}
                 />
-                <TextField source="name" sortable={false} />
+                <TextField
+                    source="data.name"
+                    label="resources.datasets.fields.name"
+                    sortable={false}
+                />
             </DatagridConfigurable>
         </List>
     );

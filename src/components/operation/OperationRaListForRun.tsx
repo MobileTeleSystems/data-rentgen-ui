@@ -31,13 +31,27 @@ const OperationRaListForRun = ({
             disableSyncWithLocation
         >
             <DatagridConfigurable bulkActionButtons={false}>
-                <DateField source="created_at" showTime={true} />
+                <DateField
+                    source="data.created_at"
+                    label="resources.operations.fields.created_at"
+                    showTime={true}
+                />
                 {/* Do not show run, as we already in RunRaShow page*/}
-                <TextField source="position" sortable={false} />
-                <TextField source="group" sortable={false} />
+                <TextField
+                    source="data.position"
+                    label="resources.operations.fields.position"
+                    sortable={false}
+                />
+                <TextField
+                    source="data.group"
+                    label="resources.operations.fields.group"
+                    sortable={false}
+                />
                 <FunctionField
                     source="description"
-                    render={(record) => record.description || record.name}
+                    render={(record) =>
+                        record.data.description || record.data.name
+                    }
                     sortable={false}
                 />
                 <StatusField source="status" sortable={false} />

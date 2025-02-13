@@ -1,26 +1,31 @@
+import {
+    OperationDetailedResponseV1,
+    RunDetailedResponseV1,
+} from "@/dataProvider/types";
 import { ReactElement } from "react";
 import { ChipField, ChipFieldProps, useRecordContext } from "react-admin";
 
-const StatusField = ({ ...props }: ChipFieldProps): ReactElement | null => {
-    const record = useRecordContext();
+const statusToColorMap = {
+    STARTED: "info",
+    RUNNING: "primary",
+    SUCCEEDED: "success",
+    FAILED: "error",
+    KILLED: "error",
+    UNKNOWN: "warning",
+} as const;
+
+const StatusField = ({
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    source,
+    ...props
+}: ChipFieldProps): ReactElement | null => {
+    const record = useRecordContext<
+        RunDetailedResponseV1 | OperationDetailedResponseV1
+    >();
     if (!record) return null;
 
-    switch (record.status) {
-        case "STARTED":
-            return <ChipField color="info" {...props} />;
-        case "RUNNING":
-            return <ChipField color="primary" {...props} />;
-        case "SUCCEEDED":
-            return <ChipField color="success" {...props} />;
-        case "FAILED":
-            return <ChipField color="error" {...props} />;
-        case "KILLED":
-            return <ChipField color="error" {...props} />;
-        case "UNKNOWN":
-            return <ChipField color="warning" {...props} />;
-        default:
-            return <ChipField {...props} />;
-    }
+    const color = statusToColorMap[record.data.status];
+    return <ChipField color={color} source="data.status" {...props} />;
 };
 
 export default StatusField;

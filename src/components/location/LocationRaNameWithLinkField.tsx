@@ -18,13 +18,13 @@ const LocationRaNameWithLinkField = (
     const path = createPath({
         resource: "locations",
         type: "show",
-        id: record.location.id,
+        id: record.data.location.id,
     });
 
     return (
         <Link href={`#${path}`}>
             <Typography variant="body2" component="span">
-                {record.location.name}
+                {record.data.location.name}
             </Typography>
         </Link>
     );
