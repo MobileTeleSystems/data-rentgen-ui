@@ -19,7 +19,7 @@ import { statusToThemeColor } from "@/utils/color";
 
 export type RunNode = Node<RunResponseV1, "runNode">;
 
-const RunNode = memo((props: NodeProps<RunNode>): ReactElement => {
+const RunNode = (props: NodeProps<RunNode>): ReactElement => {
     const createdAt = formatDate(new Date(props.data.created_at));
 
     const title = props.data.external_id ? props.data.external_id : createdAt;
@@ -42,12 +42,7 @@ const RunNode = memo((props: NodeProps<RunNode>): ReactElement => {
     return (
         <BaseNode
             nodeId={props.id}
-            icon={
-                <RunIcon
-                    run={props.data}
-                    sx={{ minWidth: "5em", alignItems: "center" }}
-                />
-            }
+            icon={<RunIcon sx={{ minWidth: "5em", alignItems: "center" }} />}
             header={
                 <CardHeader
                     title={title}
@@ -81,6 +76,6 @@ const RunNode = memo((props: NodeProps<RunNode>): ReactElement => {
             }
         />
     );
-});
+};
 
-export default RunNode;
+export default memo(RunNode);

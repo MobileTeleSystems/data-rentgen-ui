@@ -10,14 +10,16 @@ import { parseJSON, parseResponse, getURL, addTokenHeader } from "./utils";
 
 type GetLineageParams = {
     id: number | string;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     filter?: any;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     meta?: any;
 };
 
 const defaultDataProvider: DataProvider = {
-    // @ts-ignore
+    // @ts-expect-error Not implemented
     create: () => Promise.resolve({ data: { id: 0 } }),
-    // @ts-ignore
+    // @ts-expect-error Not implemented
     delete: () => Promise.resolve({ data: {} }),
     deleteMany: () => Promise.resolve({}),
     getList: (
@@ -44,7 +46,7 @@ const defaultDataProvider: DataProvider = {
             }
         }
 
-        var headers = new Headers();
+        let headers = new Headers();
         headers = addTokenHeader(headers);
 
         return fetch(url.toString(), {
@@ -82,7 +84,7 @@ const defaultDataProvider: DataProvider = {
             url.searchParams.append(`${resourceOne}_id`, id.toString());
         });
 
-        var headers = new Headers();
+        let headers = new Headers();
         headers = addTokenHeader(headers);
 
         return fetch(url.toString(), {
@@ -111,7 +113,7 @@ const defaultDataProvider: DataProvider = {
         const resourceOne = resource.slice(0, -1);
         url.searchParams.append(`${resourceOne}_id`, params.id.toString());
 
-        var headers = new Headers();
+        let headers = new Headers();
         headers = addTokenHeader(headers);
 
         return fetch(url.toString(), {
@@ -150,7 +152,7 @@ const defaultDataProvider: DataProvider = {
             }
         }
 
-        var headers = new Headers();
+        let headers = new Headers();
         headers = addTokenHeader(headers);
 
         return fetch(url.toString(), {
@@ -165,7 +167,7 @@ const defaultDataProvider: DataProvider = {
     update: (resource: string, params: UpdateParams) => {
         const url = getURL(`/v1/${resource}/${params.id}`);
 
-        var headers = new Headers();
+        let headers = new Headers();
         headers = addTokenHeader(headers);
         headers.set("Content-Type", "application/json");
 

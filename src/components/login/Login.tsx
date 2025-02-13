@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import {
-    Avatar,
     Box,
     Button,
     Card,
@@ -11,7 +10,6 @@ import {
     Stack,
     Typography,
 } from "@mui/material";
-import LockIcon from "@mui/icons-material/Lock";
 import {
     Form,
     required,
@@ -39,6 +37,7 @@ const Login = () => {
         setLoading(true);
         login(
             auth,
+            /* eslint-disable @typescript-eslint/no-explicit-any */
             location.state ? (location.state as any).nextPathname : "/",
         ).catch((error: Error) => {
             setLoading(false);

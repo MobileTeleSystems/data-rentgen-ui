@@ -3,6 +3,7 @@ import { FieldProps, useRecordContext } from "react-admin";
 import LocationIconWithType from "./LocationIconWithType";
 
 const LocationRaTypeWithIconField = (
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     props: FieldProps,
 ): ReactElement | null => {
     const record = useRecordContext();

@@ -18,6 +18,7 @@ const DatasetRaList = (): ReactElement => {
 
     const datasetFilters = [
         <SearchInput
+            key="search_query"
             source="search_query"
             alwaysOn
             validate={minLength(3)}

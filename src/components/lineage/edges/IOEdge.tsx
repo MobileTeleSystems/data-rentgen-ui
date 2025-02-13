@@ -15,6 +15,7 @@ import { Card, Chip, Typography } from "@mui/material";
 
 const IOEdge = ({
     id,
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     label,
     data,
     ...props

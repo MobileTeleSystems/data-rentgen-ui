@@ -1,10 +1,12 @@
 import * as React from "react";
-import { Layout } from "react-admin";
+import { Layout as RALayout } from "react-admin";
 import AppBar from "./AppBar";
 import AppMenu from "./AppMenu";
 
-export default ({ children }: { children: React.ReactNode }) => (
-    <Layout appBar={AppBar} menu={AppMenu}>
+const Layout = ({ children }: { children: React.ReactNode }) => (
+    <RALayout appBar={AppBar} menu={AppMenu}>
         {children}
-    </Layout>
+    </RALayout>
 );
+
+export default Layout;

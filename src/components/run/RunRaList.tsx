@@ -9,7 +9,6 @@ import {
 } from "react-admin";
 
 import { DurationField, StatusField, ListActions } from "@/components/base";
-import RunExternalIdField from "./RunRaExternalId";
 import RunRaListFilters from "./RunRaListFilters";
 import RunRaExternalId from "./RunRaExternalId";
 

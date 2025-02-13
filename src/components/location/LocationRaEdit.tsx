@@ -1,12 +1,5 @@
 import { ReactElement } from "react";
-import {
-    Edit,
-    SaveButton,
-    SimpleForm,
-    TextInput,
-    Toolbar,
-    TransformData,
-} from "react-admin";
+import { Edit, SaveButton, SimpleForm, TextInput, Toolbar } from "react-admin";
 
 const LocationRaEditToolbar = () => {
     return (

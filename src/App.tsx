@@ -31,6 +31,7 @@ import { DatasetIcon } from "@/components/icons";
 
 const store = localStorageStore(undefined, "DataRentgen");
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const i18nProvider = polyglotI18nProvider((locale) => englishMessages, "en", [
     { locale: "en", name: "English" },
 ]);

@@ -11,10 +11,7 @@ export const getNodeId = (
     return node.kind + "-" + node.id;
 };
 
-const getDefaultNode = (
-    node: LineageNodeResponseV1,
-    raw_response: LineageResponseV1,
-): Node => {
+const getDefaultNode = (node: LineageNodeResponseV1): Node => {
     return {
         id: getNodeId(node),
         type: "default",
@@ -23,66 +20,51 @@ const getDefaultNode = (
     };
 };
 
-const getDataseNode = (
-    node: LineageNodeResponseV1,
-    raw_response: LineageResponseV1,
-): Node => {
+const getDataseNode = (node: LineageNodeResponseV1): Node => {
     return {
-        ...getDefaultNode(node, raw_response),
+        ...getDefaultNode(node),
         type: "datasetNode",
     };
 };
 
-const getJobNode = (
-    node: LineageNodeResponseV1,
-    raw_response: LineageResponseV1,
-): Node => {
+const getJobNode = (node: LineageNodeResponseV1): Node => {
     return {
-        ...getDefaultNode(node, raw_response),
+        ...getDefaultNode(node),
         type: "jobNode",
     };
 };
 
-const getRunNode = (
-    node: LineageNodeResponseV1,
-    raw_response: LineageResponseV1,
-): Node => {
+const getRunNode = (node: LineageNodeResponseV1): Node => {
     return {
-        ...getDefaultNode(node, raw_response),
+        ...getDefaultNode(node),
         type: "runNode",
     };
 };
 
-const getOperationNode = (
-    node: LineageNodeResponseV1,
-    raw_response: LineageResponseV1,
-): Node => {
+const getOperationNode = (node: LineageNodeResponseV1): Node => {
     return {
-        ...getDefaultNode(node, raw_response),
+        ...getDefaultNode(node),
         type: "operationNode",
     };
 };
 
-const getGraphNode = (
-    node: LineageNodeResponseV1,
-    raw_response: LineageResponseV1,
-): Node => {
+const getGraphNode = (node: LineageNodeResponseV1): Node => {
     switch (node.kind) {
         case "DATASET":
-            return getDataseNode(node, raw_response);
+            return getDataseNode(node);
         case "JOB":
-            return getJobNode(node, raw_response);
+            return getJobNode(node);
         case "RUN":
-            return getRunNode(node, raw_response);
+            return getRunNode(node);
         case "OPERATION":
-            return getOperationNode(node, raw_response);
+            return getOperationNode(node);
         default:
-            return getDefaultNode(node, raw_response);
+            return getDefaultNode(node);
     }
 };
 
 const getGraphNodes = (raw_response: LineageResponseV1): Node[] => {
-    return raw_response.nodes.map((node) => getGraphNode(node, raw_response));
+    return raw_response.nodes.map((node) => getGraphNode(node));
 };
 
 export default getGraphNodes;

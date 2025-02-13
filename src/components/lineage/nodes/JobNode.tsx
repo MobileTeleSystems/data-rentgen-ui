@@ -10,7 +10,7 @@ import { JobIconWithType } from "@/components/job";
 
 export type JobNode = Node<JobResponseV1, "jobNode">;
 
-const JobNode = memo((props: NodeProps<JobNode>): ReactElement => {
+const JobNode = (props: NodeProps<JobNode>): ReactElement => {
     let title = props.data.name;
     let subheader = `${props.data.location.type}://${props.data.location.name}`;
     if (props.data.name.includes("/")) {
@@ -50,6 +50,6 @@ const JobNode = memo((props: NodeProps<JobNode>): ReactElement => {
             }
         />
     );
-});
+};
 
-export default JobNode;
+export default memo(JobNode);

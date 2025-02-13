@@ -1,6 +1,6 @@
 // Get time interval between two dates
 const getTimeIntervalText = (startTime: Date, endTime: Date): string => {
-    // @ts-ignore
+    // @ts-expect-error Math.abs perfecly works with Date input
     const differenceInSeconds = Math.abs(endTime - startTime) / 1000;
 
     const hours = Math.floor(differenceInSeconds / 60 / 60);

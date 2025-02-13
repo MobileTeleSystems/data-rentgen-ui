@@ -6,6 +6,7 @@ import { Link, Typography } from "@mui/material";
 // Instead of using ReactAdmin's ReferenceField (which makes additional request to fetch locations by list[id]),
 // make own link component
 const LocationRaNameWithLinkField = (
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     props: FieldProps,
 ): ReactElement | null => {
     const record = useRecordContext();

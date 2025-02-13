@@ -17,6 +17,7 @@ const LocationRaList = (): ReactElement => {
 
     const locationFilters = [
         <SearchInput
+            key="search_query"
             source="search_query"
             alwaysOn
             validate={minLength(3)}

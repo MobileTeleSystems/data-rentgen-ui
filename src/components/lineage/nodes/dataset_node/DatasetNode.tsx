@@ -16,12 +16,12 @@ import DatasetSchemaTable from "./DatasetSchemaTable";
 
 export type DatasetNode = Node<DatasetResponseV1, "datasetNode">;
 
-const DatasetNode = memo((props: NodeProps<DatasetNode>): ReactElement => {
+const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
     const translate = useTranslate();
     const reactFlow = useReactFlow();
 
     let title = props.data.name;
-    let subheader = `${props.data.location.type}://${props.data.location.name}`;
+    const subheader = `${props.data.location.type}://${props.data.location.name}`;
     if (title.includes("/")) {
         title = ".../" + title.substring(title.lastIndexOf("/") + 1);
     }
@@ -38,7 +38,7 @@ const DatasetNode = memo((props: NodeProps<DatasetNode>): ReactElement => {
         .filter(
             (edge) => edge.data?.kind == "OUTPUT" && edge.target === props.id,
         )
-        // @ts-ignore
+        // @ts-expect-error Explicit cast
         .map((edge) => edge.data as OutputRelationLineageResponseV1)
         // sort by last_interaction_at descending
         .toSorted((a, b) =>
@@ -57,7 +57,7 @@ const DatasetNode = memo((props: NodeProps<DatasetNode>): ReactElement => {
         .filter(
             (edge) => edge.data?.kind == "INPUT" && edge.source === props.id,
         )
-        // @ts-ignore
+        // @ts-expect-error Explicit cast
         .map((edge) => edge.data as InputRelationLineageResponseV1)
         // sort by last_interaction_at descending
         .toSorted((a, b) =>
@@ -121,6 +121,6 @@ const DatasetNode = memo((props: NodeProps<DatasetNode>): ReactElement => {
             }
         />
     );
-});
+};
 
-export default DatasetNode;
+export default memo(DatasetNode);

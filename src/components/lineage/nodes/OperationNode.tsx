@@ -19,7 +19,7 @@ import { statusToThemeColor } from "@/utils/color";
 
 export type OperationNode = Node<OperationResponseV1, "operationNode">;
 
-const OperationNode = memo((props: NodeProps<OperationNode>): ReactElement => {
+const OperationNode = (props: NodeProps<OperationNode>): ReactElement => {
     const title = props.data.description ?? props.data.name;
 
     const createdAt = formatDate(new Date(props.data.created_at));
@@ -42,10 +42,7 @@ const OperationNode = memo((props: NodeProps<OperationNode>): ReactElement => {
         <BaseNode
             nodeId={props.id}
             icon={
-                <OperationIcon
-                    operation={props.data}
-                    sx={{ minWidth: "5em", alignItems: "center" }}
-                />
+                <OperationIcon sx={{ minWidth: "5em", alignItems: "center" }} />
             }
             header={
                 <CardHeader
@@ -80,6 +77,6 @@ const OperationNode = memo((props: NodeProps<OperationNode>): ReactElement => {
             }
         />
     );
-});
+};
 
-export default OperationNode;
+export default memo(OperationNode);

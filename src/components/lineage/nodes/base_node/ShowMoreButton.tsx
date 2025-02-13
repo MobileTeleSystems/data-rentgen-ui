@@ -7,9 +7,8 @@ interface ExpandMoreProps extends IconButtonProps {
 }
 
 const ShowMoreButton = styled((props: ExpandMoreProps) => {
-    const { isExpanded, ...other } = props;
     return (
-        <IconButton {...other}>
+        <IconButton {...props}>
             <ExpandMoreIcon />
         </IconButton>
     );
