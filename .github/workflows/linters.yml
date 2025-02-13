@@ -37,7 +37,7 @@ jobs:
               run: npx eslint
 
             - name: Run Prettier
-              run: npx prettier --check
+              run: npx prettier --config .prettierrc 'src/**/*.tsx' 'src/**/*.ts' --check
 
             - name: Build project
               run: npm run build
