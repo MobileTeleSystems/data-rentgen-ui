@@ -11,7 +11,6 @@ interface LocationResponseV1 {
 }
 
 interface DatasetResponseV1 extends RaRecord {
-    kind: "DATASET";
     id: number;
     type: string;
     name: string;
@@ -26,7 +25,6 @@ type JobTypeResponseV1 =
     | "UNKNOWN";
 
 interface JobResponseV1 extends RaRecord {
-    kind: "JOB";
     id: number;
     type: JobTypeResponseV1;
     name: string;
@@ -48,7 +46,6 @@ type StatusResponseV1 =
 type StartReasonResponseV1 = "AUTOMATIC" | "MANUAL";
 
 interface RunResponseV1 extends RaRecord {
-    kind: "RUN";
     id: string;
     created_at: string;
     job_id: number;
@@ -68,7 +65,6 @@ interface RunResponseV1 extends RaRecord {
 type OperationTypeResponseV1 = "BATCH" | "STREAMING";
 
 interface OperationResponseV1 extends RaRecord {
-    kind: "OPERATION";
     id: string;
     created_at: string;
     run_id: string;
@@ -90,25 +86,23 @@ interface RelationEndpointLineageResponseV1 {
 }
 
 interface BaseRelationLineageResponseV1 {
-    kind: string;
     from: RelationEndpointLineageResponseV1;
     to: RelationEndpointLineageResponseV1;
 }
 
-type IORelationSchemaV1 = {
+interface IORelationSchemaV1 {
     id: number;
     fields: IORelationSchemaFieldV1[];
-};
+}
 
-type IORelationSchemaFieldV1 = {
+interface IORelationSchemaFieldV1 {
     name: string;
     type: string | null;
     description: string | null;
     fields: IORelationSchemaFieldV1[];
-};
+}
 
 interface InputRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {
-    kind: "INPUT";
     last_interaction_at: string;
     num_rows: number | null;
     num_bytes: number | null;
@@ -126,7 +120,6 @@ type OutputRelationTypeLineageResponseV1 =
 
 interface OutputRelationLineageResponseV1
     extends BaseRelationLineageResponseV1 {
-    kind: "OUTPUT";
     last_interaction_at: string;
     type: OutputRelationTypeLineageResponseV1 | null;
     num_rows: number | null;
@@ -135,35 +128,35 @@ interface OutputRelationLineageResponseV1
     schema: IORelationSchemaV1 | null;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface ParentRelationLineageResponseV1
-    extends BaseRelationLineageResponseV1 {
-    kind: "PARENT";
-}
+    extends BaseRelationLineageResponseV1 {}
 
 type SymlinkRelationTypeLineageResponseV1 = "METASTORE" | "WAREHOUSE";
 
 interface SymlinkRelationLineageResponseV1
     extends BaseRelationLineageResponseV1 {
-    kind: "SYMLINK";
     type: SymlinkRelationTypeLineageResponseV1;
 }
 
-type LineageRelationResponseV1 =
-    | InputRelationLineageResponseV1
-    | OutputRelationLineageResponseV1
-    | ParentRelationLineageResponseV1
-    | SymlinkRelationLineageResponseV1;
+interface LineageRelationsResponseV1 {
+    parents: ParentRelationLineageResponseV1[];
+    inputs: InputRelationLineageResponseV1[];
+    outputs: OutputRelationLineageResponseV1[];
+    symlinks: SymlinkRelationLineageResponseV1[];
+}
 
-type LineageNodeResponseV1 =
-    | DatasetResponseV1
-    | JobResponseV1
-    | RunResponseV1
-    | OperationResponseV1;
+interface LineageNodesResponseV1 {
+    datasets: { [id: string]: DatasetResponseV1 };
+    jobs: { [id: string]: JobResponseV1 };
+    runs: { [id: string]: RunResponseV1 };
+    operations: { [id: string]: OperationResponseV1 };
+}
 
-type LineageResponseV1 = {
-    nodes: LineageNodeResponseV1[];
-    relations: LineageRelationResponseV1[];
-};
+interface LineageResponseV1 {
+    nodes: LineageNodesResponseV1;
+    relations: LineageRelationsResponseV1;
+}
 
 export type {
     LocationResponseV1,
@@ -171,9 +164,6 @@ export type {
     JobResponseV1,
     RunResponseV1,
     OperationResponseV1,
-    LineageNodeResponseV1,
-    LineageRelationResponseV1,
-    LineageResponseV1,
     UserResponseV1,
     StatusResponseV1,
     StartReasonResponseV1,
@@ -190,4 +180,7 @@ export type {
     ParentRelationLineageResponseV1,
     SymlinkRelationLineageResponseV1,
     SymlinkRelationTypeLineageResponseV1,
+    LineageNodesResponseV1,
+    LineageRelationsResponseV1,
+    LineageResponseV1,
 };

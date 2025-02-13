@@ -1,19 +1,22 @@
 import {
-    LineageRelationResponseV1,
     OutputRelationLineageResponseV1,
     SymlinkRelationLineageResponseV1,
     InputRelationLineageResponseV1,
     ParentRelationLineageResponseV1,
     BaseRelationLineageResponseV1,
     LineageResponseV1,
+    RelationEndpointLineageResponseV1,
 } from "@/dataProvider/types";
 import { Edge, MarkerType } from "@xyflow/react";
-import { getNodeId } from "./getGraphNodes";
 
 const STOKE_THICK = 3;
 const STOKE_THIN = 1;
 
-export const getEdgeId = (relation: BaseRelationLineageResponseV1): string => {
+const getNodeId = (node: RelationEndpointLineageResponseV1): string => {
+    return node.kind + "-" + node.id;
+};
+
+const getEdgeId = (relation: BaseRelationLineageResponseV1): string => {
     // @ts-expect-error Type field may be present in some relation types
     const type = relation.type ?? "";
     return `${getNodeId(relation.from)}-${type}->${getNodeId(relation.to)}`;
@@ -25,8 +28,6 @@ const getMinimalEdge = (relation: BaseRelationLineageResponseV1): Edge => {
         source: getNodeId(relation.from),
         target: getNodeId(relation.to),
         type: "baseEdge",
-        // @ts-expect-error For some reason, TS thinks that BaseRelation does not satisfy Record
-        data: relation,
         markerEnd: {
             type: MarkerType.ArrowClosed,
         },
@@ -40,9 +41,13 @@ const getMinimalEdge = (relation: BaseRelationLineageResponseV1): Edge => {
 const getParentEdge = (relation: ParentRelationLineageResponseV1): Edge => {
     return {
         ...getMinimalEdge(relation),
+        label: "PARENT",
+        data: {
+            ...relation,
+            kind: "PARENT",
+        },
         sourceHandle: "bottom",
         targetHandle: "top",
-        label: "PARENT",
     };
 };
 
@@ -64,6 +69,10 @@ const getOutputEdge = (relation: OutputRelationLineageResponseV1): Edge => {
     return {
         ...getMinimalEdge(relation),
         type: "ioEdge",
+        data: {
+            ...relation,
+            kind: "OUTPUT",
+        },
         animated: true,
         markerEnd: {
             type: MarkerType.ArrowClosed,
@@ -84,6 +93,10 @@ const getInputEdge = (relation: InputRelationLineageResponseV1): Edge => {
     return {
         ...getMinimalEdge(relation),
         type: "ioEdge",
+        data: {
+            ...relation,
+            kind: "INPUT",
+        },
         animated: true,
         markerEnd: {
             type: MarkerType.ArrowClosed,
@@ -128,12 +141,17 @@ const getSymlinkEdge = (
     // with more simple graphs, like these:
     //
     // HDFS <-> Hive -> Job
-    const targetRelations = raw_response.relations.filter(
+    const anyTargetInput = raw_response.relations.inputs.find(
+        (r) => r.from.id == relation.to.id,
+    );
+    const anyTargetOutput = raw_response.relations.outputs.find(
+        (r) => r.to.id == relation.to.id,
+    );
+    const anyTargetSymlink = raw_response.relations.symlinks.find(
         (r) => r.to.id == relation.to.id || r.from.id == relation.to.id,
     );
-    const targetHasOnlyOutputs = targetRelations.every(
-        (r) => r.kind == "OUTPUT" || r.kind == "SYMLINK",
-    );
+    const targetHasOnlyOutputs =
+        (!!anyTargetOutput || !!anyTargetSymlink) && !anyTargetInput;
 
     const color = "purple";
 
@@ -146,6 +164,10 @@ const getSymlinkEdge = (
         target: targetHasOnlyOutputs
             ? getNodeId(relation.from)
             : getNodeId(relation.to),
+        data: {
+            ...relation,
+            kind: "SYMLINK",
+        },
         markerStart: {
             type: MarkerType.ArrowClosed,
             color: color,
@@ -164,35 +186,15 @@ const getSymlinkEdge = (
     };
 };
 
-const getGraphEdge = (
-    relation: LineageRelationResponseV1,
-    raw_response: LineageResponseV1,
-): Edge | null => {
-    switch (relation.kind) {
-        case "PARENT":
-            return getParentEdge(relation);
-        case "OUTPUT":
-            return getOutputEdge(relation);
-        case "INPUT":
-            return getInputEdge(relation);
-        case "SYMLINK":
-            return getSymlinkEdge(relation, raw_response);
-        default:
-            return getMinimalEdge(relation);
-    }
-};
-
 const getGraphEdges = (raw_response: LineageResponseV1): Edge[] => {
-    const result: Edge[] = [];
-
-    raw_response.relations.forEach((relation) => {
-        const edge = getGraphEdge(relation, raw_response);
-        if (edge) {
-            result.push(edge);
-        }
-    });
-
-    return result;
+    return [
+        ...raw_response.relations.parents.map(getParentEdge),
+        ...raw_response.relations.inputs.map(getInputEdge),
+        ...raw_response.relations.outputs.map(getOutputEdge),
+        ...raw_response.relations.symlinks
+            .map((relation) => getSymlinkEdge(relation, raw_response))
+            .filter((edge) => edge !== null),
+    ];
 };
 
 export default getGraphEdges;
