@@ -2,10 +2,10 @@ import { ReactElement } from "react";
 import { Stack } from "@mui/material";
 import { useRecordContext } from "react-admin";
 import JobIcon from "./JobIcon";
-import { JobResponseV1 } from "@/dataProvider/types";
+import { JobDetailedResponseV1 } from "@/dataProvider/types";
 
 const JobRaRepr = (): ReactElement | null => {
-    const job = useRecordContext<JobResponseV1>();
+    const job = useRecordContext<JobDetailedResponseV1>();
     if (!job) return null;
 
     return (
@@ -19,8 +19,8 @@ const JobRaRepr = (): ReactElement | null => {
                 textDecoration: "underline",
             }}
         >
-            <JobIcon job={job} />
-            <span>{job.name}</span>
+            <JobIcon job={job.data} />
+            <span>{job.data.name}</span>
         </Stack>
     );
 };

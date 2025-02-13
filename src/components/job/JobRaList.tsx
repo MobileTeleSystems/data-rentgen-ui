@@ -32,11 +32,24 @@ const JobRaList = (): ReactElement => {
     return (
         <List actions={<ListActions />} filters={jobFilters} resource="jobs">
             <DatagridConfigurable bulkActionButtons={false}>
-                <JobRaTypeField source="type" />
-                <TextField source="name" sortable={false} />
+                <JobRaTypeField
+                    source="data.type"
+                    label="resources.jobs.fields.type"
+                />
+                <TextField
+                    source="data.name"
+                    label="resources.jobs.fields.name"
+                    sortable={false}
+                />
 
-                <LocationRaTypeWithIconField source="location.type" />
-                <LocationRaNameWithLinkField source="location.name" />
+                <LocationRaTypeWithIconField
+                    source="data.location.type"
+                    label="resources.jobs.fields.location.type"
+                />
+                <LocationRaNameWithLinkField
+                    source="data.location.name"
+                    label="resources.jobs.fields.location.name"
+                />
             </DatagridConfigurable>
         </List>
     );

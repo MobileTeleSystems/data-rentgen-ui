@@ -2,9 +2,10 @@ import { ReactElement } from "react";
 import { Stack } from "@mui/material";
 import { LocationIcon } from "@/components/location";
 import { useRecordContext } from "react-admin";
+import { DatasetDetailedResponseV1 } from "@/dataProvider/types";
 
 const DatasetRaRepr = (): ReactElement | null => {
-    const dataset = useRecordContext();
+    const dataset = useRecordContext<DatasetDetailedResponseV1>();
     if (!dataset) return null;
 
     return (
@@ -18,8 +19,8 @@ const DatasetRaRepr = (): ReactElement | null => {
                 textDecoration: "underline",
             }}
         >
-            <LocationIcon location={dataset.location} />
-            <span>{dataset.name}</span>
+            <LocationIcon location={dataset.data.location} />
+            <span>{dataset.data.name}</span>
         </Stack>
     );
 };

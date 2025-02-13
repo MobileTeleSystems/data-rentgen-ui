@@ -16,14 +16,22 @@ const DatasetRaShow = (): ReactElement => {
     return (
         <Show resource="datasets">
             <SimpleShowLayout>
-                <TextField source="id" />
-                <LocationRaTypeWithIconField source="location.type" />
-                <LocationRaNameWithLinkField source="location.name" />
+                <TextField source="data.id" label="id" />
+                <LocationRaTypeWithIconField
+                    source="data.location.type"
+                    label="location.type"
+                />
+                <LocationRaNameWithLinkField
+                    source="data.location.name"
+                    label="location.name"
+                />
 
-                <TextField source="name" />
+                <TextField source="data.name" label="name" />
                 <WithRecord
                     render={(record) =>
-                        record.format && <TextField source="format" />
+                        record.format && (
+                            <TextField source="data.format" label="format" />
+                        )
                     }
                 />
 

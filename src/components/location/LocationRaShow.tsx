@@ -16,17 +16,29 @@ const LocationRaShow = (): ReactElement => {
         <Show resource="locations">
             <SimpleShowLayout>
                 <TextField source="id" />
-                <WrapperField source="type">
+                <WrapperField
+                    source="data.type"
+                    label="resources.locations.fields.type"
+                >
                     <WithRecord
                         render={(record) => (
-                            <LocationIconWithType location={record} />
+                            <LocationIconWithType location={record.data} />
                         )}
                     />
                 </WrapperField>
-                <TextField source="name" />
-                <TextField source="external_id" />
+                <TextField
+                    source="data.name"
+                    label="resources.locations.fields.name"
+                />
+                <TextField
+                    source="data.external_id"
+                    label="resources.locations.fields.external_id"
+                />
 
-                <ArrayField source="addresses">
+                <ArrayField
+                    source="data.addresses"
+                    label="resources.locations.fields.addresses"
+                >
                     <Datagrid bulkActionButtons={false}>
                         <UrlField source="url" target="_blank" />
                     </Datagrid>

@@ -34,15 +34,27 @@ const LocationRaList = (): ReactElement => {
             resource="locations"
         >
             <DatagridConfigurable bulkActionButtons={false}>
-                <WrapperField source="type" sortable={false}>
+                <WrapperField
+                    source="data.type"
+                    label="resources.locations.fields.type"
+                    sortable={false}
+                >
                     <WithRecord
                         render={(record) => (
-                            <LocationIconWithType location={record} />
+                            <LocationIconWithType location={record.data} />
                         )}
                     />
                 </WrapperField>
-                <TextField source="name" sortable={false} />
-                <TextField source="external_id" sortable={false} />
+                <TextField
+                    source="data.name"
+                    label="resources.locations.fields.name"
+                    sortable={false}
+                />
+                <TextField
+                    source="data.external_id"
+                    label="resources.locations.fields.external_id"
+                    sortable={false}
+                />
             </DatagridConfigurable>
         </List>
     );
