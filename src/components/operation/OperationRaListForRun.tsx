@@ -7,7 +7,12 @@ import {
     FunctionField,
 } from "react-admin";
 
-import { DurationField, StatusField, ListActions } from "@/components/base";
+import {
+    DurationField,
+    StatusField,
+    ListActions,
+    IOStatisticsField,
+} from "@/components/base";
 import { RunResponseV1 } from "@/dataProvider/types";
 import OperationRaListFilters from "./OperationRaListFilters";
 
@@ -56,6 +61,8 @@ const OperationRaListForRun = ({
                 />
                 <StatusField source="status" sortable={false} />
                 <DurationField source="duration" sortable={false} />
+                <IOStatisticsField source="statistics.inputs" />
+                <IOStatisticsField source="statistics.outputs" />
             </DatagridConfigurable>
         </List>
     );

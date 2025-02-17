@@ -141,6 +141,14 @@ const customEnglishMessages: TranslationMessages = {
                 attempt: "Attempt",
                 running_log_url: "Running log URL",
                 persistent_log_url: "Persistent log URL",
+                statistics: {
+                    name: "Statistics",
+                    inputs: "Total inputs",
+                    outputs: "Total outputs",
+                    operations: "Total operations",
+                    rows: "row |||| rows",
+                    files: "file |||| files",
+                },
             },
             sections: {
                 created: "Created",
@@ -157,6 +165,11 @@ const customEnglishMessages: TranslationMessages = {
                 attempt: "Attempt",
                 external_url: "External URL",
                 logs_url: "Logs URL",
+                statistics: {
+                    name: "Statistics",
+                    inputs: "Total inputs",
+                    outputs: "Total Outputs",
+                },
             },
             tabs: {
                 operations: "Operations",
@@ -196,6 +209,13 @@ const customEnglishMessages: TranslationMessages = {
                 started_at: "Started at",
                 ended_at: "Ended at",
                 duration: "Duration",
+                statistics: {
+                    name: "Statistics",
+                    inputs: "Total inputs",
+                    outputs: "Total outputs",
+                    rows: "row |||| rows",
+                    files: "file |||| files",
+                },
             },
             sections: {
                 created: "Created",
@@ -209,6 +229,11 @@ const customEnglishMessages: TranslationMessages = {
                 ended: "Ended",
                 when: "When",
                 duration: "Duration",
+                statistics: {
+                    name: "Statistics",
+                    inputs: "Total inputs",
+                    outputs: "Total Outputs",
+                },
             },
             tabs: {
                 lineage: "Lineage",
