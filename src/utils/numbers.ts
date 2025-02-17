@@ -3,7 +3,7 @@ import { useTranslate } from "react-admin";
 const step = 1000;
 const suffixes = ["", "K", "M", "B", "T"];
 
-const formatNumberApprox = (value: number, decimals = 2): string => {
+const formatNumberApprox = (value: number, precision = 3): string => {
     const translate = useTranslate();
     if (value < step) return value.toString();
 
@@ -13,7 +13,7 @@ const formatNumberApprox = (value: number, decimals = 2): string => {
         _: suffix,
     });
     const roundedValue = value / Math.pow(step, i);
-    return roundedValue.toFixed(decimals) + suffixTranslation;
+    return roundedValue.toPrecision(precision) + suffixTranslation;
 };
 
 export default formatNumberApprox;

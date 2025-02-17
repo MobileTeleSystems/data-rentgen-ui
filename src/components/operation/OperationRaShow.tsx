@@ -2,6 +2,7 @@ import { Stack } from "@mui/material";
 import { ReactElement } from "react";
 import {
     DateField,
+    FunctionField,
     Labeled,
     ReferenceField,
     Show,
@@ -9,8 +10,13 @@ import {
     TabbedShowLayout,
     TextField,
 } from "react-admin";
-import { DurationField, StatusField } from "@/components/base";
+import {
+    DurationField,
+    IOStatisticsField,
+    StatusField,
+} from "@/components/base";
 import OperationRaLineage from "./OperationRaLineage";
+import { OperationDetailedResponseV1 } from "@/dataProvider/types";
 
 const OperationRaShow = (): ReactElement => {
     return (
@@ -64,11 +70,30 @@ const OperationRaShow = (): ReactElement => {
                     </Stack>
                 </Labeled>
 
-                <TabbedShowLayout>
-                    <TabbedShowLayout.Tab label="resources.operations.tabs.lineage">
-                        <OperationRaLineage />
-                    </TabbedShowLayout.Tab>
-                </TabbedShowLayout>
+                <Labeled label="resources.operations.sections.statistics.name">
+                    <Stack direction="row" spacing={3}>
+                        <Labeled label="resources.operations.sections.statistics.inputs">
+                            <IOStatisticsField source="statistics.inputs" />
+                        </Labeled>
+                        <Labeled label="resources.operations.sections.statistics.outputs">
+                            <IOStatisticsField source="statistics.outputs" />
+                        </Labeled>
+                    </Stack>
+                </Labeled>
+
+                <FunctionField
+                    render={(record: OperationDetailedResponseV1) => {
+                        return record.statistics.inputs.total_datasets +
+                            record.statistics.outputs.total_datasets >
+                            0 ? (
+                            <TabbedShowLayout>
+                                <TabbedShowLayout.Tab label="resources.operations.tabs.lineage">
+                                    <OperationRaLineage />
+                                </TabbedShowLayout.Tab>
+                            </TabbedShowLayout>
+                        ) : null;
+                    }}
+                />
             </SimpleShowLayout>
         </Show>
     );

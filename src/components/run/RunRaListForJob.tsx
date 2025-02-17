@@ -8,7 +8,12 @@ import {
     TextField,
 } from "react-admin";
 
-import { DurationField, StatusField, ListActions } from "@/components/base";
+import {
+    DurationField,
+    StatusField,
+    ListActions,
+    IOStatisticsField,
+} from "@/components/base";
 import RunRaExternalId from "./RunRaExternalId";
 import RunRaListFilters from "./RunRaListFilters";
 
@@ -58,6 +63,12 @@ const RunRaListForJob = ({ jobId }: { jobId: number }): ReactElement => {
                     reference="runs"
                     sortable={false}
                 />
+                <TextField
+                    source="statistics.operations.total_operations"
+                    label="resources.runs.fields.statistics.operations"
+                />
+                <IOStatisticsField source="statistics.inputs" />
+                <IOStatisticsField source="statistics.outputs" />
             </DatagridConfigurable>
         </List>
     );

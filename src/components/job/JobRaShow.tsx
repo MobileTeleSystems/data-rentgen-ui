@@ -24,6 +24,10 @@ const JobRaShow = (): ReactElement => {
                     source="data.type"
                     label="resources.jobs.fields.type"
                 />
+                <TextField
+                    source="data.name"
+                    label="resources.jobs.fields.name"
+                />
 
                 <LocationRaTypeWithIconField
                     source="data.location.type"

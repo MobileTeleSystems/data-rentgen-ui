@@ -2,6 +2,8 @@ import { Stack } from "@mui/material";
 import { ReactElement } from "react";
 import {
     DateField,
+    Empty,
+    FunctionField,
     Labeled,
     ReferenceField,
     RichTextField,
@@ -12,10 +14,15 @@ import {
     UrlField,
     WithRecord,
 } from "react-admin";
-import { DurationField, StatusField } from "@/components/base";
+import {
+    DurationField,
+    IOStatisticsField,
+    StatusField,
+} from "@/components/base";
 import { OperationRaListForRun } from "@/components/operation";
 import RunRaLineage from "./RunRaLineage";
 import RunRaListForParentRun from "./RunRaListForParentRun";
+import { RunDetailedResponseV1 } from "@/dataProvider/types";
 
 const RunRaShow = (): ReactElement => {
     return (
@@ -101,12 +108,28 @@ const RunRaShow = (): ReactElement => {
                     </Stack>
                 </Labeled>
 
+                <Labeled label="resources.runs.sections.statistics.name">
+                    <Stack direction="row" spacing={3}>
+                        <Labeled label="resources.runs.sections.statistics.inputs">
+                            <IOStatisticsField source="statistics.inputs" />
+                        </Labeled>
+                        <Labeled label="resources.runs.sections.statistics.outputs">
+                            <IOStatisticsField source="statistics.outputs" />
+                        </Labeled>
+                    </Stack>
+                </Labeled>
+
                 <TabbedShowLayout>
                     <TabbedShowLayout.Tab label="resources.runs.tabs.operations">
-                        <WithRecord
-                            render={(record) => (
-                                <OperationRaListForRun run={record.data} />
-                            )}
+                        <FunctionField
+                            render={(record: RunDetailedResponseV1) =>
+                                record.statistics.operations.total_operations >
+                                0 ? (
+                                    <OperationRaListForRun run={record.data} />
+                                ) : (
+                                    <Empty resource="operations" />
+                                )
+                            }
                         />
                     </TabbedShowLayout.Tab>
 
@@ -124,7 +147,17 @@ const RunRaShow = (): ReactElement => {
                         label="resources.runs.tabs.lineage"
                         path="lineage"
                     >
-                        <RunRaLineage />
+                        <FunctionField
+                            render={(record: RunDetailedResponseV1) =>
+                                record.statistics.inputs.total_datasets +
+                                    record.statistics.outputs.total_datasets >
+                                0 ? (
+                                    <RunRaLineage />
+                                ) : (
+                                    <Empty resource="data" />
+                                )
+                            }
+                        />
                     </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </SimpleShowLayout>
