@@ -80,6 +80,13 @@ const customEnglishMessages: TranslationMessages = {
                         type: "Type",
                         description: "Description",
                     },
+                    search: {
+                        name: "Search",
+                        placeholder: "Filter by name",
+                    },
+                    pagination: {
+                        all: "All",
+                    },
                 },
             },
             tabs: {

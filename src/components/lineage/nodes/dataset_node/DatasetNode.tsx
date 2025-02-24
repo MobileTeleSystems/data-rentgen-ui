@@ -17,7 +17,7 @@ const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
     let title = props.data.name;
     const subheader = `${props.data.location.type}://${props.data.location.name}`;
     if (title.includes("/")) {
-        title = ".../" + title.substring(title.lastIndexOf("/") + 1);
+        title = ".../" + title.split("/").slice(-2).join("/");
     }
 
     const createPath = useCreatePath();
