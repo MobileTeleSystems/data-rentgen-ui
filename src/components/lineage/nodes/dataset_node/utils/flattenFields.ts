@@ -6,7 +6,12 @@ export const flattenFields = (
 ): IORelationSchemaFieldV1[] => {
     let result: IORelationSchemaFieldV1[] = [];
     for (const field of fields) {
-        result.push(field);
+        const newField = {
+            ...field,
+            name: prefix + field.name,
+        };
+        result.push(newField);
+
         if (field.fields.length > 0) {
             // parent.child
             result = result.concat(

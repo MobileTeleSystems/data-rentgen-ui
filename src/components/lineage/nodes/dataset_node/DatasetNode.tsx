@@ -3,6 +3,7 @@ import { useCreatePath, useTranslate } from "react-admin";
 import { memo, ReactElement } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
+import "./DatasetNode.css";
 import { DatasetResponseV1 } from "@/dataProvider/types";
 import { LocationIconWithType } from "@/components/location";
 import { Button, CardHeader, Typography } from "@mui/material";
@@ -48,7 +49,7 @@ const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
                 />
             }
             expandableContent={
-                props.data && props.data.schema ? (
+                props.data.schema ? (
                     <>
                         <Typography sx={{ textAlign: "center" }}>
                             {translate(

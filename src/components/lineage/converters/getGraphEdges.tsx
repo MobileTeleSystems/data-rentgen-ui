@@ -2,8 +2,9 @@ import {
     OutputRelationLineageResponseV1,
     SymlinkRelationLineageResponseV1,
     InputRelationLineageResponseV1,
-    ParentRelationLineageResponseV1,
     BaseRelationLineageResponseV1,
+    DirectColumnLineageRelationLineageResponseV1,
+    IndirectColumnLineageRelationLineageResponseV1,
     LineageResponseV1,
     RelationEndpointLineageResponseV1,
 } from "@/dataProvider/types";
@@ -36,19 +37,6 @@ const getMinimalEdge = (relation: BaseRelationLineageResponseV1): Edge => {
             strokeWidth: STOKE_THIN,
             stroke: "black",
         },
-    };
-};
-
-const getParentEdge = (relation: ParentRelationLineageResponseV1): Edge => {
-    return {
-        ...getMinimalEdge(relation),
-        label: "PARENT",
-        data: {
-            ...relation,
-            kind: "PARENT",
-        },
-        sourceHandle: "bottom",
-        targetHandle: "top",
     };
 };
 
@@ -250,7 +238,7 @@ const getSymlinkEdge = (
             color: color,
         },
         style: {
-            strokeWidth: STOKE_THIN,
+            strokeWidth: STOKE_MEDIUM,
             stroke: color,
         },
         labelStyle: {
@@ -259,9 +247,72 @@ const getSymlinkEdge = (
     };
 };
 
+const getDirectColumnLineageEdges = (
+    relation: DirectColumnLineageRelationLineageResponseV1,
+): Edge[] => {
+    const color = "#b1b1b7";
+    return Object.keys(relation.fields).flatMap((target_field) => {
+        return relation.fields[target_field].map((source_field) => {
+            return {
+                ...getMinimalEdge(relation),
+                id: `${getNodeId(relation.from)}:${source_field.name}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:${target_field}`,
+                sourceHandle: `field:${source_field.name}`,
+                targetHandle: `field:${target_field}`,
+                data: {
+                    source_field: source_field.name,
+                    types: source_field.types,
+                    target_field: target_field,
+                    kind: "DIRECT_COLUMN_LINEAGE",
+                },
+                animated: true,
+                markerEnd: {
+                    type: MarkerType.ArrowClosed,
+                    color: color,
+                },
+                style: {
+                    strokeWidth: STOKE_MEDIUM,
+                    stroke: color,
+                },
+                labelStyle: {
+                    backgroundColor: color,
+                },
+            };
+        });
+    });
+};
+
+const getIndirectColumnLineageEdges = (
+    relation: IndirectColumnLineageRelationLineageResponseV1,
+): Edge[] => {
+    const color = "#b1b1b7";
+    return relation.fields.map((field) => {
+        return {
+            ...getMinimalEdge(relation),
+            id: `${getNodeId(relation.from)}:${field.name}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:*`,
+            sourceHandle: `field:${field.name}`,
+            data: {
+                source_field: field.name,
+                types: field.types,
+                target_field: null,
+                kind: "INDIRECT_COLUMN_LINEAGE",
+            },
+            animated: true,
+            markerEnd: {
+                type: MarkerType.ArrowClosed,
+                color: color,
+            },
+            style: {
+                strokeWidth: STOKE_MEDIUM,
+                stroke: color,
+            },
+            labelStyle: {
+                backgroundColor: color,
+            },
+        };
+    });
+};
 const getGraphEdges = (raw_response: LineageResponseV1): Edge[] => {
     return [
-        ...raw_response.relations.parents.map(getParentEdge),
         ...raw_response.relations.inputs.map((relation) =>
             getInputEdge(relation, raw_response),
         ),
@@ -271,6 +322,12 @@ const getGraphEdges = (raw_response: LineageResponseV1): Edge[] => {
         ...raw_response.relations.symlinks
             .map((relation) => getSymlinkEdge(relation, raw_response))
             .filter((edge) => edge !== null),
+        ...(raw_response.relations.direct_column_lineage ?? []).flatMap(
+            getDirectColumnLineageEdges,
+        ),
+        ...(raw_response.relations.indirect_column_lineage ?? []).flatMap(
+            getIndirectColumnLineageEdges,
+        ),
     ];
 };
 
