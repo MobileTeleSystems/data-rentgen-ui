@@ -19,11 +19,18 @@ const buildLineageLayout = ({
         nodesep: NODE_SEPARATOR,
     });
 
+    const connectedWithEdges = new Set(
+        edges.flatMap((edge) => [edge.source, edge.target]),
+    );
+
     nodes.forEach((node) => {
-        dagreGraph.setNode(node.id, {
-            width: node.measured?.width ?? node.width ?? node.initialWidth,
-            height: node.measured?.height ?? node.height ?? node.initialHeight,
-        });
+        if (connectedWithEdges.has(node.id)) {
+            dagreGraph.setNode(node.id, {
+                width: node.measured?.width ?? node.width ?? node.initialWidth,
+                height:
+                    node.measured?.height ?? node.height ?? node.initialHeight,
+            });
+        }
     });
 
     edges.forEach((edge) => {
@@ -34,6 +41,10 @@ const buildLineageLayout = ({
 
     const newNodes = nodes.map((node) => {
         const nodeWithPosition = dagreGraph.node(node.id);
+        if (!nodeWithPosition) {
+            return node;
+        }
+
         return {
             ...(node as Node),
             // We are shifting the dagre node position (anchor=center center) to the top left

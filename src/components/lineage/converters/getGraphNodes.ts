@@ -5,11 +5,21 @@ import {
     LineageResponseV1,
     RunResponseV1,
 } from "@/dataProvider/types";
-import { Node } from "@xyflow/react";
+import { Node, Position } from "@xyflow/react";
 
 const BASE_NODE_HEIGHT = 120;
 const BASE_NODE_WIDTH = 800;
 const BASE_NODE_WIDTH_PER_CHAR = 25;
+
+const getDefaultNode = () => {
+    return {
+        position: { x: 0, y: 0 },
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        initialWidth: BASE_NODE_WIDTH,
+        initialHeight: BASE_NODE_HEIGHT,
+    };
+};
 
 const getDataseNode = (
     node: DatasetResponseV1,
@@ -59,11 +69,9 @@ const getDataseNode = (
     }
 
     return {
+        ...getDefaultNode(),
         id: "DATASET-" + node.id,
         type: "datasetNode",
-        position: { x: 0, y: 0 },
-        initialWidth: BASE_NODE_WIDTH,
-        initialHeight: BASE_NODE_HEIGHT,
         data: {
             ...node,
             kind: "DATASET",
@@ -109,9 +117,9 @@ const getJobNode = (
         .toSorted((a, b) => (a.created_at < b.created_at ? 1 : -1));
 
     return {
+        ...getDefaultNode(),
         id: "JOB-" + node.id,
         type: "jobNode",
-        position: { x: 0, y: 0 },
         initialWidth: maxNameWidth * BASE_NODE_WIDTH_PER_CHAR,
         initialHeight: Math.min(runs.length + 1, 10) * BASE_NODE_HEIGHT,
         data: {

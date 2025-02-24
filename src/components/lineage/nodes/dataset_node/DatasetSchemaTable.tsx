@@ -9,10 +9,11 @@ import {
     TableRow,
     TextField,
 } from "@mui/material";
-import { IORelationSchemaFieldV1 } from "@/dataProvider/types";
 import { useTranslate } from "react-admin";
+import { Handle, Position } from "@xyflow/react";
 import { useMemo, useState } from "react";
 import { Search } from "@mui/icons-material";
+import { IORelationSchemaFieldV1 } from "@/dataProvider/types";
 import { paginateArray } from "../../utils/pagination";
 import { fieldMatchesText, flattenFields } from "./utils";
 
@@ -84,6 +85,7 @@ const DatasetSchemaTable = ({
             <Table>
                 <TableHead>
                     <TableRow>
+                        <TableCell className="hidden" />
                         <TableCell>
                             {translate(
                                 "resources.datasets.fields.schema.field.name",
@@ -94,16 +96,31 @@ const DatasetSchemaTable = ({
                                 "resources.datasets.fields.schema.field.type",
                             )}
                         </TableCell>
+                        <TableCell className="hidden" />
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {fieldsToShow.map((field) => (
-                        <>
-                            <TableRow key={`${field.name}.main`}>
-                                <TableCell>{field.name}</TableCell>
-                                <TableCell>{field.type}</TableCell>
-                            </TableRow>
-                        </>
+                        <TableRow key={field.name}>
+                            <TableCell className="hidden">
+                                <Handle
+                                    type="target"
+                                    id={`field:${field.name}`}
+                                    position={Position.Left}
+                                    isConnectable={false}
+                                />
+                            </TableCell>
+                            <TableCell>{field.name}</TableCell>
+                            <TableCell>{field.type}</TableCell>
+                            <TableCell className="hidden">
+                                <Handle
+                                    type="source"
+                                    id={`field:${field.name}`}
+                                    position={Position.Right}
+                                    isConnectable={false}
+                                />
+                            </TableCell>
+                        </TableRow>
                     ))}
                 </TableBody>
                 <TablePagination

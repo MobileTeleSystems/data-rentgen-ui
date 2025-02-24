@@ -197,6 +197,21 @@ interface ParentRelationLineageResponseV1
 
 type SymlinkRelationTypeLineageResponseV1 = "METASTORE" | "WAREHOUSE";
 
+interface ColumnLineageFieldResponseV1 {
+    name: string;
+    types: string[];
+}
+
+interface DirectColumnLineageRelationLineageResponseV1
+    extends BaseRelationLineageResponseV1 {
+    fields: { [target_field: string]: ColumnLineageFieldResponseV1[] };
+}
+
+interface IndirectColumnLineageRelationLineageResponseV1
+    extends BaseRelationLineageResponseV1 {
+    fields: ColumnLineageFieldResponseV1[];
+}
+
 interface SymlinkRelationLineageResponseV1
     extends BaseRelationLineageResponseV1 {
     type: SymlinkRelationTypeLineageResponseV1;
@@ -207,6 +222,9 @@ interface LineageRelationsResponseV1 {
     inputs: InputRelationLineageResponseV1[];
     outputs: OutputRelationLineageResponseV1[];
     symlinks: SymlinkRelationLineageResponseV1[];
+    // TODO: remove undefined after implementing these fields in backend API
+    direct_column_lineage?: DirectColumnLineageRelationLineageResponseV1[];
+    indirect_column_lineage?: IndirectColumnLineageRelationLineageResponseV1[];
 }
 
 interface LineageNodesResponseV1 {
@@ -258,4 +276,7 @@ export type {
     LineageNodesResponseV1,
     LineageRelationsResponseV1,
     LineageResponseV1,
+    ColumnLineageFieldResponseV1,
+    DirectColumnLineageRelationLineageResponseV1,
+    IndirectColumnLineageRelationLineageResponseV1,
 };
