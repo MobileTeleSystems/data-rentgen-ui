@@ -2,8 +2,6 @@ import dagre from "@dagrejs/dagre";
 import { Node, Edge } from "@xyflow/react";
 
 const NODE_SEPARATOR = 100;
-const NODE_WIDTH = 800;
-const NODE_HEIGHT = 90;
 const LINEAGE_DIRECTION_HORIZONTAL = "LR";
 
 const buildLineageLayout = ({
@@ -23,8 +21,8 @@ const buildLineageLayout = ({
 
     nodes.forEach((node) => {
         dagreGraph.setNode(node.id, {
-            width: node.measured?.width ?? node.width ?? NODE_WIDTH,
-            height: node.measured?.height ?? node.height ?? NODE_HEIGHT,
+            width: node.measured?.width ?? node.width ?? node.initialWidth,
+            height: node.measured?.height ?? node.height ?? node.initialHeight,
         });
     });
 

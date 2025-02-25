@@ -7,7 +7,7 @@ import {
     WithRecord,
 } from "react-admin";
 
-import JobLineage from "./JobRaLineage";
+import JobRaLineage from "./JobRaLineage";
 import { RunRaListForJob } from "@/components/run";
 import {
     LocationRaNameWithLinkField,
@@ -51,7 +51,7 @@ const JobRaShow = (): ReactElement => {
                         label="resources.jobs.tabs.lineage"
                         path="lineage"
                     >
-                        <JobLineage />
+                        <JobRaLineage />
                     </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </SimpleShowLayout>

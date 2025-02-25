@@ -255,6 +255,10 @@ const customEnglishMessages: TranslationMessages = {
                     helperText: "Include only operations created before",
                 },
                 apply_button: "Apply",
+                search_query: {
+                    label: "Search",
+                    helperText: "Filter by name, group or description",
+                },
             },
         },
     },

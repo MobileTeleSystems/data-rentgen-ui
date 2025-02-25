@@ -3,10 +3,13 @@ import {
     IORelationSchemaV1,
     JobResponseV1,
     LineageResponseV1,
-    OperationResponseV1,
     RunResponseV1,
 } from "@/dataProvider/types";
 import { Node } from "@xyflow/react";
+
+const BASE_NODE_HEIGHT = 120;
+const BASE_NODE_WIDTH = 800;
+const BASE_NODE_WIDTH_PER_CHAR = 25;
 
 const getDataseNode = (
     node: DatasetResponseV1,
@@ -59,6 +62,8 @@ const getDataseNode = (
         id: "DATASET-" + node.id,
         type: "datasetNode",
         position: { x: 0, y: 0 },
+        initialWidth: BASE_NODE_WIDTH,
+        initialHeight: BASE_NODE_HEIGHT,
         data: {
             ...node,
             kind: "DATASET",
@@ -69,38 +74,50 @@ const getDataseNode = (
     };
 };
 
-const getJobNode = (node: JobResponseV1): Node => {
+const getJobNode = (
+    node: JobResponseV1,
+    raw_response: LineageResponseV1,
+): Node => {
+    const runsById: Map<string, RunResponseV1> = new Map();
+
+    let maxNameWidth = node.name.length;
+
+    Object.values(raw_response.nodes.runs)
+        .filter((other_node) => other_node.job_id == node.id)
+        .forEach((run) => {
+            run.operations = [];
+            runsById.set(run.id, run);
+            maxNameWidth = Math.max(maxNameWidth, run.external_id?.length ?? 1);
+        });
+
+    Object.values(raw_response.nodes.operations)
+        .filter((other_node) => runsById.has(other_node.run_id))
+        .forEach((operation) => {
+            const run = runsById.get(operation.run_id)!;
+            run.operations.push(operation);
+            runsById.set(operation.run_id, run);
+            maxNameWidth = Math.max(
+                maxNameWidth,
+                operation.name.length,
+                operation.description?.length ?? 1,
+            );
+        });
+
+    const runs = runsById
+        .values()
+        .toArray()
+        .toSorted((a, b) => (a.created_at < b.created_at ? 1 : -1));
+
     return {
         id: "JOB-" + node.id,
         type: "jobNode",
         position: { x: 0, y: 0 },
+        initialWidth: maxNameWidth * BASE_NODE_WIDTH_PER_CHAR,
+        initialHeight: Math.min(runs.length + 1, 10) * BASE_NODE_HEIGHT,
         data: {
             ...node,
             kind: "JOB",
-        },
-    };
-};
-
-const getRunNode = (node: RunResponseV1): Node => {
-    return {
-        id: "RUN-" + node.id,
-        type: "runNode",
-        position: { x: 0, y: 0 },
-        data: {
-            ...node,
-            kind: "RUN",
-        },
-    };
-};
-
-const getOperationNode = (node: OperationResponseV1): Node => {
-    return {
-        id: "OPERATION-" + node.id,
-        type: "operationNode",
-        position: { x: 0, y: 0 },
-        data: {
-            ...node,
-            kind: "OPERATION",
+            runs: runs,
         },
     };
 };
@@ -110,9 +127,9 @@ const getGraphNodes = (raw_response: LineageResponseV1): Node[] => {
         ...Object.values(raw_response.nodes.datasets).map((dataset) =>
             getDataseNode(dataset, raw_response),
         ),
-        ...Object.values(raw_response.nodes.jobs).map(getJobNode),
-        ...Object.values(raw_response.nodes.runs).map(getRunNode),
-        ...Object.values(raw_response.nodes.operations).map(getOperationNode),
+        ...Object.values(raw_response.nodes.jobs).map((job) =>
+            getJobNode(job, raw_response),
+        ),
     ];
 };
 

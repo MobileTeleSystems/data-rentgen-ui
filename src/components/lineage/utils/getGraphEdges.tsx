@@ -10,7 +10,8 @@ import {
 import { Edge, MarkerType } from "@xyflow/react";
 
 const STOKE_THICK = 3;
-const STOKE_THIN = 1;
+const STOKE_MEDIUM = 1;
+const STOKE_THIN = 0.5;
 
 const getNodeId = (node: RelationEndpointLineageResponseV1): string => {
     return node.kind + "-" + node.id;
@@ -51,7 +52,41 @@ const getParentEdge = (relation: ParentRelationLineageResponseV1): Edge => {
     };
 };
 
-const getOutputEdge = (relation: OutputRelationLineageResponseV1): Edge => {
+const getOutputEdge = (
+    relation: OutputRelationLineageResponseV1,
+    raw_response: LineageResponseV1,
+): Edge => {
+    let source: string = getNodeId(relation.from);
+    let sourceHandle: string | null = null;
+    let strokeWidth = STOKE_THICK;
+
+    if (relation.from.kind == "OPERATION") {
+        const operation = raw_response.nodes.operations[relation.from.id];
+        const run = raw_response.nodes.runs[operation.run_id];
+
+        source = getNodeId({ kind: "JOB", id: run.job_id });
+        sourceHandle = "OPERATION-" + operation.id;
+    }
+
+    if (relation.from.kind == "RUN") {
+        const run = raw_response.nodes.runs[relation.from.id];
+
+        source = getNodeId({ kind: "JOB", id: run.job_id });
+        sourceHandle = "RUN-" + run.id;
+
+        if (Object.keys(raw_response.nodes.operations).length > 0) {
+            strokeWidth = STOKE_MEDIUM;
+        }
+    }
+
+    if (relation.from.kind == "JOB") {
+        if (Object.keys(raw_response.nodes.operations).length > 0) {
+            strokeWidth = STOKE_THIN;
+        } else if (Object.keys(raw_response.nodes.runs).length > 0) {
+            strokeWidth = STOKE_MEDIUM;
+        }
+    }
+
     let color = "green";
     switch (relation.type) {
         case "DROP":
@@ -68,6 +103,9 @@ const getOutputEdge = (relation: OutputRelationLineageResponseV1): Edge => {
 
     return {
         ...getMinimalEdge(relation),
+        id: `${source}:${sourceHandle ?? "*"}->${getNodeId(relation.to)}`,
+        source: source,
+        sourceHandle: sourceHandle,
         type: "ioEdge",
         data: {
             ...relation,
@@ -79,7 +117,7 @@ const getOutputEdge = (relation: OutputRelationLineageResponseV1): Edge => {
             color: color,
         },
         style: {
-            strokeWidth: STOKE_THICK,
+            strokeWidth: strokeWidth,
             stroke: color,
         },
         labelStyle: {
@@ -88,10 +126,45 @@ const getOutputEdge = (relation: OutputRelationLineageResponseV1): Edge => {
     };
 };
 
-const getInputEdge = (relation: InputRelationLineageResponseV1): Edge => {
+const getInputEdge = (
+    relation: InputRelationLineageResponseV1,
+    raw_response: LineageResponseV1,
+): Edge => {
+    let target: string = getNodeId(relation.to);
+    let targetHandle: string | null = null;
+    let strokeWidth = STOKE_THICK;
+
+    if (relation.to.kind == "OPERATION") {
+        const operation = raw_response.nodes.operations[relation.to.id];
+        const run = raw_response.nodes.runs[operation.run_id];
+
+        target = getNodeId({ kind: "JOB", id: run.job_id });
+        targetHandle = "OPERATION-" + operation.id;
+    }
+    if (relation.to.kind == "RUN") {
+        const run = raw_response.nodes.runs[relation.to.id];
+
+        target = getNodeId({ kind: "JOB", id: run.job_id });
+        targetHandle = "RUN-" + run.id;
+
+        if (Object.keys(raw_response.nodes.operations).length > 0) {
+            strokeWidth = STOKE_MEDIUM;
+        }
+    }
+    if (relation.to.kind == "JOB") {
+        if (Object.keys(raw_response.nodes.operations).length > 0) {
+            strokeWidth = STOKE_THIN;
+        } else if (Object.keys(raw_response.nodes.runs).length > 0) {
+            strokeWidth = STOKE_MEDIUM;
+        }
+    }
+
     const color = "green";
     return {
         ...getMinimalEdge(relation),
+        id: `${getNodeId(relation.from)}->${target}:${targetHandle ?? "*"}`,
+        target: target,
+        targetHandle: targetHandle,
         type: "ioEdge",
         data: {
             ...relation,
@@ -103,7 +176,7 @@ const getInputEdge = (relation: InputRelationLineageResponseV1): Edge => {
             color: color,
         },
         style: {
-            strokeWidth: STOKE_THICK,
+            strokeWidth: strokeWidth,
             stroke: color,
         },
         labelStyle: {
@@ -189,8 +262,12 @@ const getSymlinkEdge = (
 const getGraphEdges = (raw_response: LineageResponseV1): Edge[] => {
     return [
         ...raw_response.relations.parents.map(getParentEdge),
-        ...raw_response.relations.inputs.map(getInputEdge),
-        ...raw_response.relations.outputs.map(getOutputEdge),
+        ...raw_response.relations.inputs.map((relation) =>
+            getInputEdge(relation, raw_response),
+        ),
+        ...raw_response.relations.outputs.map((relation) =>
+            getOutputEdge(relation, raw_response),
+        ),
         ...raw_response.relations.symlinks
             .map((relation) => getSymlinkEdge(relation, raw_response))
             .filter((edge) => edge !== null),

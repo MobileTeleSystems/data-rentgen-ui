@@ -12,8 +12,7 @@ const DatasetRaLineage = () => {
             <LineageView
                 resource="datasets"
                 recordId={record.id}
-                granularities={["JOB", "RUN", "OPERATION"]}
-                defaultDirection="UPSTREAM"
+                granularities={["JOB", "RUN"]}
             />
         </ReactFlowProvider>
     );

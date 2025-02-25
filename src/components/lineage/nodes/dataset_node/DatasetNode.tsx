@@ -1,6 +1,6 @@
 import { NodeProps, Node } from "@xyflow/react";
 import { useCreatePath, useTranslate } from "react-admin";
-import { ReactElement, memo } from "react";
+import { memo, ReactElement } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 import { DatasetResponseV1 } from "@/dataProvider/types";
