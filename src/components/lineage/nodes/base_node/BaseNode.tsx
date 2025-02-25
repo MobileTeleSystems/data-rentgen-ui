@@ -1,5 +1,5 @@
-import { Position, Handle, Edge, useReactFlow } from "@xyflow/react";
-import { ReactElement, ReactNode, useState } from "react";
+import { Position, Handle, useReactFlow } from "@xyflow/react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 
 import "./BaseNode.css";
 import {
@@ -18,38 +18,45 @@ const BaseNode = ({
     icon,
     header,
     expandableContent = null,
+    defaultExpanded = false,
     ...props
 }: {
     nodeId: string;
     icon: ReactNode;
     header: ReactNode;
     expandableContent?: ReactNode | null;
+    defaultExpanded?: boolean;
 } & CardProps): ReactElement => {
-    const { getEdges } = useReactFlow();
+    const { getEdges, updateNodeData } = useReactFlow();
 
-    const isParent = (edge: Edge) => edge.data?.kind == "PARENT";
-
-    const hasInputs = getEdges().some(
-        (edge) => edge.source === nodeId && !isParent(edge),
+    const hasOutgoing = getEdges().some(
+        (edge) => edge.source === nodeId && !edge.sourceHandle,
     );
-    const hasOutputs = getEdges().some(
-        (edge) => edge.target === nodeId && !isParent(edge),
-    );
-    const hasParents = getEdges().some(
-        (edge) => edge.target === nodeId && isParent(edge),
-    );
-    const hasChildren = getEdges().some(
-        (edge) => edge.source === nodeId && isParent(edge),
+    const hasIncoming = getEdges().some(
+        (edge) => edge.target === nodeId && !edge.targetHandle,
     );
 
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(defaultExpanded);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
+    useEffect(() => {
+        // Re-render all edges connected to this node
+        updateNodeData(nodeId, {});
+    }, [expanded]);
+
     return (
         <Card {...props}>
             <Stack direction={"row"} sx={{ alignItems: "center" }}>
+                {hasIncoming && (
+                    <Handle
+                        type="target"
+                        id="left"
+                        position={Position.Left}
+                        isConnectable={false}
+                    />
+                )}
                 {icon}
                 <Divider orientation="vertical" flexItem />
                 {header}
@@ -63,45 +70,19 @@ const BaseNode = ({
                         />
                     </CardActions>
                 )}
+                {hasOutgoing && (
+                    <Handle
+                        type="source"
+                        id="right"
+                        position={Position.Right}
+                        isConnectable={false}
+                    />
+                )}
             </Stack>
             {expandableContent && (
-                <>
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
-                        <CardContent>{expandableContent}</CardContent>
-                    </Collapse>
-                </>
-            )}
-            {hasOutputs && (
-                <Handle
-                    type="target"
-                    id={"left"}
-                    position={Position.Left}
-                    isConnectable={false}
-                />
-            )}
-            {hasParents && (
-                <Handle
-                    type="target"
-                    id={"top"}
-                    position={Position.Top}
-                    isConnectable={false}
-                />
-            )}
-            {hasInputs && (
-                <Handle
-                    type="source"
-                    id={"right"}
-                    position={Position.Right}
-                    isConnectable={false}
-                />
-            )}
-            {hasChildren && (
-                <Handle
-                    type="source"
-                    id={"bottom"}
-                    position={Position.Bottom}
-                    isConnectable={false}
-                />
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CardContent>{expandableContent}</CardContent>
+                </Collapse>
             )}
         </Card>
     );

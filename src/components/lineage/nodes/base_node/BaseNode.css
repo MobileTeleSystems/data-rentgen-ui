@@ -9,3 +9,14 @@
         var(--xy-selection-border-default)
     );
 }
+
+.react-flow .react-flow__handle {
+    top: auto;
+}
+
+.react-flow .react-flow__handle-left {
+    left: 0;
+}
+.react-flow .react-flow__handle-right {
+    right: 0;
+}
