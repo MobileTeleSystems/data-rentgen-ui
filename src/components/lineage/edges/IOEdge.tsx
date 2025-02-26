@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import {
     getBezierPath,
     EdgeLabelRenderer,
-    BaseEdge,
+    BaseEdge as ReactFlowBaseEdge,
     EdgeProps,
 } from "@xyflow/react";
 import {
@@ -13,11 +13,14 @@ import formatNumberApprox from "@/utils/numbers";
 import formatBytes from "@/utils/bytes";
 import { Card, Chip, Typography } from "@mui/material";
 
+import "./BaseEdge.css";
+
 const IOEdge = ({
     id,
     /* eslint-disable @typescript-eslint/no-unused-vars */
     label,
     data,
+    selected,
     ...props
 }: EdgeProps & {
     data: InputRelationLineageResponseV1 | OutputRelationLineageResponseV1;
@@ -28,12 +31,12 @@ const IOEdge = ({
         data.type || data.num_rows || data.num_bytes || data.num_files;
 
     if (!hasContent) {
-        return <BaseEdge id={id} path={edgePath} {...props} />;
+        return <ReactFlowBaseEdge id={id} path={edgePath} {...props} />;
     }
 
     return (
         <>
-            <BaseEdge id={id} path={edgePath} {...props} />
+            <ReactFlowBaseEdge id={id} path={edgePath} {...props} />
             <EdgeLabelRenderer>
                 <Card
                     style={{
@@ -43,7 +46,7 @@ const IOEdge = ({
                         position: "absolute",
                         transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
                     }}
-                    className="nodrag nopan"
+                    className={`nodrag nopan ${selected ? "selected" : ""}`}
                 >
                     {data.type ? (
                         <Chip

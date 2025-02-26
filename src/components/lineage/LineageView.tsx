@@ -1,13 +1,12 @@
 import { useDataProvider, useNotify } from "react-admin";
 
-import buildLineageLayout from "./utils/buildLayout";
+import { buildLineageLayout } from "./layout";
 import { Edge, Node, useNodesState, useEdgesState } from "@xyflow/react";
 import LineageFilters from "./LineageFilters";
 import LineageGraph from "./LineageGraph";
 
 import "@xyflow/react/dist/style.css";
-import getGraphNodes from "./utils/getGraphNodes";
-import getGraphEdges from "./utils/getGraphEdges";
+import { getGraphNodes, getGraphEdges } from "./converters";
 import { LineageResponseV1 } from "@/dataProvider/types";
 
 type LineageViewProps = {
@@ -21,6 +20,9 @@ type LineageViewProps = {
 const LineageView = (props: LineageViewProps) => {
     const dataProvider = useDataProvider();
     const notify = useNotify();
+
+    // datasets + 123 -> DATASET-123
+    const currentNodeId = `${props.resource.slice(0, -1).toUpperCase()}-${props.recordId}`;
 
     const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
@@ -44,6 +46,13 @@ const LineageView = (props: LineageViewProps) => {
                 .then((data: LineageResponseV1) => {
                     const initialNodes = getGraphNodes(data);
                     const initialEdges = getGraphEdges(data);
+
+                    initialNodes
+                        .filter((node) => node.id == currentNodeId)
+                        .forEach((node) => {
+                            node.selected = true;
+                        });
+
                     const { nodes: layoutedNodes, edges: layoutedEdges } =
                         buildLineageLayout({
                             nodes: initialNodes,

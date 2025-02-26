@@ -7,7 +7,14 @@ import {
 } from "@xyflow/react";
 import { Chip } from "@mui/material";
 
-const BaseEdge = ({ id, label, ...props }: EdgeProps): ReactElement => {
+import "./BaseEdge.css";
+
+const BaseEdge = ({
+    id,
+    label,
+    selected,
+    ...props
+}: EdgeProps): ReactElement => {
     const [edgePath, labelX, labelY] = getBezierPath(props);
 
     return (
@@ -21,7 +28,7 @@ const BaseEdge = ({ id, label, ...props }: EdgeProps): ReactElement => {
                             position: "absolute",
                             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
                         }}
-                        className="nodrag nopan"
+                        className={`nodrag nopan ${selected ? "selected" : ""}`}
                     >
                         <Chip
                             size="small"
