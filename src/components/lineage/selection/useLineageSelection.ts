@@ -2,8 +2,7 @@ import { Edge, Node, useReactFlow } from "@xyflow/react";
 import { useCallback, useState, MouseEvent } from "react";
 
 const useLineageSelection = () => {
-    const { getNodes, getEdges, setEdges, setNodes, getNodeConnections } =
-        useReactFlow();
+    const { getNodes, getEdges, setEdges, setNodes } = useReactFlow();
     const [hideNonSelected, setHideNonSelected] = useState(false);
 
     const setSelection = (
