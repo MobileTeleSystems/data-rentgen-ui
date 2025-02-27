@@ -28,18 +28,58 @@ const useLineageSelection = () => {
         );
     };
 
+    const _visitNodes = (
+        startNodeIds: string[],
+        edgesByNodeId: Map<string, Edge[]>,
+        edgeAttribute: "source" | "target",
+    ): { nodes: Set<string>; edges: Set<string> } => {
+        const result = {
+            nodes: new Set<string>(),
+            edges: new Set<string>(),
+        };
+
+        let startFrom = new Set<string>(startNodeIds);
+        while (edgesByNodeId.size > 0) {
+            const visitedNodes = new Set<string>();
+            const visitedEdges = new Set<string>();
+
+            startFrom.forEach((nodeId) => {
+                const edges = edgesByNodeId.get(nodeId);
+                if (edges) {
+                    edges.forEach((edge: Edge) => {
+                        visitedNodes.add(edge[edgeAttribute]);
+                        visitedEdges.add(edge.id);
+                    });
+                    edgesByNodeId.delete(nodeId);
+                }
+            });
+            if (visitedNodes.size == 0 && visitedEdges.size == 0) {
+                break;
+            }
+
+            visitedNodes.forEach((nodeId) => {
+                result.nodes.add(nodeId);
+            });
+            visitedEdges.forEach((edgeId) => {
+                result.edges.add(edgeId);
+            });
+            startFrom = visitedNodes;
+        }
+
+        return result;
+    };
+
     const getAllRelations = (
         nodeIds: string[],
     ): { nodes: Set<string>; edges: Set<string> } => {
-        const intermediate = {
-            upstreamNodes: new Set<string>(nodeIds),
-            downstreamNodes: new Set<string>(nodeIds),
-            upstreamEdges: new Set<string>(),
-            downstreamEdges: new Set<string>(),
+        const result = {
+            nodes: new Set<string>(nodeIds),
+            edges: new Set<string>(),
         };
 
         const rawEdges = getEdges();
 
+        // Convert list to maps to use O(1) lookups
         const edgesBySource = new Map<string, Edge[]>();
         const edgesByTarget = new Map<string, Edge[]>();
         rawEdges.forEach((edge) => {
@@ -52,60 +92,13 @@ const useLineageSelection = () => {
             edgesByTarget.set(edge.target, sameTarget);
         });
 
-        while (edgesByTarget.size > 0) {
-            let reachedAnything = false;
-            intermediate.upstreamNodes.forEach((nodeId) => {
-                const upstreamEdges = edgesByTarget.get(nodeId);
-                if (upstreamEdges) {
-                    upstreamEdges.forEach((edge: Edge) => {
-                        intermediate.upstreamNodes.add(edge.source);
-                        intermediate.upstreamEdges.add(edge.id);
-                    });
-                    edgesByTarget.delete(nodeId);
-                    reachedAnything = true;
-                }
-            });
-            if (!reachedAnything) {
-                break;
-            }
-        }
+        const upstreams = _visitNodes(nodeIds, edgesByTarget, "source");
+        const downstreams = _visitNodes(nodeIds, edgesBySource, "target");
 
-        while (edgesBySource.size > 0) {
-            let reachedAnything = false;
-            intermediate.downstreamNodes.forEach((nodeId) => {
-                const downstreamEdges = edgesBySource.get(nodeId);
-                if (downstreamEdges) {
-                    downstreamEdges.forEach((edge: Edge) => {
-                        intermediate.downstreamNodes.add(edge.target);
-                        intermediate.downstreamEdges.add(edge.id);
-                    });
-                    edgesBySource.delete(nodeId);
-                    reachedAnything = true;
-                }
-            });
-            if (!reachedAnything) {
-                break;
-            }
-        }
-
-        const result = {
-            nodes: new Set<string>(),
-            edges: new Set<string>(),
-        };
-
-        // Set union is only in ES2024
-        intermediate.upstreamNodes.forEach((nodeId) =>
-            result.nodes.add(nodeId),
-        );
-        intermediate.upstreamEdges.forEach((edgeId) =>
-            result.edges.add(edgeId),
-        );
-        intermediate.downstreamNodes.forEach((nodeId) =>
-            result.nodes.add(nodeId),
-        );
-        intermediate.downstreamEdges.forEach((edgeId) =>
-            result.edges.add(edgeId),
-        );
+        upstreams.nodes.forEach((nodeId) => result.nodes.add(nodeId));
+        upstreams.edges.forEach((edgeId) => result.edges.add(edgeId));
+        downstreams.nodes.forEach((nodeId) => result.nodes.add(nodeId));
+        downstreams.edges.forEach((edgeId) => result.edges.add(edgeId));
 
         return result;
     };
