@@ -7,6 +7,7 @@ import {
     useReactFlow,
     useNodesInitialized,
     BackgroundVariant,
+    Edge,
 } from "@xyflow/react";
 import { DatasetNode, JobNode, RunNode, OperationNode } from "./nodes";
 import { useEffect } from "react";
@@ -28,10 +29,21 @@ const nodeTypes = {
     operationNode: OperationNode,
 };
 
+const subgraphSelected = (edges?: Edge[]) => {
+    if (!edges) {
+        return false;
+    }
+    for (const edge of edges) {
+        if (edge.selected) {
+            return true;
+        }
+    }
+    return false;
+};
+
 const LineageGraph = (props: ReactFlowProps) => {
     const { fitView } = useReactFlow();
-    const { hideNonSelected, ...actions } = useLineageSelection();
-
+    const selectionHandlers = useLineageSelection();
     const nodesInitialized = useNodesInitialized();
 
     useEffect(() => {
@@ -40,7 +52,9 @@ const LineageGraph = (props: ReactFlowProps) => {
 
     return (
         <ReactFlow
-            className={hideNonSelected ? "hideNonSelected" : undefined}
+            className={
+                subgraphSelected(props.edges) ? "subgraphSelected" : undefined
+            }
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             nodesFocusable={true}
@@ -56,7 +70,7 @@ const LineageGraph = (props: ReactFlowProps) => {
             zoomOnDoubleClick={false}
             fitView
             onDoubleClick={() => fitView()}
-            {...actions}
+            {...selectionHandlers}
             {...props}
         >
             <Background variant={BackgroundVariant.Dots} />

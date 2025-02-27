@@ -1,6 +1,6 @@
-.react-flow.hideNonSelected .react-flow__node:not(.selected),
-.react-flow.hideNonSelected .react-flow__edge:not(.selected),
-.react-flow.hideNonSelected
+.react-flow.subgraphSelected .react-flow__node:not(.selected),
+.react-flow.subgraphSelected .react-flow__edge:not(.selected),
+.react-flow.subgraphSelected
     .react-flow__edgelabel-renderer
     > div:not(.selected) {
     opacity: 0.3 !important;

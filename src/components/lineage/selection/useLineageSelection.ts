@@ -1,14 +1,12 @@
 import { Edge, Node, useReactFlow } from "@xyflow/react";
-import { useCallback, useState, MouseEvent } from "react";
+import { useCallback, MouseEvent } from "react";
 
 const useLineageSelection = () => {
     const { getNodes, getEdges, setEdges, setNodes } = useReactFlow();
-    const [hideNonSelected, setHideNonSelected] = useState(false);
 
     const setSelection = (
         nodesToSelect: Set<string>,
         edgesToSelect: Set<string>,
-        hideOthers: boolean = true,
     ) => {
         const nodes = getNodes().map((node) => {
             node.selected = nodesToSelect.has(node.id);
@@ -22,9 +20,6 @@ const useLineageSelection = () => {
 
         setNodes(nodes);
         setEdges(edges);
-        setHideNonSelected(
-            hideOthers && nodesToSelect.size + edgesToSelect.size > 0,
-        );
     };
 
     const _visitNodes = (
@@ -102,6 +97,10 @@ const useLineageSelection = () => {
         return result;
     };
 
+    const selectNode = useCallback((nodeId: string) => {
+        setSelection(new Set([nodeId]), new Set());
+    }, []);
+
     const onEdgeClick = useCallback((e: MouseEvent, currentEdge: Edge) => {
         setSelection(
             new Set([currentEdge.source, currentEdge.target]),
@@ -123,8 +122,7 @@ const useLineageSelection = () => {
     );
 
     const onNodeClick = useCallback((e: MouseEvent, currentNode: Node) => {
-        // If only one node is selected, don't hide others, as it not very convenient
-        setSelection(new Set([currentNode.id]), new Set(), false);
+        selectNode(currentNode.id);
         e.stopPropagation();
     }, []);
 
@@ -143,7 +141,6 @@ const useLineageSelection = () => {
     }, []);
 
     return {
-        hideNonSelected,
         onEdgeClick,
         onEdgeDoubleClick,
         onNodeClick,

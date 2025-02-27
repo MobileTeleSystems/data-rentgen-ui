@@ -1,3 +1,7 @@
+.react-flow__node.draggable.selectable {
+    cursor: pointer;
+}
+
 .react-flow__node.selected .MuiCard-root {
     --xy-selection-background-color: #ebf2fd;
     background-color: var(
