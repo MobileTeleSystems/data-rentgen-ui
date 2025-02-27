@@ -5,7 +5,6 @@ import { defineConfig } from "vite";
 import webfontDownload from "vite-plugin-webfont-dl";
 import svgr from "vite-plugin-svgr";
 import path from "path";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,7 +18,6 @@ export default defineConfig({
         ]),
         react(),
         alias(),
-        nodePolyfills(),
         svgr({
             svgrOptions: {
                 plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx"],
