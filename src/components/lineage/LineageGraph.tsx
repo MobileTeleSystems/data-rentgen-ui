@@ -55,6 +55,7 @@ const LineageGraph = (props: ReactFlowProps) => {
             zoomOnPinch={true}
             zoomOnDoubleClick={false}
             fitView
+            onDoubleClick={() => fitView()}
             {...actions}
             {...props}
         >

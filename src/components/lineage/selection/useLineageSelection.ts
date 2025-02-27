@@ -84,8 +84,12 @@ const useLineageSelection = () => {
             const upstreams = trackUpstreams(currentEdge.source);
             const downstreams = trackDownstreams(currentEdge.target);
 
-            const relatedNodes = upstreams.nodes.union(downstreams.nodes);
-            const relatedEdges = upstreams.edges.union(downstreams.edges);
+            // Set.union is onl in ES2024
+            const relatedNodes = upstreams.nodes;
+            downstreams.nodes.forEach((node) => relatedNodes.add(node));
+
+            const relatedEdges = upstreams.edges;
+            downstreams.edges.forEach((edges) => relatedEdges.add(edges));
             relatedEdges.add(currentEdge.id);
 
             setSelection(relatedNodes, relatedEdges);
@@ -105,9 +109,13 @@ const useLineageSelection = () => {
             const upstreams = trackUpstreams(currentNode.id);
             const downstreams = trackDownstreams(currentNode.id);
 
-            const relatedNodes = upstreams.nodes.union(downstreams.nodes);
-            const relatedEdges = upstreams.edges.union(downstreams.edges);
+            // Set.union is onl in ES2024
+            const relatedNodes = upstreams.nodes;
+            downstreams.nodes.forEach((node) => relatedNodes.add(node));
             relatedNodes.add(currentNode.id);
+
+            const relatedEdges = upstreams.edges;
+            downstreams.edges.forEach((edges) => relatedEdges.add(edges));
 
             setSelection(relatedNodes, relatedEdges);
             e.stopPropagation();
