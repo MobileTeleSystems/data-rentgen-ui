@@ -111,10 +111,12 @@ const getJobNode = (
             );
         });
 
-    const runs = runsById
-        .values()
-        .toArray()
-        .toSorted((a, b) => (a.created_at < b.created_at ? 1 : -1));
+    // Map.values().toArray() availability is limited
+    const runs: RunResponseV1[] = [];
+    runsById.forEach((value) => {
+        runs.push(value);
+    });
+    runs.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
 
     return {
         ...getDefaultNode(),
