@@ -1,6 +1,7 @@
 import jsPlugin from "@eslint/js";
 import tsPlugin from "typescript-eslint";
 import reactPlugin from "eslint-plugin-react";
+import compatPlugin from "eslint-plugin-compat";
 
 export default tsPlugin.config(
     jsPlugin.configs.recommended,
@@ -14,4 +15,5 @@ export default tsPlugin.config(
             },
         },
     },
+    compatPlugin.configs["flat/recommended"],
 );
