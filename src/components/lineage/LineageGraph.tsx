@@ -30,7 +30,7 @@ const nodeTypes = {
 
 const LineageGraph = (props: ReactFlowProps) => {
     const { fitView } = useReactFlow();
-    const lineageSelection = useLineageSelection();
+    const { hideNonSelected, ...actions } = useLineageSelection();
 
     const nodesInitialized = useNodesInitialized();
 
@@ -40,9 +40,7 @@ const LineageGraph = (props: ReactFlowProps) => {
 
     return (
         <ReactFlow
-            className={
-                lineageSelection.hideNonSelected ? "hideNonSelected" : undefined
-            }
+            className={hideNonSelected ? "hideNonSelected" : undefined}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             nodesFocusable={true}
@@ -57,12 +55,7 @@ const LineageGraph = (props: ReactFlowProps) => {
             zoomOnPinch={true}
             zoomOnDoubleClick={false}
             fitView
-            onDoubleClick={() => fitView()}
-            onPaneClick={lineageSelection.onPaneClick}
-            onEdgeClick={lineageSelection.onEdgeClick}
-            onNodeClick={lineageSelection.onNodeClick}
-            onEdgeDoubleClick={lineageSelection.onEdgeDoubleClick}
-            onNodeDoubleClick={lineageSelection.onNodeDoubleClick}
+            {...actions}
             {...props}
         >
             <Background variant={BackgroundVariant.Dots} />
