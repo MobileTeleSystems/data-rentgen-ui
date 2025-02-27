@@ -34,6 +34,7 @@ const RunRaList = (): ReactElement => {
                 </ListActions>
             }
             queryOptions={{ enabled }}
+            storeKey={false}
         >
             <DatagridConfigurable bulkActionButtons={false}>
                 <DateField

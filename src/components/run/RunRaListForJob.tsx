@@ -35,9 +35,8 @@ const RunRaListForJob = ({ jobId }: { jobId: number }): ReactElement => {
                 </ListActions>
             }
             queryOptions={{ enabled }}
-            /* Use distinct filters from RunList component */
-            storeKey="runListForJob"
             title={false}
+            storeKey={false}
         >
             <DatagridConfigurable bulkActionButtons={false}>
                 <DateField

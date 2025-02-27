@@ -32,6 +32,7 @@ const LocationRaList = (): ReactElement => {
             actions={<ListActions />}
             filters={locationFilters}
             resource="locations"
+            storeKey={false}
         >
             <DatagridConfigurable bulkActionButtons={false}>
                 <WrapperField
