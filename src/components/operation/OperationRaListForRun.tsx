@@ -32,8 +32,7 @@ const OperationRaListForRun = ({
                 </ListActions>
             }
             title={false}
-            /* Reset filters on every RunRaShow page */
-            disableSyncWithLocation
+            storeKey={false}
         >
             <DatagridConfigurable bulkActionButtons={false}>
                 <DateField

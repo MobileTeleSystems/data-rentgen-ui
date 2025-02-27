@@ -33,6 +33,7 @@ const DatasetRaList = (): ReactElement => {
             actions={<ListActions />}
             filters={datasetFilters}
             resource="datasets"
+            storeKey={false}
         >
             <DatagridConfigurable bulkActionButtons={false}>
                 <LocationRaTypeWithIconField

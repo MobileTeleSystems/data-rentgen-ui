@@ -30,7 +30,12 @@ const JobRaList = (): ReactElement => {
     ];
 
     return (
-        <List actions={<ListActions />} filters={jobFilters} resource="jobs">
+        <List
+            actions={<ListActions />}
+            filters={jobFilters}
+            resource="jobs"
+            storeKey={false}
+        >
             <DatagridConfigurable bulkActionButtons={false}>
                 <JobRaTypeField
                     source="data.type"

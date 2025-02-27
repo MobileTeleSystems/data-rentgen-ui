@@ -3,10 +3,13 @@ import {
     DateTimeInput,
     useTranslate,
     SelectInput,
+    useListParams,
+    useResourceContext,
 } from "react-admin";
 
 import { useForm, FormProvider } from "react-hook-form";
 import { Box, Button } from "@mui/material";
+import { useEffect } from "react";
 
 const weekAgo = (): Date => {
     const result = new Date();
@@ -15,14 +18,16 @@ const weekAgo = (): Date => {
     return result;
 };
 
+type LineageFilterValues = {
+    since?: string;
+    until?: string;
+    depth?: number;
+    direction?: string;
+    granularity?: string;
+};
+
 type LineageFiltersProps = {
-    onSubmit: (values: {
-        since?: string;
-        until?: string;
-        depth?: number;
-        direction?: string;
-        granularity?: string;
-    }) => void;
+    onSubmit: (values: LineageFilterValues) => void;
     defaultSince?: Date;
     defaultDirection?: string;
     granularities?: string[];
@@ -34,8 +39,17 @@ const LineageFilters = ({
     defaultDirection,
     granularities = [],
 }: LineageFiltersProps) => {
+    const resource = useResourceContext() as string;
+    const defaultGranularity = granularities[0] ?? null;
+
+    const [listParams, listParamsActions] = useListParams({
+        resource,
+        filterDefaultValues: {},
+        storeKey: false,
+    });
+
     const translate = useTranslate();
-    const form = useForm();
+    const form = useForm({ defaultValues: listParams.filterValues });
 
     const granularityChoises = [
         {
@@ -52,14 +66,23 @@ const LineageFilters = ({
         },
     ];
 
-    const defaultGranularity = granularities[0] ?? null;
-    const granularitiesFiltered = granularityChoises.filter((choise) =>
-        granularities.includes(choise.id),
+    const granularitiesFiltered = granularityChoises.filter((choice) =>
+        granularities.includes(choice.id),
     );
+
+    const submit = form.handleSubmit((formValues: LineageFilterValues) => {
+        listParamsActions.setFilters(formValues);
+        onSubmit(formValues);
+    });
+
+    // draw lineage just after opening the page
+    useEffect(() => {
+        submit();
+    }, []);
 
     return (
         <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={submit}>
                 <Box display="flex" alignItems="flex-end">
                     <Box component="span" mr={2}>
                         <DateTimeInput
