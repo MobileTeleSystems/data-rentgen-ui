@@ -44,7 +44,7 @@ const subgraphSelected = (edges?: Edge[]) => {
 
 const LineageGraph = (props: ReactFlowProps) => {
     const { fitView } = useReactFlow();
-    const { setSelection, ...selectionHandlers } = useLineageSelection();
+    const selectionHandlers = useLineageSelection();
     const nodesInitialized = useNodesInitialized();
 
     useEffect(() => {
