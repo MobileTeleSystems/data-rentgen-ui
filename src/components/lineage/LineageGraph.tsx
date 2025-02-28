@@ -11,7 +11,7 @@ import {
 } from "@xyflow/react";
 import { DatasetNode, JobNode, RunNode, OperationNode } from "./nodes";
 import { useEffect } from "react";
-import { BaseEdge, IOEdge } from "./edges";
+import { BaseEdge, IOEdge, ColumnLineageEdge } from "./edges";
 import { useLineageSelection } from "./selection";
 
 export const MIN_ZOOM_VALUE = 0.1;
@@ -19,6 +19,7 @@ export const MAX_ZOOM_VALUE = 2.5;
 
 const edgeTypes = {
     ioEdge: IOEdge,
+    columnLineageEdge: ColumnLineageEdge,
     baseEdge: BaseEdge,
 };
 
@@ -43,7 +44,7 @@ const subgraphSelected = (edges?: Edge[]) => {
 
 const LineageGraph = (props: ReactFlowProps) => {
     const { fitView } = useReactFlow();
-    const selectionHandlers = useLineageSelection();
+    const { setSelection, ...selectionHandlers } = useLineageSelection();
     const nodesInitialized = useNodesInitialized();
 
     useEffect(() => {

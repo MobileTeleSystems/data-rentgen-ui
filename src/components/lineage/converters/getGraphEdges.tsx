@@ -258,6 +258,7 @@ const getDirectColumnLineageEdges = (
                 id: `${getNodeId(relation.from)}:${source_field.name}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:${target_field_name}`,
                 sourceHandle: source_field.name,
                 targetHandle: target_field_name,
+                type: "columnLineageEdge",
                 data: {
                     source_field: source_field.name,
                     target_field: target_field_name,
@@ -290,10 +291,11 @@ const getIndirectColumnLineageEdges = (
             ...getMinimalEdge(relation),
             id: `${getNodeId(relation.from)}:${field.name}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:*`,
             sourceHandle: field.name,
+            type: "columnLineageEdge",
             data: {
                 source_field: field.name,
-                types: field.types,
                 target_field: null,
+                types: field.types,
                 kind: "INDIRECT_COLUMN_LINEAGE",
             },
             animated: true,

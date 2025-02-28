@@ -1,4 +1,5 @@
-import IOEdge from "./IOEdge";
 import BaseEdge from "./BaseEdge";
+import ColumnLineageEdge from "./ColumnLineageEdge";
+import IOEdge from "./IOEdge";
 
-export { IOEdge, BaseEdge };
+export { BaseEdge, ColumnLineageEdge, IOEdge };
