@@ -14,8 +14,6 @@ const BASE_NODE_WIDTH_PER_CHAR = 25;
 const getDefaultNode = () => {
     return {
         position: { x: 0, y: 0 },
-        sourcePosition: Position.Right,
-        targetPosition: Position.Left,
         initialWidth: BASE_NODE_WIDTH,
         initialHeight: BASE_NODE_HEIGHT,
     };

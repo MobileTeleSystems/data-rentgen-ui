@@ -1,3 +1,12 @@
 .react-flow__node .hidden {
-    display: none;
+    width: 0;
+    padding: 0;
+}
+
+.react-flow__node .columnLineageHandle {
+    border-radius: 0;
+    border-color: #000000;
+    background: #00000000;
+    transform: none;
+    border: none;
 }

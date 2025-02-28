@@ -1,5 +1,17 @@
-import { Position, Handle, useReactFlow } from "@xyflow/react";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
+import {
+    Position,
+    Handle,
+    useReactFlow,
+    useUpdateNodeInternals,
+} from "@xyflow/react";
+import {
+    ReactElement,
+    ReactNode,
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useState,
+} from "react";
 
 import "./BaseNode.css";
 import {
@@ -27,7 +39,8 @@ const BaseNode = ({
     expandableContent?: ReactNode | null;
     defaultExpanded?: boolean;
 } & CardProps): ReactElement => {
-    const { getEdges, updateNodeData } = useReactFlow();
+    const { getEdges } = useReactFlow();
+    const updateNodeInternals = useUpdateNodeInternals();
 
     const hasOutgoing = getEdges().some(
         (edge) => edge.source === nodeId && !edge.sourceHandle,
@@ -43,7 +56,7 @@ const BaseNode = ({
 
     useEffect(() => {
         // Re-render all edges connected to this node
-        updateNodeData(nodeId, {});
+        updateNodeInternals(nodeId);
     }, [expanded]);
 
     return (

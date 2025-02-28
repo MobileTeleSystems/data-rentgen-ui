@@ -251,17 +251,17 @@ const getDirectColumnLineageEdges = (
     relation: DirectColumnLineageRelationLineageResponseV1,
 ): Edge[] => {
     const color = "#b1b1b7";
-    return Object.keys(relation.fields).flatMap((target_field) => {
-        return relation.fields[target_field].map((source_field) => {
+    return Object.keys(relation.fields).flatMap((target_field_name) => {
+        return relation.fields[target_field_name].map((source_field) => {
             return {
                 ...getMinimalEdge(relation),
-                id: `${getNodeId(relation.from)}:${source_field.name}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:${target_field}`,
-                sourceHandle: `field:${source_field.name}`,
-                targetHandle: `field:${target_field}`,
+                id: `${getNodeId(relation.from)}:${source_field.name}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:${target_field_name}`,
+                sourceHandle: source_field.name,
+                targetHandle: target_field_name,
                 data: {
                     source_field: source_field.name,
+                    target_field: target_field_name,
                     types: source_field.types,
-                    target_field: target_field,
                     kind: "DIRECT_COLUMN_LINEAGE",
                 },
                 animated: true,
@@ -289,7 +289,7 @@ const getIndirectColumnLineageEdges = (
         return {
             ...getMinimalEdge(relation),
             id: `${getNodeId(relation.from)}:${field.name}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:*`,
-            sourceHandle: `field:${field.name}`,
+            sourceHandle: field.name,
             data: {
                 source_field: field.name,
                 types: field.types,

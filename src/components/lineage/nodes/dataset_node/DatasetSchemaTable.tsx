@@ -104,8 +104,9 @@ const DatasetSchemaTable = ({
                         <TableRow key={field.name}>
                             <TableCell className="hidden">
                                 <Handle
+                                    className="columnLineageHandle"
                                     type="target"
-                                    id={`field:${field.name}`}
+                                    id={field.name}
                                     position={Position.Left}
                                     isConnectable={false}
                                 />
@@ -114,8 +115,9 @@ const DatasetSchemaTable = ({
                             <TableCell>{field.type}</TableCell>
                             <TableCell className="hidden">
                                 <Handle
+                                    className="columnLineageHandle"
                                     type="source"
-                                    id={`field:${field.name}`}
+                                    id={field.name}
                                     position={Position.Right}
                                     isConnectable={false}
                                 />
