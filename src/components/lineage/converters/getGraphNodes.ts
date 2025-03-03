@@ -5,7 +5,7 @@ import {
     LineageResponseV1,
     RunResponseV1,
 } from "@/dataProvider/types";
-import { Node, Position } from "@xyflow/react";
+import { Node } from "@xyflow/react";
 
 const BASE_NODE_HEIGHT = 120;
 const BASE_NODE_WIDTH = 800;
@@ -23,6 +23,14 @@ const getDataseNode = (
     node: DatasetResponseV1,
     raw_response: LineageResponseV1,
 ): Node => {
+    let title = node.name;
+    const subheader = `${node.location.type}://${node.location.name}`;
+    if (title.includes("/")) {
+        // For path like "/app/warehouse/hive/external/some.db/table"
+        // show only "../some.db/table"
+        title = ".../" + title.split("/").slice(-2).join("/");
+    }
+
     const outputSchemas = raw_response.relations.outputs
         .filter((output) => output.to.id == node.id && output.schema !== null)
         // sort by last_interaction_at descending
@@ -66,13 +74,22 @@ const getDataseNode = (
         schemaCount = inputSchemas.length;
     }
 
+    const maxNameWidth = Math.max(title.length, subheader.length);
+    const maxWidth = Math.max(
+        maxNameWidth * BASE_NODE_WIDTH_PER_CHAR,
+        BASE_NODE_WIDTH,
+    );
+
     return {
         ...getDefaultNode(),
         id: "DATASET-" + node.id,
         type: "datasetNode",
+        initialWidth: maxWidth,
         data: {
             ...node,
             kind: "DATASET",
+            title: title,
+            subheader: subheader,
             schema: schema,
             schemaFrom: schemaFrom,
             schemaCount: schemaCount,
@@ -86,10 +103,21 @@ const getJobNode = (
 ): Node => {
     const runsById: Map<string, RunResponseV1> = new Map();
 
-    let maxNameWidth = node.name.length;
+    let title = node.name;
+    let subheader = `${node.location.type}://${node.location.name}`;
+    if (node.name.includes("/")) {
+        // For long job names like "/group/subgroup/job_name"
+        // move "/group/subgroup/" to subheader
+        title = node.name.substring(node.name.lastIndexOf("/") + 1);
+        subheader += "/" + node.name.substring(0, node.name.lastIndexOf("/"));
+    }
+
+    let maxNameWidth = Math.max(title.length, subheader.length);
 
     Object.values(raw_response.nodes.runs)
         .filter((other_node) => other_node.job_id == node.id)
+        // show most recent operations on top
+        .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
         .forEach((run) => {
             run.operations = [];
             runsById.set(run.id, run);
@@ -98,6 +126,8 @@ const getJobNode = (
 
     Object.values(raw_response.nodes.operations)
         .filter((other_node) => runsById.has(other_node.run_id))
+        // show most recent operations on top
+        .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
         .forEach((operation) => {
             const run = runsById.get(operation.run_id)!;
             run.operations.push(operation);
@@ -114,17 +144,24 @@ const getJobNode = (
     runsById.forEach((value) => {
         runs.push(value);
     });
-    runs.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
+
+    const maxWidth = Math.max(
+        maxNameWidth * BASE_NODE_WIDTH_PER_CHAR,
+        BASE_NODE_WIDTH,
+    );
+    const maxHeight = Math.min(runs.length + 1, 10) * BASE_NODE_HEIGHT;
 
     return {
         ...getDefaultNode(),
         id: "JOB-" + node.id,
         type: "jobNode",
-        initialWidth: maxNameWidth * BASE_NODE_WIDTH_PER_CHAR,
-        initialHeight: Math.min(runs.length + 1, 10) * BASE_NODE_HEIGHT,
+        initialWidth: maxWidth,
+        initialHeight: maxHeight,
         data: {
             ...node,
             kind: "JOB",
+            title: title,
+            subheader: subheader,
             runs: runs,
         },
     };

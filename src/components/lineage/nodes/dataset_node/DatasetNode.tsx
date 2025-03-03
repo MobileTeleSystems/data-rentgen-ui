@@ -15,12 +15,6 @@ export type DatasetNode = Node<DatasetResponseV1, "datasetNode">;
 const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
     const translate = useTranslate();
 
-    let title = props.data.name;
-    const subheader = `${props.data.location.type}://${props.data.location.name}`;
-    if (title.includes("/")) {
-        title = ".../" + title.split("/").slice(-2).join("/");
-    }
-
     const createPath = useCreatePath();
     const path = createPath({
         resource: "datasets",
@@ -39,8 +33,8 @@ const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
             }
             header={
                 <CardHeader
-                    title={title}
-                    subheader={subheader}
+                    title={props.data.title}
+                    subheader={props.data.subheader}
                     action={
                         <Button size="small" href={"#" + path}>
                             <OpenInNewIcon />
