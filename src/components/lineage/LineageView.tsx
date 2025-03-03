@@ -33,6 +33,7 @@ const LineageView = (props: LineageViewProps) => {
         depth?: number;
         direction?: string;
         granularity?: string;
+        include_column_lineage?: boolean;
     }) => {
         setNodes([]);
         setNodes([]);
@@ -44,8 +45,8 @@ const LineageView = (props: LineageViewProps) => {
                     filter: values,
                 })
                 .then((data: LineageResponseV1) => {
-                    const initialNodes = getGraphNodes(data);
-                    const initialEdges = getGraphEdges(data);
+                    let initialNodes = getGraphNodes(data);
+                    let initialEdges = getGraphEdges(data);
 
                     initialNodes
                         .filter((node) => node.id == currentNodeId)

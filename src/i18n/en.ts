@@ -293,6 +293,10 @@ const customEnglishMessages: TranslationMessages = {
                 run: "Run",
                 operation: "Operation",
             },
+            include_column_lineage: {
+                label: "Column lineage",
+                helperText: "Draw lineage between columns",
+            },
         },
         build_button: "Build lineage graph",
     },
