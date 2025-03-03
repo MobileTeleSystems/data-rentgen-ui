@@ -14,16 +14,6 @@ export type JobNode = Node<JobResponseV1, "jobNode">;
 const JobNode = (props: NodeProps<JobNode>): ReactElement => {
     const translate = useTranslate();
 
-    let title = props.data.name;
-    let subheader = `${props.data.location.type}://${props.data.location.name}`;
-    if (props.data.name.includes("/")) {
-        title = props.data.name.substring(props.data.name.lastIndexOf("/") + 1);
-        subheader +=
-            "/" +
-            props.data.name.substring(0, props.data.name.lastIndexOf("/")) +
-            "/";
-    }
-
     const createPath = useCreatePath();
     const path = createPath({
         resource: "jobs",
@@ -42,8 +32,8 @@ const JobNode = (props: NodeProps<JobNode>): ReactElement => {
             }
             header={
                 <CardHeader
-                    title={title}
-                    subheader={subheader}
+                    title={props.data.title}
+                    subheader={props.data.subheader}
                     action={
                         <Button size="small" href={"#" + path}>
                             <OpenInNewIcon />
