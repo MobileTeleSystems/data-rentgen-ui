@@ -5,6 +5,7 @@ import {
     SelectInput,
     useListParams,
     useResourceContext,
+    BooleanInput,
 } from "react-admin";
 
 import { useForm, FormProvider } from "react-hook-form";
@@ -24,6 +25,7 @@ type LineageFilterValues = {
     depth?: number;
     direction?: string;
     granularity?: string;
+    include_column_lineage?: boolean;
 };
 
 type LineageFiltersProps = {
@@ -162,6 +164,14 @@ const LineageFilters = ({
                             />
                         </Box>
                     )}
+                    <Box component="span" mr={2}>
+                        <BooleanInput
+                            source="include_column_lineage"
+                            defaultValue={false}
+                            label="lineage.filters.include_column_lineage.label"
+                            helperText="lineage.filters.include_column_lineage.helperText"
+                        />
+                    </Box>
 
                     <Box component="span" mr={2} mb={4}>
                         <Button

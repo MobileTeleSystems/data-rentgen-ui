@@ -62,16 +62,29 @@ const getDataseNode = (
     // prefer output schema as there is high chance that it describes all the columns properly.
     // read interactions may select only a subset of columns.
     let schema: IORelationSchemaV1 | undefined = undefined;
-    let schemaFrom: string = "input";
+    let schemaFrom: string = "output";
     let schemaCount = 0;
     if (outputSchemas.length > 0) {
-        schema = outputSchemas.at(0);
+        schema = outputSchemas[0];
         schemaFrom = "output";
         schemaCount = outputSchemas.length;
     } else if (inputSchemas.length > 0) {
-        schema = inputSchemas.at(0);
+        schema = inputSchemas[0];
         schemaFrom = "input";
         schemaCount = inputSchemas.length;
+    }
+
+    let hasColumnLineage = false;
+    if (raw_response.relations.direct_column_lineage?.length) {
+        hasColumnLineage = raw_response.relations.direct_column_lineage.some(
+            (relation) =>
+                relation.from.id == node.id || relation.to.id == node.id,
+        );
+    } else if (raw_response.relations.indirect_column_lineage?.length) {
+        hasColumnLineage = raw_response.relations.indirect_column_lineage.some(
+            (relation) =>
+                relation.from.id == node.id || relation.to.id == node.id,
+        );
     }
 
     const maxNameWidth = Math.max(title.length, subheader.length);
@@ -80,16 +93,25 @@ const getDataseNode = (
         BASE_NODE_WIDTH,
     );
 
+    let maxHeight = BASE_NODE_HEIGHT;
+    if (hasColumnLineage) {
+        maxHeight =
+            BASE_NODE_HEIGHT *
+            Math.max(outputSchemas.length, inputSchemas.length, 10);
+    }
+
     return {
         ...getDefaultNode(),
         id: "DATASET-" + node.id,
         type: "datasetNode",
+        initialHeight: maxHeight,
         initialWidth: maxWidth,
         data: {
             ...node,
             kind: "DATASET",
             title: title,
             subheader: subheader,
+            expanded: hasColumnLineage,
             schema: schema,
             schemaFrom: schemaFrom,
             schemaCount: schemaCount,

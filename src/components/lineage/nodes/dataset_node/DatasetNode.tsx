@@ -42,6 +42,7 @@ const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
                     }
                 />
             }
+            defaultExpanded={props.data.expanded}
             expandableContent={
                 props.data.schema ? (
                     <>
