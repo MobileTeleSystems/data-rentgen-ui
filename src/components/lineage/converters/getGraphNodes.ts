@@ -94,10 +94,8 @@ const getDataseNode = (
     );
 
     let maxHeight = BASE_NODE_HEIGHT;
-    if (hasColumnLineage) {
-        maxHeight =
-            BASE_NODE_HEIGHT *
-            Math.max(outputSchemas.length, inputSchemas.length, 10);
+    if (schema && hasColumnLineage) {
+        maxHeight += BASE_NODE_HEIGHT * Math.min(schema.fields.length, 10);
     }
 
     return {
