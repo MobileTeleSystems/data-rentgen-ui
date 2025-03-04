@@ -1,0 +1,5 @@
+.react-flow__edge.react-flow__edge-columnLineageEdge.selected
+    .react-flow__edge-path {
+    stroke: #89b2f3 !important;
+    stroke-width: 2px !important;
+}

@@ -6,9 +6,9 @@ import {
     EdgeProps,
 } from "@xyflow/react";
 import { ColumnLineageFieldResponseV1 } from "@/dataProvider/types";
-import { Card, Chip } from "@mui/material";
+import { Chip } from "@mui/material";
 
-import "./BaseEdge.css";
+import "./ColumnLineageEdge.css";
 
 const ColumnLineageEdge = ({
     id,

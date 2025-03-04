@@ -52,7 +52,10 @@ const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
                                 { smart_count: props.data.schemaCount },
                             )}
                         </Typography>
-                        <DatasetSchemaTable fields={props.data.schema.fields} />
+                        <DatasetSchemaTable
+                            nodeId={props.id}
+                            fields={props.data.schema.fields}
+                        />
                     </>
                 ) : null
             }
