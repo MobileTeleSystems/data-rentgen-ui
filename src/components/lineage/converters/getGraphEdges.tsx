@@ -250,7 +250,7 @@ const getSymlinkEdge = (
 const getDirectColumnLineageEdges = (
     relation: DirectColumnLineageRelationLineageResponseV1,
 ): Edge[] => {
-    const color = "#b1b1b7";
+    const color = "gray";
     return Object.keys(relation.fields).flatMap((target_field_name) => {
         return relation.fields[target_field_name].map((source_field) => {
             return {
@@ -265,17 +265,17 @@ const getDirectColumnLineageEdges = (
                     types: source_field.types,
                     kind: "DIRECT_COLUMN_LINEAGE",
                 },
-                animated: true,
                 markerEnd: {
                     type: MarkerType.ArrowClosed,
                     color: color,
                 },
                 style: {
-                    strokeWidth: STOKE_MEDIUM,
+                    strokeWidth: STOKE_THIN,
                     stroke: color,
                 },
                 labelStyle: {
-                    backgroundColor: color,
+                    // label is shown only then edge is selected, so color is different from stroke
+                    backgroundColor: "#89b2f3",
                 },
             };
         });
@@ -285,7 +285,7 @@ const getDirectColumnLineageEdges = (
 const getIndirectColumnLineageEdges = (
     relation: IndirectColumnLineageRelationLineageResponseV1,
 ): Edge[] => {
-    const color = "#b1b1b7";
+    const color = "gray";
     return relation.fields.map((source_field) => {
         return {
             ...getMinimalEdge(relation),
@@ -298,17 +298,17 @@ const getIndirectColumnLineageEdges = (
                 types: source_field.types,
                 kind: "INDIRECT_COLUMN_LINEAGE",
             },
-            animated: true,
             markerEnd: {
                 type: MarkerType.ArrowClosed,
                 color: color,
             },
             style: {
-                strokeWidth: STOKE_MEDIUM,
+                strokeWidth: STOKE_THIN,
                 stroke: color,
             },
             labelStyle: {
-                backgroundColor: color,
+                // label is shown only then edge is selected, so color is different from stroke
+                backgroundColor: "#89b2f3",
             },
         };
     });

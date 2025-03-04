@@ -78,7 +78,7 @@ const LineageView = (props: LineageViewProps) => {
                         edges={edges}
                         onNodesChange={onNodesChange}
                         onEdgesChange={onEdgesChange}
-                    ></LineageGraph>
+                    />
                 </div>
             )}
         </>

@@ -10,3 +10,11 @@
     transform: none;
     border: none;
 }
+
+.react-flow__node .columnLineageField.selected {
+    background-color: #b4d1ff;
+    border-color: var(
+        --xy-selection-border,
+        var(--xy-selection-border-default)
+    );
+}

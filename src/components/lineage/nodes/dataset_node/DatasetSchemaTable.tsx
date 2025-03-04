@@ -10,20 +10,28 @@ import {
     TextField,
 } from "@mui/material";
 import { useTranslate } from "react-admin";
-import { Handle, Position } from "@xyflow/react";
-import { useMemo, useState } from "react";
+import { Handle, Position, useReactFlow } from "@xyflow/react";
+import { MouseEvent, useContext, useMemo, useState } from "react";
 import { Search } from "@mui/icons-material";
 import { IORelationSchemaFieldV1 } from "@/dataProvider/types";
 import { paginateArray } from "../../utils/pagination";
 import { fieldMatchesText, flattenFields } from "./utils";
+import {
+    getNearestColumnRelations,
+    getAllColumnRelations,
+} from "../../selection/utils/columnSelection";
+import LineageSelectionContext from "../../selection/LineageSelectionContext";
 
 const DatasetSchemaTable = ({
+    nodeId,
     fields,
     defaultRowsPerPage = 10,
 }: {
+    nodeId: string;
     fields: IORelationSchemaFieldV1[];
     defaultRowsPerPage?: number;
 }) => {
+    const { getEdges } = useReactFlow();
     const translate = useTranslate();
 
     const [page, setPage] = useState(0);
@@ -52,6 +60,26 @@ const DatasetSchemaTable = ({
             value: -1,
         },
     ];
+
+    const { selection, setSelection } = useContext(LineageSelectionContext);
+    const selectedFields =
+        selection.nodeWithColumns.get(nodeId) ?? new Map<string, Set<string>>();
+
+    const onFieldClick = (e: MouseEvent, fieldName: string) => {
+        const selection = getNearestColumnRelations(
+            getEdges(),
+            nodeId,
+            fieldName,
+        );
+        setSelection(selection);
+        e.stopPropagation();
+    };
+
+    const onFieldDoubleClick = (e: MouseEvent, fieldName: string) => {
+        const selection = getAllColumnRelations(getEdges(), nodeId, fieldName);
+        setSelection(selection);
+        e.stopPropagation();
+    };
 
     return (
         <>
@@ -101,7 +129,14 @@ const DatasetSchemaTable = ({
                 </TableHead>
                 <TableBody>
                     {fieldsToShow.map((field) => (
-                        <TableRow key={field.name}>
+                        <TableRow
+                            key={field.name}
+                            className={`columnLineageField ${selectedFields.has(field.name) ? "selected" : ""}`}
+                            onClick={(e) => onFieldClick(e, field.name)}
+                            onDoubleClick={(e) =>
+                                onFieldDoubleClick(e, field.name)
+                            }
+                        >
                             <TableCell className="hidden">
                                 <Handle
                                     className="columnLineageHandle"

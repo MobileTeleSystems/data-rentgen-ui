@@ -8,11 +8,19 @@ import {
     useNodesInitialized,
     BackgroundVariant,
     Edge,
+    Node,
 } from "@xyflow/react";
 import { DatasetNode, JobNode, RunNode, OperationNode } from "./nodes";
-import { useEffect } from "react";
+import { MouseEvent, useEffect } from "react";
 import { BaseEdge, IOEdge, ColumnLineageEdge } from "./edges";
-import { useLineageSelection } from "./selection";
+import useLineageSelectionProvider from "./selection/useLineageSelectionProvider";
+import LineageSelectionContext from "./selection/LineageSelectionContext";
+import { getAllNodeRelations } from "./selection/utils/nodeSelection";
+import {
+    getNearestEdgeRelations,
+    getAllEdgeRelations,
+} from "./selection/utils/edgeSelection";
+import { isSubgraphSelected } from "./selection/utils/common";
 
 export const MIN_ZOOM_VALUE = 0.1;
 export const MAX_ZOOM_VALUE = 2.5;
@@ -30,54 +38,83 @@ const nodeTypes = {
     operationNode: OperationNode,
 };
 
-const subgraphSelected = (edges?: Edge[]) => {
-    if (!edges) {
-        return false;
-    }
-    for (const edge of edges) {
-        if (edge.selected) {
-            return true;
-        }
-    }
-    return false;
-};
-
 const LineageGraph = (props: ReactFlowProps) => {
-    const { fitView } = useReactFlow();
-    const selectionHandlers = useLineageSelection();
+    const { fitView, getEdges } = useReactFlow();
     const nodesInitialized = useNodesInitialized();
+
+    const lineageSelection = useLineageSelectionProvider();
+    const { selection, setSelection, resetSelection } = lineageSelection;
+
+    const onEdgeClick = (e: MouseEvent, edge: Edge) => {
+        const selection = getNearestEdgeRelations(edge);
+        setSelection(selection);
+        e.stopPropagation();
+    };
+
+    const onEdgeDoubleClick = (e: MouseEvent, edge: Edge) => {
+        const selection = getAllEdgeRelations(getEdges(), edge);
+        setSelection(selection);
+        e.stopPropagation();
+    };
+
+    const onNodeClick = (e: MouseEvent, node: Node) => {
+        setSelection({
+            nodeWithColumns: new Map([[node.id, new Set<string>()]]),
+            edges: new Set(),
+        });
+        e.stopPropagation();
+    };
+
+    const onNodeDoubleClick = (e: MouseEvent, node: Node) => {
+        const selection = getAllNodeRelations(getEdges(), node.id);
+        setSelection(selection);
+        e.stopPropagation();
+    };
+
+    const onPaneClick = (e: MouseEvent) => {
+        resetSelection();
+        e.stopPropagation();
+    };
 
     useEffect(() => {
         fitView();
     }, [nodesInitialized]);
 
     return (
-        <ReactFlow
-            className={
-                subgraphSelected(props.edges) ? "subgraphSelected" : undefined
-            }
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-            nodesFocusable={true}
-            elementsSelectable={true}
-            nodesConnectable={false}
-            nodesDraggable={true}
-            panOnScroll={false}
-            panOnDrag={true}
-            minZoom={MIN_ZOOM_VALUE}
-            maxZoom={MAX_ZOOM_VALUE}
-            zoomOnScroll={true}
-            zoomOnPinch={true}
-            zoomOnDoubleClick={false}
-            fitView
-            onDoubleClick={() => fitView()}
-            {...selectionHandlers}
-            {...props}
-        >
-            <Background variant={BackgroundVariant.Dots} />
-            <Controls />
-            <MiniMap pannable zoomable />
-        </ReactFlow>
+        <LineageSelectionContext.Provider value={lineageSelection}>
+            <ReactFlow
+                className={
+                    isSubgraphSelected(selection)
+                        ? "subgraphSelected"
+                        : undefined
+                }
+                nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                nodesFocusable={true}
+                elementsSelectable={true}
+                nodesConnectable={false}
+                nodesDraggable={true}
+                panOnScroll={false}
+                panOnDrag={true}
+                minZoom={MIN_ZOOM_VALUE}
+                maxZoom={MAX_ZOOM_VALUE}
+                zoomOnScroll={true}
+                zoomOnPinch={true}
+                zoomOnDoubleClick={false}
+                fitView
+                onDoubleClick={() => fitView()}
+                onEdgeClick={onEdgeClick}
+                onEdgeDoubleClick={onEdgeDoubleClick}
+                onNodeClick={onNodeClick}
+                onNodeDoubleClick={onNodeDoubleClick}
+                onPaneClick={onPaneClick}
+                {...props}
+            >
+                <Background variant={BackgroundVariant.Dots} />
+                <Controls />
+                <MiniMap pannable zoomable />
+            </ReactFlow>
+        </LineageSelectionContext.Provider>
     );
 };
 
