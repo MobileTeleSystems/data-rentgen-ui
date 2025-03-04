@@ -286,16 +286,16 @@ const getIndirectColumnLineageEdges = (
     relation: IndirectColumnLineageRelationLineageResponseV1,
 ): Edge[] => {
     const color = "#b1b1b7";
-    return relation.fields.map((field) => {
+    return relation.fields.map((source_field) => {
         return {
             ...getMinimalEdge(relation),
-            id: `${getNodeId(relation.from)}:${field.name}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:*`,
-            sourceHandle: field.name,
+            id: `${getNodeId(relation.from)}:${source_field.field}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:*`,
+            sourceHandle: source_field.field,
             type: "columnLineageEdge",
             data: {
-                source_field: field.name,
+                source_field: source_field.field,
                 target_field: null,
-                types: field.types,
+                types: source_field.types,
                 kind: "INDIRECT_COLUMN_LINEAGE",
             },
             animated: true,
