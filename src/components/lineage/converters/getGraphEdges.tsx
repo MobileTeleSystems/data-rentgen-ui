@@ -255,12 +255,12 @@ const getDirectColumnLineageEdges = (
         return relation.fields[target_field_name].map((source_field) => {
             return {
                 ...getMinimalEdge(relation),
-                id: `${getNodeId(relation.from)}:${source_field.name}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:${target_field_name}`,
-                sourceHandle: source_field.name,
+                id: `${getNodeId(relation.from)}:${source_field.field}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:${target_field_name}`,
+                sourceHandle: source_field.field,
                 targetHandle: target_field_name,
                 type: "columnLineageEdge",
                 data: {
-                    source_field: source_field.name,
+                    source_field: source_field.field,
                     target_field: target_field_name,
                     types: source_field.types,
                     kind: "DIRECT_COLUMN_LINEAGE",

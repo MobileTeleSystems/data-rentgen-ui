@@ -198,7 +198,7 @@ interface ParentRelationLineageResponseV1
 type SymlinkRelationTypeLineageResponseV1 = "METASTORE" | "WAREHOUSE";
 
 interface ColumnLineageFieldResponseV1 {
-    name: string;
+    field: string;
     types: string[];
 }
 
