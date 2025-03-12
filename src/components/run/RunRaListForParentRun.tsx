@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import {
     List,
     DatagridConfigurable,
@@ -23,10 +23,6 @@ const RunRaListForParentRun = ({
 }: {
     parentRun: RunResponseV1;
 }): ReactElement => {
-    // Hack to avoid sending any network requests until user passed all required filters
-    // See https://github.com/marmelab/react-admin/issues/10286
-    const [enabled, setEnabled] = useState(false);
-
     return (
         <List
             resource="runs"
@@ -34,13 +30,9 @@ const RunRaListForParentRun = ({
             filterDefaultValues={{ since: parentRun.created_at }}
             actions={
                 <ListActions>
-                    <RunRaListFilters
-                        isReadyCallback={setEnabled}
-                        requiredFilters={["since"]}
-                    />
+                    <RunRaListFilters />
                 </ListActions>
             }
-            queryOptions={{ enabled }}
             title={false}
             storeKey={false}
         >

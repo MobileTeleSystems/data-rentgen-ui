@@ -4,6 +4,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { Box, Button, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { TextInput, useListContext } from "react-admin";
+import { useEffect } from "react";
 
 const weekAgo = (): Date => {
     const result = new Date();
@@ -12,46 +13,36 @@ const weekAgo = (): Date => {
     return result;
 };
 
-type RunRaListFiltersProps = {
-    isReadyCallback: (enabled: boolean) => void;
-    requiredFilters: string[];
+type RunRaListFilterValues = {
+    since?: string;
+    until?: string;
+    search_query?: string;
 };
 
-const RunRaListFilters = ({
-    isReadyCallback,
-    requiredFilters = ["since", "search_query"],
-}: RunRaListFiltersProps) => {
+const RunRaListFilters = () => {
     const translate = useTranslate();
     const { filterValues, setFilters } = useListContext();
     const form = useForm({ defaultValues: filterValues });
 
-    const requiredFieldsFilled = requiredFilters.every(
-        (filter) => !!filterValues[filter],
-    );
-
-    isReadyCallback(requiredFieldsFilled);
-
-    const initialValidators = (field: string) =>
-        requiredFilters.includes(field) ? [required()] : [];
-
-    const onSubmit = (values: {
-        since?: string;
-        until?: string;
-        search_query?: string;
-    }) => {
-        if (Object.keys(values).length > 0) {
-            setFilters(values);
+    const submit = form.handleSubmit((formValues: RunRaListFilterValues) => {
+        if (Object.keys(formValues).length > 0) {
+            setFilters(formValues);
         }
-    };
+    });
+
+    // fill up filters just after opening the page
+    useEffect(() => {
+        submit();
+    }, []);
 
     return (
         <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={submit}>
                 <Box display="flex" alignItems="flex-end">
                     <Box component="span" mr={2}>
                         <DateTimeInput
                             source="since"
-                            validate={initialValidators("since")}
+                            validate={required()}
                             defaultValue={weekAgo()}
                             label="resources.runs.filters.since.label"
                             helperText="resources.runs.filters.since.helperText"
@@ -61,7 +52,6 @@ const RunRaListFilters = ({
                     <Box component="span" mr={2}>
                         <DateTimeInput
                             source="until"
-                            validate={initialValidators("until")}
                             label="resources.runs.filters.until.label"
                             helperText="resources.runs.filters.until.helperText"
                         />
@@ -78,10 +68,7 @@ const RunRaListFilters = ({
                                     </InputAdornment>
                                 ),
                             }}
-                            validate={[
-                                minLength(3),
-                                ...initialValidators("search_query"),
-                            ]}
+                            validate={minLength(3)}
                             label="resources.runs.filters.search_query.label"
                             helperText="resources.runs.filters.search_query.helperText"
                         />
