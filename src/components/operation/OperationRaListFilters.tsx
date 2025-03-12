@@ -3,21 +3,34 @@ import { required, DateTimeInput, useTranslate } from "react-admin";
 import { useForm, FormProvider } from "react-hook-form";
 import { Box, Button } from "@mui/material";
 import { useListContext } from "react-admin";
+import { useEffect } from "react";
+
+type OperationRaListFilterValues = {
+    since?: string;
+    until?: string;
+};
 
 const OperationRaListFilters = () => {
     const translate = useTranslate();
     const { filterValues, setFilters } = useListContext();
     const form = useForm({ defaultValues: filterValues });
 
-    const onSubmit = (values: { since?: string; until?: string }) => {
-        if (Object.keys(values).length > 0) {
-            setFilters(values);
-        }
-    };
+    const submit = form.handleSubmit(
+        (formValues: OperationRaListFilterValues) => {
+            if (Object.keys(formValues).length > 0) {
+                setFilters(formValues);
+            }
+        },
+    );
+
+    // fill up filters just after opening the page
+    useEffect(() => {
+        submit();
+    }, []);
 
     return (
         <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={submit}>
                 <Box display="flex" alignItems="flex-end">
                     <Box component="span" mr={2}>
                         <DateTimeInput

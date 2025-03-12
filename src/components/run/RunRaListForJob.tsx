@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import {
     List,
     DatagridConfigurable,
@@ -18,23 +18,15 @@ import RunRaExternalId from "./RunRaExternalId";
 import RunRaListFilters from "./RunRaListFilters";
 
 const RunRaListForJob = ({ jobId }: { jobId: number }): ReactElement => {
-    // Hack to avoid sending any network requests until user passed all required filters
-    // See https://github.com/marmelab/react-admin/issues/10286
-    const [enabled, setEnabled] = useState(false);
-
     return (
         <List
             resource="runs"
             filter={{ job_id: jobId }}
             actions={
                 <ListActions>
-                    <RunRaListFilters
-                        isReadyCallback={setEnabled}
-                        requiredFilters={["since"]}
-                    />
+                    <RunRaListFilters />
                 </ListActions>
             }
-            queryOptions={{ enabled }}
             title={false}
             storeKey={false}
         >
