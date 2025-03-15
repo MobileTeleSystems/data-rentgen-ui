@@ -160,17 +160,19 @@ const DatasetSchemaTable = ({
                         </TableRow>
                     ))}
                 </TableBody>
-                <TablePagination
-                    count={filteredFields.length}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    rowsPerPageOptions={rowsPerPageOptions}
-                    onPageChange={(e, pageNumber) => setPage(pageNumber)}
-                    onRowsPerPageChange={(e) =>
-                        setRowsPerPage(e.target.value as unknown as number)
-                    }
-                    className="nodrag nopan"
-                />
+                {filteredFields.length > (rowsPerPageOptions[0] as number) && (
+                    <TablePagination
+                        count={filteredFields.length}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        rowsPerPageOptions={rowsPerPageOptions}
+                        onPageChange={(e, pageNumber) => setPage(pageNumber)}
+                        onRowsPerPageChange={(e) =>
+                            setRowsPerPage(e.target.value as unknown as number)
+                        }
+                        className="nodrag nopan"
+                    />
+                )}
             </Table>
         </>
     );
