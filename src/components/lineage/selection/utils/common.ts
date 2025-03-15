@@ -33,12 +33,12 @@ export type LineageSelection = {
     edges: Set<string>;
 };
 
-export const splitEdges = (
-    edges: Edge[],
-): {
+type SplitEdgesResult = {
     edgesBySource: Map<string, Edge[]>;
     edgesByTarget: Map<string, Edge[]>;
-} => {
+};
+
+export const splitEdges = (edges: Edge[]): SplitEdgesResult => {
     // Convert list to maps to use O(1) lookups
     const edgesBySource = new Map<string, Edge[]>();
     const edgesByTarget = new Map<string, Edge[]>();
@@ -105,11 +105,12 @@ export const getAllConnections = (
                 if (
                     columns.size > 0 &&
                     columnToSearch &&
-                    columnToInclude &&
                     columns.has(columnToSearch)
                 ) {
                     visitedEdges.add(edge.id);
-                    visitedColumns.add(columnToInclude);
+                    if (columnToInclude) {
+                        visitedColumns.add(columnToInclude);
+                    }
                     visitedNodeColumns.set(nodeId, visitedColumns);
                 } else if (columns.size == 0) {
                     visitedEdges.add(edge.id);
@@ -118,6 +119,7 @@ export const getAllConnections = (
             });
             edgesByNodeId.delete(nodeId);
         });
+
         if (visitedNodeColumns.size == 0 && visitedEdges.size == 0) {
             break;
         }
