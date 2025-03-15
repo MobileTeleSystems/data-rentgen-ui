@@ -108,6 +108,9 @@ const LineageGraph = (props: ReactFlowProps) => {
                 onNodeClick={onNodeClick}
                 onNodeDoubleClick={onNodeDoubleClick}
                 onPaneClick={onPaneClick}
+                // hide console warnings about edges with missing endpoint nodes
+                // https://github.com/xyflow/xyflow/issues/5085
+                onError={() => {}}
                 {...props}
             >
                 <Background variant={BackgroundVariant.Dots} />
