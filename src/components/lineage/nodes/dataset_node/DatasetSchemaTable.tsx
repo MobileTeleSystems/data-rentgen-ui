@@ -10,8 +10,13 @@ import {
     TextField,
 } from "@mui/material";
 import { useTranslate } from "react-admin";
-import { Handle, Position, useReactFlow } from "@xyflow/react";
-import { MouseEvent, useContext, useMemo, useState } from "react";
+import {
+    Handle,
+    Position,
+    useReactFlow,
+    useUpdateNodeInternals,
+} from "@xyflow/react";
+import { MouseEvent, useContext, useEffect, useMemo, useState } from "react";
 import { Search } from "@mui/icons-material";
 import { IORelationSchemaFieldV1 } from "@/dataProvider/types";
 import { paginateArray } from "../../utils/pagination";
@@ -31,6 +36,7 @@ const DatasetSchemaTable = ({
     fields: IORelationSchemaFieldV1[];
     defaultRowsPerPage?: number;
 }) => {
+    const updateNodeInternals = useUpdateNodeInternals();
     const { getEdges } = useReactFlow();
     const translate = useTranslate();
 
@@ -80,6 +86,11 @@ const DatasetSchemaTable = ({
         setSelection(selection);
         e.stopPropagation();
     };
+
+    useEffect(() => {
+        // Re-render all edges connected to this node
+        updateNodeInternals(nodeId);
+    }, [page, rowsPerPage, showSearch, search]);
 
     return (
         <>
