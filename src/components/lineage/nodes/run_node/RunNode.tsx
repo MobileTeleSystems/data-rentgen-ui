@@ -116,7 +116,10 @@ const RunNode = (props: NodeProps<RunNode>): ReactElement => {
                                 smart_count: props.data.operations,
                             })}
                         </Typography>
-                        <OperationNodeList operations={props.data.operations} />
+                        <OperationNodeList
+                            nodeId={props.id}
+                            operations={props.data.operations}
+                        />
                     </>
                 ) : null
             }

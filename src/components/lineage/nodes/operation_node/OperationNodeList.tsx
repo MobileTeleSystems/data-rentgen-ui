@@ -1,5 +1,5 @@
 import { useTranslate } from "react-admin";
-import { ReactElement, useMemo, useState } from "react";
+import { ReactElement, useEffect, useMemo, useState } from "react";
 
 import { OperationResponseV1 } from "@/dataProvider/types";
 import { IconButton, Stack, TablePagination, TextField } from "@mui/material";
@@ -7,11 +7,14 @@ import OperationNode from "./OperationNode";
 import { Search } from "@mui/icons-material";
 import { paginateArray } from "../../utils/pagination";
 import { operationMatchesText } from "./utils/operationMatchesText";
+import { useUpdateNodeInternals } from "@xyflow/react";
 
 const OperationNodeList = ({
+    nodeId,
     operations,
     defaultRowsPerPage = 5,
 }: {
+    nodeId: string;
     operations: OperationResponseV1[];
     defaultRowsPerPage?: number;
 }): ReactElement => {
@@ -24,6 +27,7 @@ const OperationNodeList = ({
     }
 
     const translate = useTranslate();
+    const updateNodeInternals = useUpdateNodeInternals();
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
@@ -57,6 +61,11 @@ const OperationNodeList = ({
             value: -1,
         },
     ];
+
+    useEffect(() => {
+        // Re-render all edges connected to this node
+        updateNodeInternals(nodeId);
+    }, [page, rowsPerPage, showSearch, search]);
 
     return (
         <>

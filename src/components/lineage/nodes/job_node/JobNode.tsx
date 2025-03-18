@@ -51,7 +51,7 @@ const JobNode = (props: NodeProps<JobNode>): ReactElement => {
                                 smart_count: props.data.runs,
                             })}
                         </Typography>
-                        <RunNodeList runs={props.data.runs} />
+                        <RunNodeList nodeId={props.id} runs={props.data.runs} />
                     </>
                 ) : null
             }
