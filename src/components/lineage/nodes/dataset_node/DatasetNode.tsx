@@ -48,8 +48,7 @@ const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
                     <>
                         <Typography sx={{ textAlign: "center" }}>
                             {translate(
-                                `resources.datasets.fields.schema.${props.data.schemaFrom}`,
-                                { smart_count: props.data.schemaCount },
+                                `resources.datasets.fields.schema.${props.data.schemaFrom}.${props.data.schema.relevance_type.toLowerCase()}`,
                             )}
                         </Typography>
                         <DatasetSchemaTable

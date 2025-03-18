@@ -63,15 +63,18 @@ const getDataseNode = (
     // read interactions may select only a subset of columns.
     let schema: IORelationSchemaV1 | undefined = undefined;
     let schemaFrom: string = "output";
-    let schemaCount = 0;
     if (outputSchemas.length > 0) {
         schema = outputSchemas[0];
         schemaFrom = "output";
-        schemaCount = outputSchemas.length;
+        if (outputSchemas.length > 1) {
+            schema.relevance_type = "LATEST_KNOWN";
+        }
     } else if (inputSchemas.length > 0) {
         schema = inputSchemas[0];
         schemaFrom = "input";
-        schemaCount = inputSchemas.length;
+        if (inputSchemas.length > 1) {
+            schema.relevance_type = "LATEST_KNOWN";
+        }
     }
 
     let hasColumnLineage = false;
@@ -112,7 +115,6 @@ const getDataseNode = (
             expanded: hasColumnLineage,
             schema: schema,
             schemaFrom: schemaFrom,
-            schemaCount: schemaCount,
         },
     };
 };
