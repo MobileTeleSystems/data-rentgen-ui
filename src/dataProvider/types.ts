@@ -153,9 +153,12 @@ interface BaseRelationLineageResponseV1 {
     to: RelationEndpointLineageResponseV1;
 }
 
+type IORelationSchemaRelevanceTypeV1 = "EXACT_MATCH" | "LATEST_KNOWN";
+
 type IORelationSchemaV1 = {
     id: string;
     fields: IORelationSchemaFieldV1[];
+    relevance_type: IORelationSchemaRelevanceTypeV1;
 };
 
 interface IORelationSchemaFieldV1 {
@@ -267,6 +270,7 @@ export type {
     BaseRelationLineageResponseV1,
     InputRelationLineageResponseV1,
     IORelationSchemaFieldV1,
+    IORelationSchemaRelevanceTypeV1,
     IORelationSchemaV1,
     OutputRelationLineageResponseV1,
     OutputRelationTypeLineageResponseV1,
