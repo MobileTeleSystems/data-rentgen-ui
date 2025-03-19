@@ -1,5 +1,6 @@
 import { AuthProvider } from "react-admin";
 import { parseResponse, getURL } from "@/dataProvider/utils";
+import { HttpError } from "react-admin";
 
 const keycloakAuthProvider: AuthProvider = {
     login: () => {
@@ -19,6 +20,7 @@ const keycloakAuthProvider: AuthProvider = {
                 }
                 if (status >= 200 && status < 300) {
                     localStorage.setItem("username", json.name);
+                    window.location.href = "/";
                 }
                 return Promise.resolve();
             });
@@ -48,6 +50,36 @@ const keycloakAuthProvider: AuthProvider = {
             // TODO: add avatar example
             avatar: "./avatar.svg",
         });
+    },
+    handleCallback: () => {
+        const query = window.location.search;
+        const url = getURL("/v1/auth/callback" + query);
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            credentials: "include",
+        };
+        // @ts-expect-error requestOptions
+        return fetch(url.toString(), requestOptions)
+            .then((response) => {
+                if (response.status < 200 || response.status >= 300) {
+                    throw new HttpError(
+                        response.statusText,
+                        response.status,
+                        response.body,
+                    );
+                    window.location.href = "/login";
+                }
+                if (response.status >= 200 && response.status < 300) {
+                    localStorage.setItem("username", json.name);
+                    window.location.href = "/";
+                }
+
+                return Promise.resolve();
+            })
+            .catch((e) => {
+                console.error(e);
+            });
     },
 };
 

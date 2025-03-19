@@ -4,14 +4,11 @@ import {
     localStorageStore,
     StoreContextProvider,
     Resource,
-    CustomRoutes,
 } from "react-admin";
-import { Route } from "react-router-dom";
 import defaultDataProvider from "./dataProvider";
 import englishMessages from "./i18n/en";
 import { Layout } from "./layout";
 import { mainLightTheme, mainDarkTheme } from "@/themes/main";
-import { KeycloakAuthCallback } from "@/components/login";
 import { getAuthProvider } from "./auth/utils/getAuthProvider";
 import {
     LocationRaList,
@@ -85,12 +82,6 @@ const App = () => {
                     show={RunRaShow}
                 />
                 <Resource name="operations" show={OperationRaShow} />
-                <CustomRoutes>
-                    <Route
-                        path="/auth-callback"
-                        element={<KeycloakAuthCallback />}
-                    />
-                </CustomRoutes>
             </Admin>
         </StoreContextProvider>
     );
