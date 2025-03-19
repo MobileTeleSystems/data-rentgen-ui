@@ -71,7 +71,6 @@ const keycloakAuthProvider: AuthProvider = {
                     window.location.href = "/login";
                 }
                 if (response.status >= 200 && response.status < 300) {
-                    localStorage.setItem("username", json.name);
                     window.location.href = "/";
                 }
 
