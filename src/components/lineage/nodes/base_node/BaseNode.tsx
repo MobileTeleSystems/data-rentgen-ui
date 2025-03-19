@@ -4,7 +4,7 @@ import {
     useReactFlow,
     useUpdateNodeInternals,
 } from "@xyflow/react";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
+import { ReactElement, ReactNode, useLayoutEffect, useState } from "react";
 
 import "./BaseNode.css";
 import {
@@ -47,7 +47,7 @@ const BaseNode = ({
         setExpanded(!expanded);
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         // Re-render all edges connected to this node
         updateNodeInternals(nodeId);
     }, [expanded]);

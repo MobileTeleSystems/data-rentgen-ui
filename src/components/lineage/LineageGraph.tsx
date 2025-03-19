@@ -11,7 +11,7 @@ import {
     Node,
 } from "@xyflow/react";
 import { DatasetNode, JobNode, RunNode, OperationNode } from "./nodes";
-import { MouseEvent, useEffect } from "react";
+import { MouseEvent, useLayoutEffect } from "react";
 import { BaseEdge, IOEdge, ColumnLineageEdge } from "./edges";
 import useLineageSelectionProvider from "./selection/useLineageSelectionProvider";
 import LineageSelectionContext from "./selection/LineageSelectionContext";
@@ -76,7 +76,7 @@ const LineageGraph = (props: ReactFlowProps) => {
         e.stopPropagation();
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         fitView();
     }, [nodesInitialized]);
 

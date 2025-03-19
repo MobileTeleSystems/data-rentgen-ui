@@ -16,7 +16,13 @@ import {
     useReactFlow,
     useUpdateNodeInternals,
 } from "@xyflow/react";
-import { MouseEvent, useContext, useEffect, useMemo, useState } from "react";
+import {
+    MouseEvent,
+    useContext,
+    useLayoutEffect,
+    useMemo,
+    useState,
+} from "react";
 import { Search } from "@mui/icons-material";
 import { IORelationSchemaFieldV1 } from "@/dataProvider/types";
 import { paginateArray } from "../../utils/pagination";
@@ -87,7 +93,7 @@ const DatasetSchemaTable = ({
         e.stopPropagation();
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         // Re-render all edges connected to this node
         updateNodeInternals(nodeId);
     }, [page, rowsPerPage, showSearch, search]);

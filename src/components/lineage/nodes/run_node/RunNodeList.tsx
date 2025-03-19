@@ -1,5 +1,5 @@
 import { useTranslate } from "react-admin";
-import { ReactElement, useEffect, useMemo, useState } from "react";
+import { ReactElement, useLayoutEffect, useMemo, useState } from "react";
 
 import { RunResponseV1 } from "@/dataProvider/types";
 import { IconButton, Stack, TablePagination, TextField } from "@mui/material";
@@ -54,7 +54,7 @@ const RunNodeList = ({
         },
     ];
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         // Re-render all edges connected to this node
         updateNodeInternals(nodeId);
     }, [page, rowsPerPage, showSearch, search]);
