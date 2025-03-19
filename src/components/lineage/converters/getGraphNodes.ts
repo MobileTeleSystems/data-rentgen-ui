@@ -46,7 +46,7 @@ const getDataseNode = (
         );
 
     const inputSchemas = raw_response.relations.inputs
-        .filter((input) => input.to.id == node.id && input.schema !== null)
+        .filter((input) => input.from.id == node.id && input.schema !== null)
         // sort by last_interaction_at descending
         .toSorted((a, b) =>
             a.last_interaction_at < b.last_interaction_at ? 1 : -1,
