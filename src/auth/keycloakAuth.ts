@@ -1,6 +1,5 @@
 import { AuthProvider } from "react-admin";
 import { parseResponse, getURL } from "@/dataProvider/utils";
-import { HttpError } from "react-admin";
 
 const keycloakAuthProvider: AuthProvider = {
     login: () => {
