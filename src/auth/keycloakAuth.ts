@@ -36,7 +36,11 @@ const keycloakAuthProvider: AuthProvider = {
             // Redirect to Keycloak login page
             window.location.href = error.body.error.details;
         }
-        return Promise.reject(error);
+        if (error.statue === 401) {
+            return Promise.reject(error);
+        }
+
+        return Promise.resolve();
     },
     getIdentity: () => {
         const user = localStorage.getItem("username");
