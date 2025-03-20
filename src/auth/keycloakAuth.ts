@@ -63,7 +63,7 @@ const keycloakAuthProvider: AuthProvider = {
         return fetch(url.toString(), requestOptions).then((response) => {
             if (response.status >= 200 && response.status < 300) {
                 // Call login method to make a /user/me request and get username
-                keycloakAuthProvider.login();
+                keycloakAuthProvider.login({});
             }
             if (response.status < 200 || response.status >= 300) {
                 throw new HttpError(
