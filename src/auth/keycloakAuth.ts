@@ -37,7 +37,7 @@ const keycloakAuthProvider: AuthProvider = {
             // Redirect to Keycloak login page
             window.location.href = error.body.error.details;
         }
-        throw error;
+        return Promise.reject(error);
     },
     getIdentity: () => {
         const user = localStorage.getItem("username");
@@ -61,17 +61,12 @@ const keycloakAuthProvider: AuthProvider = {
         };
         // @ts-expect-error requestOptions
         return fetch(url.toString(), requestOptions).then((response) => {
-            if (response.status >= 200 && response.status < 300) {
-                // Call login method to make a /user/me request and get username
-                return keycloakAuthProvider.login({});
-            }
             if (response.status < 200 || response.status >= 300) {
-                throw new HttpError(
-                    response.statusText,
-                    response.status,
-                    response.body,
-                );
+                return Promise.reject(Error(response.statusText));
             }
+
+            // Call login method to make a /user/me request and get username
+            return keycloakAuthProvider.login({});
         });
     },
 };
