@@ -204,6 +204,9 @@ const customEnglishMessages: TranslationMessages = {
                 },
                 apply_button: "Apply",
             },
+            pagination: {
+                all: "All",
+            },
         },
         operations: {
             name: "Operation |||| Operations",
@@ -265,6 +268,9 @@ const customEnglishMessages: TranslationMessages = {
                     label: "Search",
                     helperText: "Filter by name, group or description",
                 },
+            },
+            pagination: {
+                all: "All",
             },
         },
     },

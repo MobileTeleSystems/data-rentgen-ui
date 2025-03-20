@@ -6,65 +6,65 @@ import {
     splitEdges,
 } from "./common";
 
-export const getNearestColumnRelations = (
+export const getNearestHandleRelations = (
     edges: Edge[],
     nodeId: string,
-    fieldName: string,
+    handle: string,
 ): LineageSelection => {
-    // For specific node and column return only nearest edges and their columns.
+    // For specific node and handle return only nearest edges and their handles.
 
     const connectedEdges = edges.filter(
         (edge) =>
-            (edge.source === nodeId && edge.sourceHandle === fieldName) ||
-            (edge.target === nodeId && edge.targetHandle === fieldName),
+            (edge.source === nodeId && edge.sourceHandle === handle) ||
+            (edge.target === nodeId && edge.targetHandle === handle),
     );
 
     const result: LineageSelection = {
-        nodeWithColumns: new Map(),
+        nodeWithHandles: new Map(),
         edges: new Set(connectedEdges.map((edge) => edge.id)),
     };
 
     connectedEdges.forEach((edge) => {
-        const columns =
-            result.nodeWithColumns.get(edge.source) ?? new Set<string>();
+        const handles =
+            result.nodeWithHandles.get(edge.source) ?? new Set<string>();
         if (edge.sourceHandle) {
-            columns.add(edge.sourceHandle);
+            handles.add(edge.sourceHandle);
         }
-        result.nodeWithColumns.set(edge.source, columns);
+        result.nodeWithHandles.set(edge.source, handles);
     });
 
     connectedEdges.forEach((edge) => {
-        const columns =
-            result.nodeWithColumns.get(edge.target) ?? new Set<string>();
+        const handles =
+            result.nodeWithHandles.get(edge.target) ?? new Set<string>();
         if (edge.targetHandle) {
-            columns.add(edge.targetHandle);
+            handles.add(edge.targetHandle);
         }
-        result.nodeWithColumns.set(edge.target, columns);
+        result.nodeWithHandles.set(edge.target, handles);
     });
 
     return result;
 };
 
-export const getAllColumnRelations = (
+export const getAllHandleRelations = (
     edges: Edge[],
     nodeId: string,
-    fieldName: string,
+    handle: string,
 ): LineageSelection => {
-    // For specific node and column return all connected edges and nodes, recursively.
+    // For specific node and handle return all connected edges and nodes, recursively.
 
     const { edgesBySource, edgesByTarget } = splitEdges(edges);
 
     // walk `source -> edge - target`
     const downstreams = getAllConnections(
         nodeId,
-        new Set([fieldName]),
+        new Set([handle]),
         edgesBySource,
         "outgoing",
     );
     // same, but in opposite direction
     const upstreams = getAllConnections(
         nodeId,
-        new Set([fieldName]),
+        new Set([handle]),
         edgesByTarget,
         "incoming",
     );

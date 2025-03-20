@@ -1,6 +1,6 @@
 import { NodeProps, Node, Handle, Position, useReactFlow } from "@xyflow/react";
 import { useCreatePath } from "react-admin";
-import { memo, ReactElement } from "react";
+import { memo, MouseEvent, ReactElement, useContext } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 import { OperationResponseV1 } from "@/dataProvider/types";
@@ -16,10 +16,18 @@ import BaseNode from "../base_node/BaseNode";
 import { OperationIcon } from "@/components/operation";
 import { formatDate, getDurationText } from "@/utils/datetime";
 import { statusToThemeColor } from "@/utils/color";
+import LineageSelectionContext from "@/components/lineage/selection/LineageSelectionContext";
+import {
+    getAllHandleRelations,
+    getNearestHandleRelations,
+} from "@/components/lineage/selection/utils/handleSelection";
 
 export type OperationNode = Node<OperationResponseV1, "operationNode">;
 
-const OperationNode = (props: NodeProps<OperationNode>): ReactElement => {
+const OperationNode = ({
+    jobNodeId,
+    ...props
+}: { jobNodeId: string } & NodeProps<OperationNode>): ReactElement => {
     const createPath = useCreatePath();
     const { getEdges } = useReactFlow();
 
@@ -47,6 +55,30 @@ const OperationNode = (props: NodeProps<OperationNode>): ReactElement => {
     const hasOutgoing = getEdges().some(
         (edge) => edge.sourceHandle === handleId,
     );
+
+    const { selection, setSelection } = useContext(LineageSelectionContext);
+    const isSelected =
+        selection.nodeWithHandles.get(jobNodeId)?.has(handleId) ?? false;
+
+    const onClick = (e: MouseEvent) => {
+        const selection = getNearestHandleRelations(
+            getEdges(),
+            jobNodeId,
+            handleId,
+        );
+        setSelection(selection);
+        e.stopPropagation();
+    };
+
+    const onDoubleClick = (e: MouseEvent) => {
+        const selection = getAllHandleRelations(
+            getEdges(),
+            jobNodeId,
+            handleId,
+        );
+        setSelection(selection);
+        e.stopPropagation();
+    };
 
     return (
         <BaseNode
@@ -106,6 +138,9 @@ const OperationNode = (props: NodeProps<OperationNode>): ReactElement => {
                     )}
                 </>
             }
+            className={`operationNode ${isSelected ? "selected" : ""}`}
+            onClick={onClick}
+            onDoubleClick={onDoubleClick}
         />
     );
 };

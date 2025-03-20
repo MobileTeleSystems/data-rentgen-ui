@@ -3,7 +3,7 @@ import { LineageSelection } from "./utils/common";
 
 const LineageSelectionValue = {
     selection: {
-        nodeWithColumns: new Map<string, Set<string>>(),
+        nodeWithHandles: new Map<string, Set<string>>(),
         edges: new Set<string>(),
     },
     setSelection: (newValue: LineageSelection): void => {},

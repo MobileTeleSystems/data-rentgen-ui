@@ -1,6 +1,6 @@
 import { NodeProps, Node, Handle, Position, useReactFlow } from "@xyflow/react";
 import { useCreatePath, useTranslate } from "react-admin";
-import { memo, ReactElement } from "react";
+import { memo, MouseEvent, ReactElement, useContext } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 import { RunResponseV1 } from "@/dataProvider/types";
@@ -17,10 +17,18 @@ import { RunIcon } from "@/components/run";
 import { formatDate, getDurationText } from "@/utils/datetime";
 import { statusToThemeColor } from "@/utils/color";
 import OperationNodeList from "../operation_node/OperationNodeList";
+import {
+    getAllHandleRelations,
+    getNearestHandleRelations,
+} from "@/components/lineage/selection/utils/handleSelection";
+import LineageSelectionContext from "@/components/lineage/selection/LineageSelectionContext";
 
 export type RunNode = Node<RunResponseV1, "runNode">;
 
-const RunNode = (props: NodeProps<RunNode>): ReactElement => {
+const RunNode = ({
+    jobNodeId,
+    ...props
+}: { jobNodeId: string } & NodeProps<RunNode>): ReactElement => {
     const translate = useTranslate();
     const { getEdges } = useReactFlow();
     const createPath = useCreatePath();
@@ -50,6 +58,30 @@ const RunNode = (props: NodeProps<RunNode>): ReactElement => {
     const hasOutgoing = getEdges().some(
         (edge) => edge.sourceHandle === handleId,
     );
+
+    const { selection, setSelection } = useContext(LineageSelectionContext);
+    const isSelected =
+        selection.nodeWithHandles.get(jobNodeId)?.has(handleId) ?? false;
+
+    const onClick = (e: MouseEvent) => {
+        const selection = getNearestHandleRelations(
+            getEdges(),
+            jobNodeId,
+            handleId,
+        );
+        setSelection(selection);
+        e.stopPropagation();
+    };
+
+    const onDoubleClick = (e: MouseEvent) => {
+        const selection = getAllHandleRelations(
+            getEdges(),
+            jobNodeId,
+            handleId,
+        );
+        setSelection(selection);
+        e.stopPropagation();
+    };
 
     return (
         <BaseNode
@@ -117,12 +149,15 @@ const RunNode = (props: NodeProps<RunNode>): ReactElement => {
                             })}
                         </Typography>
                         <OperationNodeList
-                            nodeId={props.id}
+                            jobNodeId={jobNodeId}
                             operations={props.data.operations}
                         />
                     </>
                 ) : null
             }
+            className={`runNode ${isSelected ? "selected" : ""}`}
+            onClick={onClick}
+            onDoubleClick={onDoubleClick}
         />
     );
 };

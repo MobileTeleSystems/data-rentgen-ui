@@ -28,8 +28,8 @@ const mergeMaps = <K, V>(
 };
 
 export type LineageSelection = {
-    // empty column set means select the entire node
-    nodeWithColumns: Map<string, Set<string>>;
+    // empty handle set means select the entire node
+    nodeWithHandles: Map<string, Set<string>>;
     edges: Set<string>;
 };
 
@@ -57,14 +57,14 @@ export const splitEdges = (edges: Edge[]): SplitEdgesResult => {
 
 export const getAllConnections = (
     startNodesId: string,
-    startNodeColumns: Set<string>,
+    startNodeHandles: Set<string>,
     edgesByNodeId: Map<string, Edge[]>,
     direction: "incoming" | "outgoing",
 ): LineageSelection => {
     // Iterate over edges connected to specific node.
-    // If startNodeColumns is passed, select only edges with specified sourceHandle/targetHandle.
+    // If startNodeHandles is passed, select only edges with specified sourceHandle/targetHandle.
     // Go to connected source/target nodes by these edges. Recursively.
-    // Return all visited nodes, columns and edges.
+    // Return all visited nodes, handles and edges.
 
     let edgeNodeAttribute: "source" | "target";
     let directNodeHandle: "sourceHandle" | "targetHandle";
@@ -80,56 +80,56 @@ export const getAllConnections = (
     }
 
     const result: LineageSelection = {
-        nodeWithColumns: new Map([[startNodesId, startNodeColumns]]),
+        nodeWithHandles: new Map([[startNodesId, startNodeHandles]]),
         edges: new Set(),
     };
 
-    let startFrom = result.nodeWithColumns;
+    let startFrom = result.nodeWithHandles;
     while (edgesByNodeId.size > 0) {
-        const visitedNodeColumns = new Map<string, Set<string>>();
+        const visitedNodeHandles = new Map<string, Set<string>>();
         const visitedEdges = new Set<string>();
 
-        startFrom.forEach((columns, nodeId) => {
+        startFrom.forEach((handles, nodeId) => {
             const edges = edgesByNodeId.get(nodeId);
             if (!edges) {
                 return;
             }
             edges.forEach((edge: Edge) => {
                 const nodeId = edge[edgeNodeAttribute];
-                const columnToSearch = edge[directNodeHandle];
-                const columnToInclude = edge[reverseNodeHandle];
+                const handleToSearch = edge[directNodeHandle];
+                const handleToInclude = edge[reverseNodeHandle];
 
-                const visitedColumns =
-                    visitedNodeColumns.get(nodeId) ?? new Set();
+                const visitedHandles =
+                    visitedNodeHandles.get(nodeId) ?? new Set();
 
                 if (
-                    columns.size > 0 &&
-                    columnToSearch &&
-                    columns.has(columnToSearch)
+                    handles.size > 0 &&
+                    handleToSearch &&
+                    handles.has(handleToSearch)
                 ) {
                     visitedEdges.add(edge.id);
-                    if (columnToInclude) {
-                        visitedColumns.add(columnToInclude);
+                    if (handleToInclude) {
+                        visitedHandles.add(handleToInclude);
                     }
-                    visitedNodeColumns.set(nodeId, visitedColumns);
-                } else if (columns.size == 0) {
+                    visitedNodeHandles.set(nodeId, visitedHandles);
+                } else if (handles.size == 0) {
                     visitedEdges.add(edge.id);
-                    visitedNodeColumns.set(nodeId, visitedColumns);
+                    visitedNodeHandles.set(nodeId, visitedHandles);
                 }
             });
             edgesByNodeId.delete(nodeId);
         });
 
-        if (visitedNodeColumns.size == 0 && visitedEdges.size == 0) {
+        if (visitedNodeHandles.size == 0 && visitedEdges.size == 0) {
             break;
         }
 
-        result.nodeWithColumns = mergeMaps(
-            result.nodeWithColumns,
-            visitedNodeColumns,
+        result.nodeWithHandles = mergeMaps(
+            result.nodeWithHandles,
+            visitedNodeHandles,
         );
         result.edges = mergeSets(result.edges, visitedEdges);
-        startFrom = visitedNodeColumns;
+        startFrom = visitedNodeHandles;
     }
 
     return result;
@@ -140,9 +140,9 @@ export const mergeSelection = (
     selection2: LineageSelection,
 ): LineageSelection => {
     return {
-        nodeWithColumns: mergeMaps(
-            selection1.nodeWithColumns,
-            selection2.nodeWithColumns,
+        nodeWithHandles: mergeMaps(
+            selection1.nodeWithHandles,
+            selection2.nodeWithHandles,
         ),
         edges: mergeSets(selection1.edges, selection2.edges),
     };
@@ -153,11 +153,11 @@ export const isSubgraphSelected = (selection: LineageSelection) => {
         return true;
     }
 
-    let someColumnsSelected = false;
-    selection.nodeWithColumns.forEach((columns) => {
-        if (columns.size > 0) {
-            someColumnsSelected = true;
+    let someHandlesSelected = false;
+    selection.nodeWithHandles.forEach((handles) => {
+        if (handles.size > 0) {
+            someHandlesSelected = true;
         }
     });
-    return someColumnsSelected;
+    return someHandlesSelected;
 };

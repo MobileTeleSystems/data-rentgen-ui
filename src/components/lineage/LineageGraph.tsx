@@ -10,7 +10,7 @@ import {
     Edge,
     Node,
 } from "@xyflow/react";
-import { DatasetNode, JobNode, RunNode, OperationNode } from "./nodes";
+import { DatasetNode, JobNode } from "./nodes";
 import { MouseEvent, useLayoutEffect } from "react";
 import { BaseEdge, IOEdge, ColumnLineageEdge } from "./edges";
 import useLineageSelectionProvider from "./selection/useLineageSelectionProvider";
@@ -34,8 +34,6 @@ const edgeTypes = {
 const nodeTypes = {
     datasetNode: DatasetNode,
     jobNode: JobNode,
-    runNode: RunNode,
-    operationNode: OperationNode,
 };
 
 const LineageGraph = (props: ReactFlowProps) => {
@@ -59,7 +57,7 @@ const LineageGraph = (props: ReactFlowProps) => {
 
     const onNodeClick = (e: MouseEvent, node: Node) => {
         setSelection({
-            nodeWithColumns: new Map([[node.id, new Set<string>()]]),
+            nodeWithHandles: new Map([[node.id, new Set<string>()]]),
             edges: new Set(),
         });
         e.stopPropagation();

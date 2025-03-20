@@ -6,7 +6,7 @@ const useLineageSelectionProvider = () => {
     const { getNodes, setNodes, getEdges, setEdges } = useReactFlow();
 
     const [selection, setSelectionState] = useState<LineageSelection>({
-        nodeWithColumns: new Map<string, Set<string>>(),
+        nodeWithHandles: new Map<string, Set<string>>(),
         edges: new Set<string>(),
     });
 
@@ -15,7 +15,7 @@ const useLineageSelectionProvider = () => {
         const newNodes = getNodes().map((node) => {
             return {
                 ...node,
-                selected: newValue.nodeWithColumns.has(node.id),
+                selected: newValue.nodeWithHandles.has(node.id),
             };
         });
         const newEdges = getEdges().map((edge) => {
@@ -30,7 +30,7 @@ const useLineageSelectionProvider = () => {
 
     const resetSelection = useCallback(() => {
         setSelectionState({
-            nodeWithColumns: new Map<string, Set<string>>(),
+            nodeWithHandles: new Map<string, Set<string>>(),
             edges: new Set<string>(),
         });
     }, []);
