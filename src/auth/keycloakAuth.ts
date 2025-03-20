@@ -20,9 +20,9 @@ const keycloakAuthProvider: AuthProvider = {
                 }
                 if (status >= 200 && status < 300) {
                     localStorage.setItem("username", json.name);
+                    // Using direct window.location.href cause {redirectTo: '/'} doesn't work.
                     window.location.href = "/";
                 }
-                return Promise.resolve();
             });
     },
     logout: () => {
@@ -60,25 +60,19 @@ const keycloakAuthProvider: AuthProvider = {
             credentials: "include",
         };
         // @ts-expect-error requestOptions
-        return fetch(url.toString(), requestOptions)
-            .then((response) => {
-                if (response.status < 200 || response.status >= 300) {
-                    throw new HttpError(
-                        response.statusText,
-                        response.status,
-                        response.body,
-                    );
-                    window.location.href = "/login";
-                }
-                if (response.status >= 200 && response.status < 300) {
-                    window.location.href = "/";
-                }
-
-                return Promise.resolve();
-            })
-            .catch((e) => {
-                console.error(e);
-            });
+        return fetch(url.toString(), requestOptions).then((response) => {
+            if (response.status >= 200 && response.status < 300) {
+                // Call login method to make a /user/me request and get username
+                keycloakAuthProvider.login();
+            }
+            if (response.status < 200 || response.status >= 300) {
+                throw new HttpError(
+                    response.statusText,
+                    response.status,
+                    response.body,
+                );
+            }
+        });
     },
 };
 

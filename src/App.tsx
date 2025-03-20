@@ -5,6 +5,7 @@ import {
     StoreContextProvider,
     Resource,
 } from "react-admin";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import defaultDataProvider from "./dataProvider";
 import englishMessages from "./i18n/en";
 import { Layout } from "./layout";
@@ -37,54 +38,60 @@ const i18nProvider = polyglotI18nProvider((locale) => englishMessages, "en", [
 const authProvider = getAuthProvider();
 
 const App = () => {
-    return (
-        <StoreContextProvider value={store}>
-            <Admin
-                title=""
-                dataProvider={defaultDataProvider}
-                store={store}
-                authProvider={authProvider.provider}
-                loginPage={authProvider.loginPage}
-                layout={Layout}
-                i18nProvider={i18nProvider}
-                disableTelemetry
-                lightTheme={mainLightTheme}
-                darkTheme={mainDarkTheme}
-                defaultTheme="light"
-                requireAuth
-            >
-                <Resource
-                    name="locations"
-                    icon={Public}
-                    list={LocationRaList}
-                    show={LocationRaShow}
-                    edit={LocationRaEdit}
-                    recordRepresentation={<LocationRaRepr />}
-                />
-                <Resource
-                    name="datasets"
-                    icon={DatasetIcon}
-                    list={DatasetRaList}
-                    show={DatasetRaShow}
-                    recordRepresentation={<DatasetRaRepr />}
-                />
-                <Resource
-                    name="jobs"
-                    icon={Settings}
-                    list={JobRaList}
-                    show={JobRaShow}
-                    recordRepresentation={<JobRaRepr />}
-                />
-                <Resource
-                    name="runs"
-                    icon={PlayArrow}
-                    list={RunRaList}
-                    show={RunRaShow}
-                />
-                <Resource name="operations" show={OperationRaShow} />
-            </Admin>
-        </StoreContextProvider>
-    );
+    const router = createBrowserRouter([
+        {
+            path: "*",
+            element: (
+                <StoreContextProvider value={store}>
+                    <Admin
+                        title=""
+                        dataProvider={defaultDataProvider}
+                        store={store}
+                        authProvider={authProvider.provider}
+                        loginPage={authProvider.loginPage}
+                        layout={Layout}
+                        i18nProvider={i18nProvider}
+                        disableTelemetry
+                        lightTheme={mainLightTheme}
+                        darkTheme={mainDarkTheme}
+                        defaultTheme="light"
+                        requireAuth
+                    >
+                        <Resource
+                            name="locations"
+                            icon={Public}
+                            list={LocationRaList}
+                            show={LocationRaShow}
+                            edit={LocationRaEdit}
+                            recordRepresentation={<LocationRaRepr />}
+                        />
+                        <Resource
+                            name="datasets"
+                            icon={DatasetIcon}
+                            list={DatasetRaList}
+                            show={DatasetRaShow}
+                            recordRepresentation={<DatasetRaRepr />}
+                        />
+                        <Resource
+                            name="jobs"
+                            icon={Settings}
+                            list={JobRaList}
+                            show={JobRaShow}
+                            recordRepresentation={<JobRaRepr />}
+                        />
+                        <Resource
+                            name="runs"
+                            icon={PlayArrow}
+                            list={RunRaList}
+                            show={RunRaShow}
+                        />
+                        <Resource name="operations" show={OperationRaShow} />
+                    </Admin>
+                </StoreContextProvider>
+            ),
+        },
+    ]);
+    return <RouterProvider router={router} />;
 };
 
 export default App;
