@@ -1,0 +1,8 @@
+.react-flow__node .runNode.selected,
+.react-flow__node .operationNode.selected {
+    background-color: #b4d1ff;
+    border-color: var(
+        --xy-selection-border,
+        var(--xy-selection-border-default)
+    );
+}

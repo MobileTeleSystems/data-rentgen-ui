@@ -9,6 +9,8 @@ import BaseNode from "../base_node/BaseNode";
 import { JobIconWithType } from "@/components/job";
 import RunNodeList from "../run_node/RunNodeList";
 
+import "./JobNode.css";
+
 export type JobNode = Node<JobResponseV1, "jobNode">;
 
 const JobNode = (props: NodeProps<JobNode>): ReactElement => {
@@ -51,7 +53,10 @@ const JobNode = (props: NodeProps<JobNode>): ReactElement => {
                                 smart_count: props.data.runs,
                             })}
                         </Typography>
-                        <RunNodeList nodeId={props.id} runs={props.data.runs} />
+                        <RunNodeList
+                            jobNodeId={props.id}
+                            runs={props.data.runs}
+                        />
                     </>
                 ) : null
             }

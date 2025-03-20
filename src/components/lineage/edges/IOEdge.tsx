@@ -13,7 +13,7 @@ import formatNumberApprox from "@/utils/numbers";
 import formatBytes from "@/utils/bytes";
 import { Card, Chip, Typography } from "@mui/material";
 
-import "./BaseEdge.css";
+import "./IOEdge.css";
 
 const IOEdge = ({
     id,

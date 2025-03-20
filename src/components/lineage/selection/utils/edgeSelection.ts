@@ -7,10 +7,10 @@ import {
 } from "./common";
 
 export const getNearestEdgeRelations = (edge: Edge): LineageSelection => {
-    // For specific edge return connected nodes and columns (if any).
+    // For specific edge return connected nodes and handles (if any).
 
     return {
-        nodeWithColumns: new Map<string, Set<string>>([
+        nodeWithHandles: new Map<string, Set<string>>([
             [
                 edge.source,
                 new Set([edge.sourceHandle].filter((field) => field != null)),
@@ -32,8 +32,8 @@ export const getAllEdgeRelations = (
 
     const { edgesBySource, edgesByTarget } = splitEdges(edges);
 
-    // walk `source -> edge -> target`
-    // for columnLineageEdge, select nodes and columns connected to it
+    // walk `source -> edge -> target`, recursively,
+    // keep in mind handle name of the edge
     const downstreams = getAllConnections(
         edge.target,
         new Set([edge.targetHandle].filter((field) => field != null)),

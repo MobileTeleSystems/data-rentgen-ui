@@ -5,16 +5,16 @@ import { OperationResponseV1 } from "@/dataProvider/types";
 import { IconButton, Stack, TablePagination, TextField } from "@mui/material";
 import OperationNode from "./OperationNode";
 import { Search } from "@mui/icons-material";
-import { paginateArray } from "../../utils/pagination";
+import { paginateArray } from "@/components/lineage/utils/pagination";
 import { operationMatchesText } from "./utils/operationMatchesText";
 import { useUpdateNodeInternals } from "@xyflow/react";
 
 const OperationNodeList = ({
-    nodeId,
+    jobNodeId,
     operations,
     defaultRowsPerPage = 5,
 }: {
-    nodeId: string;
+    jobNodeId: string;
     operations: OperationResponseV1[];
     defaultRowsPerPage?: number;
 }): ReactElement => {
@@ -22,7 +22,11 @@ const OperationNodeList = ({
         const operation = operations[0];
         return (
             // @ts-expect-error Not managed by ReactFlow
-            <OperationNode key={operation.id} data={operation} />
+            <OperationNode
+                jobNodeId={jobNodeId}
+                key={operation.id}
+                data={operation}
+            />
         );
     }
 
@@ -64,7 +68,7 @@ const OperationNodeList = ({
 
     useLayoutEffect(() => {
         // Re-render all edges connected to this node
-        updateNodeInternals(nodeId);
+        updateNodeInternals(jobNodeId);
     }, [page, rowsPerPage, showSearch, search]);
 
     return (
@@ -99,7 +103,11 @@ const OperationNodeList = ({
 
             {operationsToShow.map((operation) => (
                 // @ts-expect-error Not managed by ReactFlow
-                <OperationNode key={operation.id} data={operation} />
+                <OperationNode
+                    jobNodeId={jobNodeId}
+                    key={operation.id}
+                    data={operation}
+                />
             ))}
 
             <TablePagination

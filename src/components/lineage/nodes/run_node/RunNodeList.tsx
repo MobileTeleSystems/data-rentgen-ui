@@ -5,16 +5,16 @@ import { RunResponseV1 } from "@/dataProvider/types";
 import { IconButton, Stack, TablePagination, TextField } from "@mui/material";
 import RunNode from "./RunNode";
 import { Search } from "@mui/icons-material";
-import { paginateArray } from "../../utils/pagination";
+import { paginateArray } from "@/components/lineage/utils/pagination";
 import { runMatchesText } from "./utils/runMatchesText";
 import { useUpdateNodeInternals } from "@xyflow/react";
 
 const RunNodeList = ({
-    nodeId,
+    jobNodeId,
     runs,
     defaultRowsPerPage = 10,
 }: {
-    nodeId: string;
+    jobNodeId: string;
     runs: RunResponseV1[];
     defaultRowsPerPage?: number;
 }): ReactElement => {
@@ -22,7 +22,7 @@ const RunNodeList = ({
         const run = runs[0];
         return (
             // @ts-expect-error Not managed by ReactFlow
-            <RunNode key={run.id} data={run} />
+            <RunNode jobNodeId={jobNodeId} key={run.id} data={run} />
         );
     }
 
@@ -56,7 +56,7 @@ const RunNodeList = ({
 
     useLayoutEffect(() => {
         // Re-render all edges connected to this node
-        updateNodeInternals(nodeId);
+        updateNodeInternals(jobNodeId);
     }, [page, rowsPerPage, showSearch, search]);
 
     return (
@@ -91,7 +91,7 @@ const RunNodeList = ({
 
             {runsToShow.map((run) => (
                 // @ts-expect-error Not managed by ReactFlow
-                <RunNode key={run.id} data={run} />
+                <RunNode jobNodeId={jobNodeId} key={run.id} data={run} />
             ))}
 
             <TablePagination

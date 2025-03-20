@@ -25,13 +25,13 @@ import {
 } from "react";
 import { Search } from "@mui/icons-material";
 import { IORelationSchemaFieldV1 } from "@/dataProvider/types";
-import { paginateArray } from "../../utils/pagination";
+import { paginateArray } from "@/components/lineage/utils/pagination";
 import { fieldMatchesText, flattenFields } from "./utils";
 import {
-    getNearestColumnRelations,
-    getAllColumnRelations,
-} from "../../selection/utils/columnSelection";
-import LineageSelectionContext from "../../selection/LineageSelectionContext";
+    getNearestHandleRelations,
+    getAllHandleRelations,
+} from "@/components/lineage/selection/utils/handleSelection";
+import LineageSelectionContext from "@/components/lineage/selection/LineageSelectionContext";
 
 const DatasetSchemaTable = ({
     nodeId,
@@ -75,10 +75,10 @@ const DatasetSchemaTable = ({
 
     const { selection, setSelection } = useContext(LineageSelectionContext);
     const selectedFields =
-        selection.nodeWithColumns.get(nodeId) ?? new Map<string, Set<string>>();
+        selection.nodeWithHandles.get(nodeId) ?? new Set<string>();
 
     const onFieldClick = (e: MouseEvent, fieldName: string) => {
-        const selection = getNearestColumnRelations(
+        const selection = getNearestHandleRelations(
             getEdges(),
             nodeId,
             fieldName,
@@ -88,7 +88,7 @@ const DatasetSchemaTable = ({
     };
 
     const onFieldDoubleClick = (e: MouseEvent, fieldName: string) => {
-        const selection = getAllColumnRelations(getEdges(), nodeId, fieldName);
+        const selection = getAllHandleRelations(getEdges(), nodeId, fieldName);
         setSelection(selection);
         e.stopPropagation();
     };

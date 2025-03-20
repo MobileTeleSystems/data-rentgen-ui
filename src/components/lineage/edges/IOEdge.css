@@ -1,0 +1,3 @@
+.react-flow__edgelabel-renderer > div.selected {
+    z-index: 1;
+}
