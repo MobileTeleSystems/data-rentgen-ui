@@ -13,6 +13,7 @@ import { Edge, MarkerType } from "@xyflow/react";
 const STOKE_THICK = 3;
 const STOKE_MEDIUM = 1;
 const STOKE_THIN = 0.5;
+const MAX_ANIMATED_EDGES = 50;
 
 const getNodeId = (node: RelationEndpointLineageResponseV1): string => {
     return node.kind + "-" + node.id;
@@ -89,6 +90,12 @@ const getOutputEdge = (
             color = "green";
     }
 
+    // Too many animated edges is heavy load for browser
+    const totalIOEdges =
+        raw_response.relations.outputs.length +
+        raw_response.relations.inputs.length;
+    const animated = totalIOEdges <= MAX_ANIMATED_EDGES;
+
     return {
         ...getMinimalEdge(relation),
         id: `${source}:${sourceHandle ?? "*"}->${getNodeId(relation.to)}`,
@@ -99,7 +106,7 @@ const getOutputEdge = (
             ...relation,
             kind: "OUTPUT",
         },
-        animated: true,
+        animated: animated,
         markerEnd: {
             type: MarkerType.ArrowClosed,
             color: color,
@@ -146,8 +153,13 @@ const getInputEdge = (
             strokeWidth = STOKE_MEDIUM;
         }
     }
-
     const color = "green";
+
+    // Too many animated edges is heavy load for browser
+    const totalIOEdges =
+        raw_response.relations.outputs.length +
+        raw_response.relations.inputs.length;
+    const animated = totalIOEdges <= MAX_ANIMATED_EDGES;
     return {
         ...getMinimalEdge(relation),
         id: `${getNodeId(relation.from)}->${target}:${targetHandle ?? "*"}`,
@@ -158,7 +170,7 @@ const getInputEdge = (
             ...relation,
             kind: "INPUT",
         },
-        animated: true,
+        animated: animated,
         markerEnd: {
             type: MarkerType.ArrowClosed,
             color: color,
