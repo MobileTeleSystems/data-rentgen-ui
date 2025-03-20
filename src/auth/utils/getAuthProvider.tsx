@@ -4,7 +4,7 @@ import { Login, keycloakLoginForm } from "@/components/login";
 
 // replaced by docker image entrypoint
 /* eslint-disable prefer-const */
-let AUTH_PROVIDER = "keycloakAuthProvider";
+let AUTH_PROVIDER = "dummyAuthProvider";
 
 const getAuthProvider = () => {
     switch (AUTH_PROVIDER) {
