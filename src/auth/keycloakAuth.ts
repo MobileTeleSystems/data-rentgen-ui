@@ -31,7 +31,7 @@ const keycloakAuthProvider: AuthProvider = {
             credentials: "include",
         };
         // @ts-expect-error requestOptions
-        return fetch(getURL("/v1/auth/logout"), requestOptions).then((_) => {
+        return fetch(getURL("/v1/auth/logout"), requestOptions).then(() => {
             localStorage.removeItem("username");
             return Promise.resolve();
         });
