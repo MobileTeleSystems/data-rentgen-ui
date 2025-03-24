@@ -4,14 +4,12 @@ import {
     localStorageStore,
     StoreContextProvider,
     Resource,
-    CustomRoutes,
 } from "react-admin";
-import { Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import defaultDataProvider from "./dataProvider";
 import englishMessages from "./i18n/en";
 import { Layout } from "./layout";
 import { mainLightTheme, mainDarkTheme } from "@/themes/main";
-import { KeycloakAuthCallback } from "@/components/login";
 import { getAuthProvider } from "./auth/utils/getAuthProvider";
 import {
     LocationRaList,
@@ -41,58 +39,54 @@ const authProvider = getAuthProvider();
 
 const App = () => {
     return (
-        <StoreContextProvider value={store}>
-            <Admin
-                title=""
-                dataProvider={defaultDataProvider}
-                store={store}
-                authProvider={authProvider.provider}
-                loginPage={authProvider.loginPage}
-                layout={Layout}
-                i18nProvider={i18nProvider}
-                disableTelemetry
-                lightTheme={mainLightTheme}
-                darkTheme={mainDarkTheme}
-                defaultTheme="light"
-                requireAuth
-            >
-                <Resource
-                    name="locations"
-                    icon={Public}
-                    list={LocationRaList}
-                    show={LocationRaShow}
-                    edit={LocationRaEdit}
-                    recordRepresentation={<LocationRaRepr />}
-                />
-                <Resource
-                    name="datasets"
-                    icon={DatasetIcon}
-                    list={DatasetRaList}
-                    show={DatasetRaShow}
-                    recordRepresentation={<DatasetRaRepr />}
-                />
-                <Resource
-                    name="jobs"
-                    icon={Settings}
-                    list={JobRaList}
-                    show={JobRaShow}
-                    recordRepresentation={<JobRaRepr />}
-                />
-                <Resource
-                    name="runs"
-                    icon={PlayArrow}
-                    list={RunRaList}
-                    show={RunRaShow}
-                />
-                <Resource name="operations" show={OperationRaShow} />
-                <CustomRoutes>
-                    <Route
-                        path="/auth-callback"
-                        element={<KeycloakAuthCallback />}
+        <BrowserRouter>
+            <StoreContextProvider value={store}>
+                <Admin
+                    title=""
+                    dataProvider={defaultDataProvider}
+                    store={store}
+                    authProvider={authProvider.provider}
+                    loginPage={authProvider.loginPage}
+                    layout={Layout}
+                    i18nProvider={i18nProvider}
+                    disableTelemetry
+                    lightTheme={mainLightTheme}
+                    darkTheme={mainDarkTheme}
+                    defaultTheme="light"
+                    requireAuth
+                >
+                    <Resource
+                        name="locations"
+                        icon={Public}
+                        list={LocationRaList}
+                        show={LocationRaShow}
+                        edit={LocationRaEdit}
+                        recordRepresentation={<LocationRaRepr />}
                     />
-                </CustomRoutes>
-            </Admin>
-        </StoreContextProvider>
+                    <Resource
+                        name="datasets"
+                        icon={DatasetIcon}
+                        list={DatasetRaList}
+                        show={DatasetRaShow}
+                        recordRepresentation={<DatasetRaRepr />}
+                    />
+                    <Resource
+                        name="jobs"
+                        icon={Settings}
+                        list={JobRaList}
+                        show={JobRaShow}
+                        recordRepresentation={<JobRaRepr />}
+                    />
+                    <Resource
+                        name="runs"
+                        icon={PlayArrow}
+                        list={RunRaList}
+                        show={RunRaShow}
+                    />
+                    <Resource name="operations" show={OperationRaShow} />
+                </Admin>
+            </StoreContextProvider>
+        </BrowserRouter>
     );
 };
 

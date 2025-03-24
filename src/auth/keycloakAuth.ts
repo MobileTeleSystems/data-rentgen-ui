@@ -19,8 +19,8 @@ const keycloakAuthProvider: AuthProvider = {
                 }
                 if (status >= 200 && status < 300) {
                     localStorage.setItem("username", json.name);
+                    return { redirectTo: "/" };
                 }
-                return Promise.resolve();
             });
     },
     logout: () => {
@@ -35,7 +35,11 @@ const keycloakAuthProvider: AuthProvider = {
             // Redirect to Keycloak login page
             window.location.href = error.body.error.details;
         }
-        throw error;
+        if (error.statue === 401) {
+            return Promise.reject(error);
+        }
+
+        return Promise.resolve();
     },
     getIdentity: () => {
         const user = localStorage.getItem("username");
@@ -47,6 +51,24 @@ const keycloakAuthProvider: AuthProvider = {
             fullName: user,
             // TODO: add avatar example
             avatar: "./avatar.svg",
+        });
+    },
+    handleCallback: () => {
+        const query = window.location.search;
+        const url = getURL("/v1/auth/callback" + query);
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            credentials: "include",
+        };
+        // @ts-expect-error requestOptions
+        return fetch(url.toString(), requestOptions).then((response) => {
+            if (response.status < 200 || response.status >= 300) {
+                return Promise.reject(Error(response.statusText));
+            }
+
+            // Call login method to make a /user/me request and get username
+            return keycloakAuthProvider.login({});
         });
     },
 };
