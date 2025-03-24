@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import {
     Box,
     Button,
@@ -6,19 +8,31 @@ import {
     Stack,
     Typography,
 } from "@mui/material";
-import { Form, useTranslate, useAuthProvider } from "react-admin";
+import { Form, useTranslate, useLogin, useNotify } from "react-admin";
 import { DataRentgenIcon } from "../../icons";
 
 const keycloakLoginForm = () => {
+    const location = useLocation();
     const translate = useTranslate();
+    const login = useLogin();
+    const notify = useNotify();
 
-    const authProvider = useAuthProvider();
-    if (!authProvider) {
-        return null;
-    }
+    const handleSubmit = () => {
+        login(
+            /* eslint-disable @typescript-eslint/no-explicit-any */
+            location.state ? (location.state as any).nextPathname : "/",
+        ).catch((error: Error) => {
+            notify(error?.message ?? "ra.auth.sign_in_error", {
+                type: "error",
+                messageArgs: {
+                    _: error?.message,
+                },
+            });
+        });
+    };
 
     return (
-        <Form onSubmit={authProvider.login} noValidate>
+        <Form onSubmit={handleSubmit} noValidate>
             <Box
                 sx={{
                     display: "flex",

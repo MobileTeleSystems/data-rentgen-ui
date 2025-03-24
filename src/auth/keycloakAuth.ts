@@ -24,9 +24,16 @@ const keycloakAuthProvider: AuthProvider = {
             });
     },
     logout: () => {
-        // TODO Change this method after adding /logout endpoint on backend
-        localStorage.removeItem("username");
-        return Promise.resolve();
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            credentials: "include",
+        };
+        // @ts-expect-error requestOptions
+        return fetch(getURL("/v1/auth/logout"), requestOptions).then(() => {
+            localStorage.removeItem("username");
+            return Promise.resolve();
+        });
     },
     checkAuth: () =>
         localStorage.getItem("username") ? Promise.resolve() : Promise.reject(),
