@@ -19,7 +19,6 @@ const keycloakAuthProvider: AuthProvider = {
                 }
                 if (status >= 200 && status < 300) {
                     localStorage.setItem("username", json.name);
-                    // Using direct window.location.href cause {redirectTo: '/'} doesn't work.
                     return { redirectTo: "/" };
                 }
             });
