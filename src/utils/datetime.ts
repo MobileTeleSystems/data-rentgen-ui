@@ -1,5 +1,14 @@
+export type TimeInterval = {
+    hours: number;
+    minutes: number;
+    seconds: number;
+};
+
 // Get time interval between two dates
-const getTimeIntervalText = (startTime: Date, endTime: Date): string => {
+export const getTimeInterval = (
+    startTime: Date,
+    endTime: Date,
+): TimeInterval => {
     // @ts-expect-error Math.abs perfecly works with Date input
     const differenceInSeconds = Math.abs(endTime - startTime) / 1000;
 
@@ -8,29 +17,7 @@ const getTimeIntervalText = (startTime: Date, endTime: Date): string => {
     const seconds =
         Math.floor(differenceInSeconds) - hours * 60 * 60 - minutes * 60;
 
-    if (hours) return `${hours}h ${minutes}m ${seconds}s`;
-    if (minutes) return `${minutes}m ${seconds}s`;
-    return `${seconds}s`;
-};
-
-// Get duration for specific set of fields
-export const getDurationText = ({
-    created_at,
-    started_at,
-    ended_at,
-}: {
-    created_at: string;
-    started_at: string | null;
-    ended_at: string | null;
-}): string | null => {
-    const start_time = started_at || created_at;
-    const end_time = ended_at;
-
-    if (!start_time || !end_time) {
-        return null;
-    }
-
-    return getTimeIntervalText(new Date(start_time), new Date(end_time));
+    return { hours, minutes, seconds };
 };
 
 export const formatDate = (date: Date): string => {

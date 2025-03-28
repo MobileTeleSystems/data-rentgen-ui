@@ -1,19 +1,23 @@
-import { useTranslate } from "react-admin";
-
 const step = 1000;
 const suffixes = ["", "K", "M", "B", "T"];
 
-const formatNumberApprox = (value: number, precision = 3): string => {
-    const translate = useTranslate();
-    if (value < step) return value.toString();
+type ApproxNumber = {
+    value: string;
+    suffix: string;
+};
+
+export const getApproxNumber = (value: number, precision = 3): ApproxNumber => {
+    if (value < step)
+        return {
+            value: value.toString(),
+            suffix: "",
+        };
 
     const i = Math.floor(Math.log(value) / Math.log(step));
     const suffix = suffixes[i];
-    const suffixTranslation = translate(`units.numbers.${suffix}`, {
-        _: suffix,
-    });
     const roundedValue = value / Math.pow(step, i);
-    return roundedValue.toPrecision(precision) + suffixTranslation;
+    return {
+        value: roundedValue.toPrecision(precision),
+        suffix,
+    };
 };
-
-export default formatNumberApprox;

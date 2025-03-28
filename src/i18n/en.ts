@@ -22,6 +22,7 @@ const customEnglishMessages: TranslationMessages = {
     resources: {
         locations: {
             name: "Location |||| Locations",
+            type: "Type",
             amount: "1 location |||| %{smart_count} locations",
             title: "Location %{reference}",
             types: {
@@ -48,10 +49,11 @@ const customEnglishMessages: TranslationMessages = {
                 local: "Local",
             },
             fields: {
-                id: "Location ID",
+                id: "Internal ID",
                 type: "Location type",
                 name: "Location name",
                 external_id: "External ID",
+                addresses: "Addresses",
             },
             filters: {
                 search_query: {
@@ -65,13 +67,9 @@ const customEnglishMessages: TranslationMessages = {
             amount: "1 dataset |||| %{smart_count} datasets",
             title: "Dataset %{reference}",
             fields: {
-                id: "Dataset ID",
+                id: "Internal ID",
                 name: "Dataset name",
                 format: "Format",
-                location: {
-                    name: "Location Name",
-                    type: "Location Type",
-                },
                 schema: {
                     input: {
                         exact_match: "Input schema projection",
@@ -115,13 +113,9 @@ const customEnglishMessages: TranslationMessages = {
                 spark_application: "Spark Application",
             },
             fields: {
-                id: "Job ID",
+                id: "Internal ID",
                 name: "Job Name",
                 type: "Job Type",
-                location: {
-                    name: "Location Name",
-                    type: "Location Type",
-                },
             },
             tabs: {
                 runs: "Runs",
@@ -139,7 +133,7 @@ const customEnglishMessages: TranslationMessages = {
             amount: "1 run |||| %{smart_count} runs",
             title: "Run %{reference}",
             fields: {
-                id: "Run ID",
+                id: "Internal ID",
                 created_at: "Created at",
                 job: "Job",
                 status: "Status",
@@ -159,8 +153,6 @@ const customEnglishMessages: TranslationMessages = {
                     inputs: "Total inputs",
                     outputs: "Total outputs",
                     operations: "Total operations",
-                    rows: "row |||| rows",
-                    files: "file |||| files",
                 },
             },
             sections: {
@@ -168,6 +160,7 @@ const customEnglishMessages: TranslationMessages = {
                 started: "Started",
                 ended: "Ended",
                 external: "External",
+                external_id: "External",
                 when: "When",
                 how: "How",
                 for_job: "For Job",
@@ -213,7 +206,7 @@ const customEnglishMessages: TranslationMessages = {
             amount: "1 operation |||| %{smart_count} operations",
             title: "Operation %{reference}",
             fields: {
-                id: "Operation ID",
+                id: "Internal ID",
                 created_at: "Created at",
                 run_id: "Run ID",
                 position: "Position",
@@ -229,8 +222,6 @@ const customEnglishMessages: TranslationMessages = {
                     name: "Statistics",
                     inputs: "Total inputs",
                     outputs: "Total outputs",
-                    rows: "row |||| rows",
-                    files: "file |||| files",
                 },
             },
             sections: {
@@ -277,6 +268,10 @@ const customEnglishMessages: TranslationMessages = {
     errors: {
         fetch: "Cannot fetch %{resource}",
     },
+    units: {
+        rows: "row |||| rows",
+        files: "file |||| files",
+    },
     lineage: {
         filters: {
             since: {
@@ -289,21 +284,22 @@ const customEnglishMessages: TranslationMessages = {
             },
             depth: {
                 label: "Depth",
-                helperText: "How many levels of events to include",
+                helperText:
+                    "Dive down or climb up the graph for specific number of nodes",
             },
             direction: {
                 label: "Direction",
                 helperText: "Include only events with specific direction",
-                both: "Downstream & upstream",
+                both: "Upstream & downstream",
                 downstream: "Downstream",
                 upstream: "Upstream",
             },
             granularity: {
                 label: "Granularity",
-                helperText: "Include only events with specific granularity",
-                job: "Job",
-                run: "Run",
-                operation: "Operation",
+                helperText: "Summarize lineage for specified node type",
+                job: "Jobs",
+                run: "Runs",
+                operation: "Operations",
             },
             include_column_lineage: {
                 label: "Column lineage",

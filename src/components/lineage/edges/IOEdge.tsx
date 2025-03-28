@@ -9,11 +9,15 @@ import {
     InputRelationLineageResponseV1,
     OutputRelationLineageResponseV1,
 } from "@/dataProvider/types";
-import formatNumberApprox from "@/utils/numbers";
-import formatBytes from "@/utils/bytes";
 import { Card, Chip, Typography } from "@mui/material";
 
 import "./IOEdge.css";
+import { useTranslate } from "react-admin";
+import {
+    ByteCountField,
+    FileCountField,
+    RowCountField,
+} from "@/components/base";
 
 const IOEdge = ({
     id,
@@ -25,6 +29,7 @@ const IOEdge = ({
 }: EdgeProps & {
     data: InputRelationLineageResponseV1 | OutputRelationLineageResponseV1;
 }): ReactElement => {
+    const translate = useTranslate();
     const [edgePath, labelX, labelY] = getBezierPath(props);
 
     const hasContent =
@@ -58,15 +63,17 @@ const IOEdge = ({
                     ) : null}
                     {data.num_rows ? (
                         <Typography>
-                            {formatNumberApprox(data.num_rows)} rows
+                            <RowCountField rows={data.num_rows} />
                         </Typography>
                     ) : null}
                     {data.num_bytes ? (
-                        <Typography>{formatBytes(data.num_bytes)}</Typography>
+                        <Typography>
+                            <ByteCountField bytes={data.num_bytes} />
+                        </Typography>
                     ) : null}
                     {data.num_files ? (
                         <Typography>
-                            {formatNumberApprox(data.num_files)} files
+                            <FileCountField files={data.num_files} />
                         </Typography>
                     ) : null}
                 </Card>

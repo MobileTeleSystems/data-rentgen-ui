@@ -1,5 +1,5 @@
 import { NodeProps, Node, Handle, Position, useReactFlow } from "@xyflow/react";
-import { useCreatePath } from "react-admin";
+import { useCreatePath, useTranslate } from "react-admin";
 import { memo, MouseEvent, ReactElement, useContext } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
@@ -14,13 +14,14 @@ import {
 } from "@mui/material";
 import BaseNode from "../base_node/BaseNode";
 import { OperationIcon } from "@/components/operation";
-import { formatDate, getDurationText } from "@/utils/datetime";
+import { formatDate } from "@/utils/datetime";
 import { statusToThemeColor } from "@/utils/color";
 import LineageSelectionContext from "@/components/lineage/selection/LineageSelectionContext";
 import {
     getAllHandleRelations,
     getNearestHandleRelations,
 } from "@/components/lineage/selection/utils/handleSelection";
+import { DurationField } from "@/components/base";
 
 export type OperationNode = Node<OperationResponseV1, "operationNode">;
 
@@ -34,11 +35,7 @@ const OperationNode = ({
     const title = props.data.description ?? props.data.name;
 
     const createdAt = formatDate(new Date(props.data.created_at));
-    const duration = getDurationText({
-        created_at: props.data.created_at,
-        started_at: props.data.started_at,
-        ended_at: props.data.ended_at,
-    });
+    const duration = <DurationField fieldSet={props.data} />;
 
     const color = statusToThemeColor(props.data.status);
 

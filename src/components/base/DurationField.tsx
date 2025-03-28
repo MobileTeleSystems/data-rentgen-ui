@@ -1,21 +1,46 @@
-import { ReactElement } from "react";
-import { FieldProps, FunctionField } from "react-admin";
+import { ReactNode } from "react";
+import { useTranslate } from "react-admin";
 
-import { getDurationText } from "@/utils/datetime";
+import { getTimeInterval } from "@/utils/datetime";
 
-const DurationField = (props: FieldProps): ReactElement => {
-    return (
-        <FunctionField
-            render={(record) => {
-                return getDurationText({
-                    created_at: record.data.created_at,
-                    started_at: record.data.started_at,
-                    ended_at: record.data.ended_at,
-                });
-            }}
-            {...props}
-        />
-    );
+type DurationFieldSet = {
+    created_at: string;
+    started_at: string | null;
+    ended_at: string | null;
+};
+
+const DurationField = ({
+    fieldSet,
+}: {
+    fieldSet: DurationFieldSet;
+}): ReactNode => {
+    const translate = useTranslate();
+
+    const start_time = fieldSet.started_at || fieldSet.created_at;
+    const end_time = fieldSet.ended_at;
+    if (!start_time || !end_time) {
+        return null;
+    }
+
+    const interval = getTimeInterval(new Date(start_time), new Date(end_time));
+    if (!interval) return null;
+
+    const parts: string[] = [];
+    if (interval.hours > 0) {
+        parts.push(interval.hours + translate("units.time.hours", { _: "h" }));
+    }
+    if (interval.minutes > 0) {
+        parts.push(
+            interval.minutes + translate("units.time.minutes", { _: "m" }),
+        );
+    }
+    if (interval.seconds > 0) {
+        parts.push(
+            interval.seconds + translate("units.time.seconds", { _: "s" }),
+        );
+    }
+
+    return parts.join(" ");
 };
 
 export default DurationField;

@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import BaseNode from "../base_node/BaseNode";
 import { RunIcon } from "@/components/run";
-import { formatDate, getDurationText } from "@/utils/datetime";
+import { formatDate } from "@/utils/datetime";
 import { statusToThemeColor } from "@/utils/color";
 import OperationNodeList from "../operation_node/OperationNodeList";
 import {
@@ -22,6 +22,7 @@ import {
     getNearestHandleRelations,
 } from "@/components/lineage/selection/utils/handleSelection";
 import LineageSelectionContext from "@/components/lineage/selection/LineageSelectionContext";
+import { DurationField } from "@/components/base";
 
 export type RunNode = Node<RunResponseV1, "runNode">;
 
@@ -39,11 +40,7 @@ const RunNode = ({
     const subheader = props.data.external_id ? createdAt : "";
     const color = statusToThemeColor(props.data.status);
 
-    const duration = getDurationText({
-        created_at: props.data.created_at,
-        started_at: props.data.started_at,
-        ended_at: props.data.ended_at,
-    });
+    const duration = <DurationField fieldSet={props.data} />;
 
     const path = createPath({
         resource: "runs",
@@ -144,8 +141,8 @@ const RunNode = ({
                 props.data.operations.length > 0 ? (
                     <>
                         <Typography sx={{ textAlign: "center" }}>
-                            {translate(`resources.operations.name`, {
-                                smart_count: props.data.operations,
+                            {translate("resources.runs.operations", {
+                                smart_count: 2,
                             })}
                         </Typography>
                         <OperationNodeList

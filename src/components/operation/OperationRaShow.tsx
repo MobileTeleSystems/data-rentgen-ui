@@ -11,7 +11,7 @@ import {
     TextField,
 } from "react-admin";
 import {
-    DurationField,
+    DurationRaField,
     IOStatisticsField,
     StatusField,
 } from "@/components/base";
@@ -22,8 +22,11 @@ const OperationRaShow = (): ReactElement => {
     return (
         <Show>
             <SimpleShowLayout>
-                <TextField source="id" />
-                <TextField source="data.name" />
+                <TextField source="id" label="resources.operations.fields.id" />
+                <TextField
+                    source="data.name"
+                    label="resources.operations.fields.name"
+                />
 
                 <Labeled label="resources.operations.sections.external">
                     <Stack direction="row" spacing={3}>
@@ -56,7 +59,11 @@ const OperationRaShow = (): ReactElement => {
                     </Stack>
                 </Labeled>
 
-                <DateField source="data.started_at" showTime={true} />
+                <DateField
+                    source="data.started_at"
+                    label="resources.operations.fields.started_at"
+                    showTime={true}
+                />
 
                 <StatusField source="status" />
                 <Labeled label="resources.operations.sections.ended">
@@ -65,7 +72,7 @@ const OperationRaShow = (): ReactElement => {
                             <DateField source="data.ended_at" showTime={true} />
                         </Labeled>
                         <Labeled label="resources.operations.sections.duration">
-                            <DurationField source="duration" />
+                            <DurationRaField source="duration" />
                         </Labeled>
                     </Stack>
                 </Labeled>

@@ -9,7 +9,7 @@ import {
 } from "react-admin";
 
 import {
-    DurationField,
+    DurationRaField,
     StatusField,
     ListActions,
     IOStatisticsField,
@@ -50,7 +50,7 @@ const RunRaListForParentRun = ({
                     sortable={false}
                 />
                 <StatusField source="status" sortable={false} />
-                <DurationField source="duration" sortable={false} />
+                <DurationRaField source="duration" sortable={false} />
                 <WrapperField source="started_by_user" sortable={false}>
                     <TextField source="data.started_by_user.name" />
                 </WrapperField>
