@@ -22,7 +22,7 @@ const OperationRaShow = (): ReactElement => {
     return (
         <Show>
             <SimpleShowLayout>
-                <TextField source="id" />
+                <TextField source="id" label="resources.operations.fields.id" />
                 <TextField source="data.name" />
 
                 <Labeled label="resources.operations.sections.external">

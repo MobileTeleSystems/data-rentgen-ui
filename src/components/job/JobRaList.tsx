@@ -49,11 +49,11 @@ const JobRaList = (): ReactElement => {
 
                 <LocationRaTypeWithIconField
                     source="data.location.type"
-                    label="resources.jobs.fields.location.type"
+                    label="resources.locations.fields.type"
                 />
                 <LocationRaNameWithLinkField
                     source="data.location.name"
-                    label="resources.jobs.fields.location.name"
+                    label="resources.locations.fields.name"
                 />
             </DatagridConfigurable>
         </List>

@@ -15,7 +15,7 @@ const LocationRaShow = (): ReactElement => {
     return (
         <Show resource="locations">
             <SimpleShowLayout>
-                <TextField source="id" />
+                <TextField source="id" label="resources.locations.fields.id" />
                 <WrapperField
                     source="data.type"
                     label="resources.locations.fields.type"
@@ -40,7 +40,7 @@ const LocationRaShow = (): ReactElement => {
                     label="resources.locations.fields.addresses"
                 >
                     <Datagrid bulkActionButtons={false}>
-                        <UrlField source="url" target="_blank" />
+                        <UrlField source="url" label="URL" target="_blank" />
                     </Datagrid>
                 </ArrayField>
             </SimpleShowLayout>

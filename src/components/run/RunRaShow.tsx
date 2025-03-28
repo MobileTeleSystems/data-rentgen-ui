@@ -28,7 +28,7 @@ const RunRaShow = (): ReactElement => {
     return (
         <Show>
             <SimpleShowLayout>
-                <TextField source="id" />
+                <TextField source="id" label="resources.runs.fields.id" />
 
                 <Labeled label="resources.runs.sections.created">
                     <Stack direction="row" spacing={3}>
