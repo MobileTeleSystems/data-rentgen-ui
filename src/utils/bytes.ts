@@ -1,10 +1,12 @@
-import { useTranslate } from "react-admin";
-
 const step = 1024;
 const suffixes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
-const formatBytes = (bytes: number, precision = 3) => {
-    const translate = useTranslate();
+type ApproxBytes = {
+    value: string;
+    suffix: string;
+};
+
+const getApproxBytes = (bytes: number, precision = 3): ApproxBytes => {
     let i = Math.floor(Math.log(bytes) / Math.log(step));
     let result = bytes / Math.pow(step, i);
 
@@ -16,9 +18,11 @@ const formatBytes = (bytes: number, precision = 3) => {
     }
 
     const suffix = suffixes[i];
-    const suffixTranslation = translate(`units.bytes.${suffix}`, { _: suffix });
 
-    return result.toPrecision(precision) + suffixTranslation;
+    return {
+        value: result.toPrecision(precision),
+        suffix,
+    };
 };
 
-export default formatBytes;
+export { getApproxBytes };

@@ -8,6 +8,7 @@ import {
 import { BrowserRouter } from "react-router-dom";
 import defaultDataProvider from "./dataProvider";
 import englishMessages from "./i18n/en";
+import russianMessages from "./i18n/ru";
 import { Layout } from "./layout";
 import { mainLightTheme, mainDarkTheme } from "@/themes/main";
 import { getAuthProvider } from "./auth/utils/getAuthProvider";
@@ -30,10 +31,22 @@ import { DatasetIcon } from "@/components/icons";
 
 const store = localStorageStore(undefined, "DataRentgen");
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-const i18nProvider = polyglotI18nProvider((locale) => englishMessages, "en", [
+const messages = {
+    en: englishMessages,
+    ru: russianMessages,
+} as const;
+
+const locales = [
     { locale: "en", name: "English" },
-]);
+    { locale: "ru", name: "Русский" },
+];
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+const i18nProvider = polyglotI18nProvider(
+    (locale) => messages[locale as keyof typeof messages],
+    "en",
+    locales,
+);
 
 const authProvider = getAuthProvider();
 

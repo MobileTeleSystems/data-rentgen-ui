@@ -24,7 +24,11 @@ const LocationRaEdit = (): ReactElement => {
             transform={transform}
         >
             <SimpleForm sanitizeEmptyValues toolbar={<LocationRaEditToolbar />}>
-                <TextInput source="id" disabled />
+                <TextInput
+                    source="id"
+                    label="resources.locations.fields.id"
+                    disabled
+                />
                 <TextInput
                     source="data.type"
                     label="resources.locations.fields.type"

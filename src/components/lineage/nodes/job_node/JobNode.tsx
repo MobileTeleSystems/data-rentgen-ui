@@ -49,8 +49,8 @@ const JobNode = (props: NodeProps<JobNode>): ReactElement => {
                 props.data.runs.length > 0 ? (
                     <>
                         <Typography sx={{ textAlign: "center" }}>
-                            {translate(`resources.runs.name`, {
-                                smart_count: props.data.runs,
+                            {translate("resources.runs.name", {
+                                smart_count: 2,
                             })}
                         </Typography>
                         <RunNodeList

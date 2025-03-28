@@ -15,7 +15,7 @@ import {
     WithRecord,
 } from "react-admin";
 import {
-    DurationField,
+    DurationRaField,
     IOStatisticsField,
     StatusField,
 } from "@/components/base";
@@ -28,7 +28,7 @@ const RunRaShow = (): ReactElement => {
     return (
         <Show>
             <SimpleShowLayout>
-                <TextField source="id" />
+                <TextField source="id" label="resources.runs.fields.id" />
 
                 <Labeled label="resources.runs.sections.created">
                     <Stack direction="row" spacing={3}>
@@ -80,14 +80,14 @@ const RunRaShow = (): ReactElement => {
                             <RichTextField source="data.end_reason" />
                         </Labeled>
                         <Labeled label="resources.runs.sections.duration">
-                            <DurationField source="duration" />
+                            <DurationRaField source="duration" />
                         </Labeled>
                     </Stack>
                 </Labeled>
 
                 <Labeled label="resources.runs.sections.external">
                     <Stack direction="row" spacing={3}>
-                        <Labeled label="resources.runs.sections.id">
+                        <Labeled label="resources.runs.sections.external_id">
                             <TextField source="data.external_id" />
                         </Labeled>
                         <Labeled label="resources.runs.sections.attempt">
