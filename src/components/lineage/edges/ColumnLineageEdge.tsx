@@ -9,6 +9,7 @@ import { ColumnLineageFieldResponseV1 } from "@/dataProvider/types";
 import { Chip } from "@mui/material";
 
 import "./ColumnLineageEdge.css";
+import { useTranslate } from "react-admin";
 
 const ColumnLineageEdge = ({
     id,
@@ -20,7 +21,12 @@ const ColumnLineageEdge = ({
 }: EdgeProps & {
     data: ColumnLineageFieldResponseV1;
 }): ReactElement => {
+    const translate = useTranslate();
     const [edgePath, labelX, labelY] = getBezierPath(props);
+
+    const types = data.types.map((type) =>
+        translate(`edges.columnLineageTypes.${type}`, { _: type }),
+    );
 
     return (
         <>
@@ -39,7 +45,7 @@ const ColumnLineageEdge = ({
                         <Chip
                             size="small"
                             color="secondary"
-                            label={data.types.join(", ")}
+                            label={types.join(", ")}
                             style={props.labelStyle}
                         />
                     </div>
