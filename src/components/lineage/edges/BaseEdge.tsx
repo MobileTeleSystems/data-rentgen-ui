@@ -8,6 +8,7 @@ import {
 import { Chip } from "@mui/material";
 
 import "./BaseEdge.css";
+import { useTranslate } from "react-admin";
 
 const BaseEdge = ({
     id,
@@ -15,6 +16,7 @@ const BaseEdge = ({
     selected,
     ...props
 }: EdgeProps): ReactElement => {
+    const translate = useTranslate();
     const [edgePath, labelX, labelY] = getBezierPath(props);
 
     return (
@@ -33,7 +35,9 @@ const BaseEdge = ({
                         <Chip
                             size="small"
                             color="info"
-                            label={label}
+                            label={translate(`edges.labels.${label}`, {
+                                _: label,
+                            })}
                             style={props.labelStyle}
                         />
                     </div>
