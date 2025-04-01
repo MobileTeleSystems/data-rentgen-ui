@@ -183,6 +183,16 @@ const DatasetSchemaTable = ({
                         page={page}
                         rowsPerPage={rowsPerPage}
                         rowsPerPageOptions={rowsPerPageOptions}
+                        labelRowsPerPage={translate(
+                            "ra.navigation.page_rows_per_page",
+                        )}
+                        labelDisplayedRows={({ from, to, count }) =>
+                            translate("ra.navigation.page_range_info", {
+                                offsetBegin: from,
+                                offsetEnd: to,
+                                total: count,
+                            })
+                        }
                         onPageChange={(e, pageNumber) => setPage(pageNumber)}
                         onRowsPerPageChange={(e) =>
                             setRowsPerPage(e.target.value as unknown as number)
