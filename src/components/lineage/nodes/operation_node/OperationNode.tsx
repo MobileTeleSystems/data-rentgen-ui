@@ -123,7 +123,7 @@ const OperationNode = ({
                             </Stack>
                         }
                         action={
-                            <Button size="small" href={"#" + path}>
+                            <Button size="small" href={path}>
                                 <OpenInNewIcon />
                             </Button>
                         }

@@ -36,7 +36,7 @@ const DatasetNode = (props: NodeProps<DatasetNode>): ReactElement => {
                     title={props.data.title}
                     subheader={props.data.subheader}
                     action={
-                        <Button size="small" href={"#" + path}>
+                        <Button size="small" href={path}>
                             <OpenInNewIcon />
                         </Button>
                     }

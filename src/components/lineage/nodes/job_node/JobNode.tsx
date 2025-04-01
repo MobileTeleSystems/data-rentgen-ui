@@ -37,7 +37,7 @@ const JobNode = (props: NodeProps<JobNode>): ReactElement => {
                     title={props.data.title}
                     subheader={props.data.subheader}
                     action={
-                        <Button size="small" href={"#" + path}>
+                        <Button size="small" href={path}>
                             <OpenInNewIcon />
                         </Button>
                     }
