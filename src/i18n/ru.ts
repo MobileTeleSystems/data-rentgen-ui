@@ -267,32 +267,6 @@ const customRussianMessages: TranslationMessages = {
     errors: {
         fetch: "Невозможно получить %{resource}",
     },
-    units: {
-        numbers: {
-            K: " тыс.",
-            M: " млн",
-            B: " млрд",
-            T: " трлн",
-        },
-        bytes: {
-            Bytes: "Байт",
-            KiB: "КиБ",
-            MiB: "МиБ",
-            GiB: "ГиБ",
-            TiB: "ТиБ",
-            PiB: "ПиБ",
-            EiB: "ЭиБ",
-            ZiB: "ЗиБ",
-            YiB: "ЙиБ",
-        },
-        time: {
-            hours: "ч",
-            minutes: "м",
-            seconds: "с",
-        },
-        rows: "строка |||| строки |||| строк",
-        files: "файл |||| файла |||| файлов",
-    },
     lineage: {
         filters: {
             since: {
@@ -362,6 +336,19 @@ const customRussianMessages: TranslationMessages = {
         FAILED: "ОШИБКА",
         KILLED: "УБИТ",
         UNKNOWN: "НЕИЗВЕСТНО",
+    },
+    edges: {
+        ioTypes: {
+            ALTER: "МОДИЦИФИРОВАН",
+            CREATE: "СОЗДАН",
+            DROP: "УДАЛЕН",
+            OVERWRITE: "ЗАМЕНЕН",
+            RENAME: "ПЕРЕИМЕНОВАН",
+            TRUNCATE: "ОЧИЩЕН",
+        },
+        labels: {
+            SYMLINK: "СИМЛИНК",
+        },
     },
 };
 

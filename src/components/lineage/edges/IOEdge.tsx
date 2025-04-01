@@ -57,7 +57,9 @@ const IOEdge = ({
                         <Chip
                             size="small"
                             color="secondary"
-                            label={data.type as string}
+                            label={translate(`edges.ioTypes.${data.type}`, {
+                                _: data.type,
+                            })}
                             style={props.labelStyle}
                         />
                     ) : null}
