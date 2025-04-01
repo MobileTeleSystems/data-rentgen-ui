@@ -329,6 +329,40 @@ const customRussianMessages: TranslationMessages = {
         },
         build_button: "Построить граф",
     },
+    units: {
+        numbers: {
+            K: " тыс.",
+            M: " млн",
+            B: " млрд",
+            T: " трлн",
+        },
+        bytes: {
+            Bytes: "Байт",
+            KiB: "КиБ",
+            MiB: "МиБ",
+            GiB: "ГиБ",
+            TiB: "ТиБ",
+            PiB: "ПиБ",
+            EiB: "ЭиБ",
+            ZiB: "ЗиБ",
+            YiB: "ЙиБ",
+        },
+        time: {
+            hours: "ч",
+            minutes: "м",
+            seconds: "с",
+        },
+        rows: "строка |||| строки |||| строк",
+        files: "файл |||| файла |||| файлов",
+    },
+    statuses: {
+        STARTED: "ЗАПУЩЕН",
+        RUNNING: "РАБОТАЕТ",
+        SUCCEEDED: "УСПЕХ",
+        FAILED: "ОШИБКА",
+        KILLED: "УБИТ",
+        UNKNOWN: "НЕИЗВЕСТНО",
+    },
 };
 
 customRussianMessages.ra.navigation.clear_filters = "Сбросить фильтры";

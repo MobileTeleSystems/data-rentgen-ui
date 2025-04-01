@@ -10,7 +10,7 @@ import {
 
 import {
     DurationRaField,
-    StatusField,
+    StatusRaField,
     ListActions,
     IOStatisticsField,
 } from "@/components/base";
@@ -49,7 +49,7 @@ const RunRaListForParentRun = ({
                     reference="jobs"
                     sortable={false}
                 />
-                <StatusField source="status" sortable={false} />
+                <StatusRaField source="status" sortable={false} />
                 <DurationRaField source="duration" sortable={false} />
                 <WrapperField source="started_by_user" sortable={false}>
                     <TextField source="data.started_by_user.name" />

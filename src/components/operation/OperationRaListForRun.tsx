@@ -9,7 +9,7 @@ import {
 
 import {
     DurationRaField,
-    StatusField,
+    StatusRaField,
     ListActions,
     IOStatisticsField,
 } from "@/components/base";
@@ -58,7 +58,7 @@ const OperationRaListForRun = ({
                     }
                     sortable={false}
                 />
-                <StatusField source="status" sortable={false} />
+                <StatusRaField source="status" sortable={false} />
                 <DurationRaField source="duration" sortable={false} />
                 <IOStatisticsField source="statistics.inputs" />
                 <IOStatisticsField source="statistics.outputs" />
