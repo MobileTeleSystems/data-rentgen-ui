@@ -17,7 +17,7 @@ import {
 import {
     DurationRaField,
     IOStatisticsField,
-    StatusField,
+    StatusRaField,
 } from "@/components/base";
 import { OperationRaListForRun } from "@/components/operation";
 import RunRaLineage from "./RunRaLineage";
@@ -70,7 +70,7 @@ const RunRaShow = (): ReactElement => {
                     </Stack>
                 </Labeled>
 
-                <StatusField source="status" />
+                <StatusRaField source="status" />
                 <Labeled label="resources.runs.sections.ended">
                     <Stack direction="row" spacing={3}>
                         <Labeled label="resources.runs.sections.when">

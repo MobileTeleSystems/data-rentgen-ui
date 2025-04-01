@@ -4,25 +4,17 @@ import { memo, MouseEvent, ReactElement, useContext } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 import { RunResponseV1 } from "@/dataProvider/types";
-import {
-    Button,
-    CardHeader,
-    Chip,
-    Divider,
-    Stack,
-    Typography,
-} from "@mui/material";
+import { Button, CardHeader, Divider, Stack, Typography } from "@mui/material";
 import BaseNode from "../base_node/BaseNode";
 import { RunIcon } from "@/components/run";
 import { formatDate } from "@/utils/datetime";
-import { statusToThemeColor } from "@/utils/color";
 import OperationNodeList from "../operation_node/OperationNodeList";
 import {
     getAllHandleRelations,
     getNearestHandleRelations,
 } from "@/components/lineage/selection/utils/handleSelection";
 import LineageSelectionContext from "@/components/lineage/selection/LineageSelectionContext";
-import { DurationField } from "@/components/base";
+import { DurationField, StatusField } from "@/components/base";
 
 export type RunNode = Node<RunResponseV1, "runNode">;
 
@@ -38,7 +30,6 @@ const RunNode = ({
 
     const title = props.data.external_id ? props.data.external_id : createdAt;
     const subheader = props.data.external_id ? createdAt : "";
-    const color = statusToThemeColor(props.data.status);
 
     const duration = <DurationField fieldSet={props.data} />;
 
@@ -102,10 +93,9 @@ const RunNode = ({
                                     {subheader}
                                 </Typography>
                                 <Divider orientation="vertical" flexItem />
-                                <Chip
-                                    color={color}
+                                <StatusField
+                                    status={props.data.status}
                                     size="small"
-                                    label={props.data.status}
                                 />
                                 {duration && (
                                     <>

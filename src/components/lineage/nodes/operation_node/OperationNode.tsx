@@ -4,24 +4,16 @@ import { memo, MouseEvent, ReactElement, useContext } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 import { OperationResponseV1 } from "@/dataProvider/types";
-import {
-    Button,
-    CardHeader,
-    Chip,
-    Divider,
-    Stack,
-    Typography,
-} from "@mui/material";
+import { Button, CardHeader, Divider, Stack, Typography } from "@mui/material";
 import BaseNode from "../base_node/BaseNode";
 import { OperationIcon } from "@/components/operation";
 import { formatDate } from "@/utils/datetime";
-import { statusToThemeColor } from "@/utils/color";
 import LineageSelectionContext from "@/components/lineage/selection/LineageSelectionContext";
 import {
     getAllHandleRelations,
     getNearestHandleRelations,
 } from "@/components/lineage/selection/utils/handleSelection";
-import { DurationField } from "@/components/base";
+import { DurationField, StatusField } from "@/components/base";
 
 export type OperationNode = Node<OperationResponseV1, "operationNode">;
 
@@ -36,8 +28,6 @@ const OperationNode = ({
 
     const createdAt = formatDate(new Date(props.data.created_at));
     const duration = <DurationField fieldSet={props.data} />;
-
-    const color = statusToThemeColor(props.data.status);
 
     const path = createPath({
         resource: "operations",
@@ -101,10 +91,9 @@ const OperationNode = ({
                                     {createdAt}
                                 </Typography>
                                 <Divider orientation="vertical" flexItem />
-                                <Chip
-                                    color={color}
+                                <StatusField
+                                    status={props.data.status}
                                     size="small"
-                                    label={props.data.status}
                                 />
                                 {duration && (
                                     <>

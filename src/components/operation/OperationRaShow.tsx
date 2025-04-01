@@ -13,7 +13,7 @@ import {
 import {
     DurationRaField,
     IOStatisticsField,
-    StatusField,
+    StatusRaField,
 } from "@/components/base";
 import OperationRaLineage from "./OperationRaLineage";
 import { OperationDetailedResponseV1 } from "@/dataProvider/types";
@@ -65,7 +65,7 @@ const OperationRaShow = (): ReactElement => {
                     showTime={true}
                 />
 
-                <StatusField source="status" />
+                <StatusRaField source="status" />
                 <Labeled label="resources.operations.sections.ended">
                     <Stack direction="row" spacing={3}>
                         <Labeled label="resources.operations.sections.when">

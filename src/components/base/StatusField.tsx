@@ -1,9 +1,6 @@
-import {
-    OperationDetailedResponseV1,
-    RunDetailedResponseV1,
-} from "@/dataProvider/types";
-import { ReactElement } from "react";
-import { ChipField, ChipFieldProps, useRecordContext } from "react-admin";
+import { ReactNode } from "react";
+import Chip, { ChipProps } from "@mui/material/Chip";
+import { useTranslate } from "react-admin";
 
 const statusToColorMap = {
     STARTED: "info",
@@ -15,17 +12,14 @@ const statusToColorMap = {
 } as const;
 
 const StatusField = ({
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    source,
+    status,
     ...props
-}: ChipFieldProps): ReactElement | null => {
-    const record = useRecordContext<
-        RunDetailedResponseV1 | OperationDetailedResponseV1
-    >();
-    if (!record) return null;
+}: { status: keyof typeof statusToColorMap } & ChipProps): ReactNode | null => {
+    const translate = useTranslate();
 
-    const color = statusToColorMap[record.data.status];
-    return <ChipField color={color} source="data.status" {...props} />;
+    const color = statusToColorMap[status];
+    const value = translate(`statuses.${status}`, { _: status });
+    return <Chip color={color} label={value} {...props} />;
 };
 
 export default StatusField;
