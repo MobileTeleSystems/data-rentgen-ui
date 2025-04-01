@@ -31,29 +31,43 @@ jobs:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+            - name: Install Node.JS
+              uses: actions/setup-node@v4
+
             - name: Checkout code
               uses: actions/checkout@v4
 
-            - name: Set tag
-              id: set_tag
+            - name: Get version
+              id: get_version
               run: |
-                  if [[ "${{ github.ref_type }}" == "branch" && "${{ github.ref_name }}" == "develop" ]]; then
-                    echo "TAG=mtsrus/data-rentgen-ui:develop" >> $GITHUB_ENV
-                  elif [[ "${{ github.ref_type }}" == "tag" ]]; then
-                    echo "TAG=mtsrus/data-rentgen-ui:latest,mtsrus/data-rentgen-ui:${{ github.ref_name }}" >> $GITHUB_ENV
-                  fi
+                  version=$(node -p "require('./package.json').version")
+                  echo "VERSION=${version}" >> $GITHUB_ENV
+
+            - name: Docker meta
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  images: mtsrus/data-rentgen-ui
+                  labels: |
+                      org.opencontainers.image.title=Data.Rentgen UI
+                      org.opencontainers.image.vendor=MTS PJSC
+                      org.opencontainers.image.documentation=https://data-rentgen.readthedocs.io
+                      org.opencontainers.image.url=https://hub.docker.com/r/mtsrus/data-rentgen-ui
+                      org.opencontainers.image.authors=DataOps.ETL <onetools@mts.ru>
+                      org.opencontainers.image.version=${{ env.VERSION }}
 
             - name: Build UI image
               uses: docker/build-push-action@v6
               with:
-                  tags: ${{ env.TAG }}
                   context: .
                   file: ./docker/Dockerfile
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
                   target: prod
                   pull: true
                   push: true
-                  cache-to: type=inline
-                  cache-from: mtsrus/data-rentgen-ui:develop
+                  cache-to: type=gha,mode=max
+                  cache-from: type=gha
                   platforms: |
                       linux/amd64
                       linux/arm64/v8
