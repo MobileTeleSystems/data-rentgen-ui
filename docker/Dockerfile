@@ -1,6 +1,7 @@
 # rollup module does not support arm64 for now.
-# use arm64 for building .js and .css (which areplatform agnostic),
+# use amd64 for building .js and .css (which are platform agnostic),
 # and then copy to platform-specific nginx image
+
 FROM --platform=linux/amd64 node:23.10.0 AS build
 
 WORKDIR /app

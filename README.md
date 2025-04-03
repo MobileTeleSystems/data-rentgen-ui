@@ -7,6 +7,7 @@ UI for [DataRentgen](https://github.com/MobileTeleSystems/data-rentgen).
 
 Based on:
 
+- [React](https://react.dev/)
 - [ReactAdmin](https://marmelab.com/react-admin/)
 - [ReactFlow](https://reactflow.dev/)
 - [MUI](https://mui.com/)
