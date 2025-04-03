@@ -32,6 +32,9 @@ updates:
           - type:dependency
       # https://til.simonwillison.net/github/dependabot-python-setup
       groups:
-          python-packages:
+          npm-packages:
               patterns:
                   - "*"
+      ignore:
+          - dependency-name: "*"
+            update-types: ["version-update:semver-major"]
