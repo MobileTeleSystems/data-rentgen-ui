@@ -18,6 +18,9 @@ jobs:
         runs-on: ubuntu-latest
         if: github.repository == 'MobileTeleSystems/data-rentgen-ui' # prevent running on forks
 
+        permissions:
+            contents: write # to create Github release
+
         steps:
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v3
@@ -42,6 +45,8 @@ jobs:
               run: |
                   version=$(node -p "require('./package.json').version")
                   echo "VERSION=${version}" >> $GITHUB_ENV
+                  current_dt=$(date -u +"%Y-%m-%d")
+                  echo "NAME=${version} (${current_dt})" >> $GITHUB_ENV
 
             - name: Docker meta
               id: meta
@@ -72,6 +77,7 @@ jobs:
                       linux/amd64
                       linux/arm64/v8
                   provenance: mode=max
+                  sbom: true
 
             - name: Update DockerHub Description
               uses: peter-evans/dockerhub-description@v4
@@ -83,3 +89,19 @@ jobs:
                   repository: mtsrus/data-rentgen-ui
                   short-description: ${{ github.event.repository.description }}
                   enable-url-completion: true
+
+            - name: Generate SBOM
+              run: |
+                  npm install --global @cyclonedx/cyclonedx-npm
+                  cyclonedx-npm --package-lock-only --omit dev --output-reproducible --output-file sbom.cyclonedx.json
+
+            - name: Create Github release
+              id: create_release
+              uses: softprops/action-gh-release@v2
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  draft: false
+                  prerelease: false
+                  name: ${{ env.NAME }}
+                  files: |
+                      sbom.cyclonedx.json
