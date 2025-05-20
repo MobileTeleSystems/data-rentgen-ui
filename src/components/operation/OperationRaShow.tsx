@@ -15,6 +15,7 @@ import {
     IOStatisticsField,
     StatusRaField,
 } from "@/components/base";
+import { Box } from "@mui/material";
 import OperationRaLineage from "./OperationRaLineage";
 import { OperationDetailedResponseV1 } from "@/dataProvider/types";
 
@@ -88,6 +89,11 @@ const OperationRaShow = (): ReactElement => {
                     </Stack>
                 </Labeled>
 
+                <Labeled label="resources.operations.sections.sql_query">
+                    <Stack direction="row" spacing={3}>
+                        <TextField source="data.sql_query" component="pre" />
+                    </Stack>
+                </Labeled>
                 <FunctionField
                     render={(record: OperationDetailedResponseV1) => {
                         return record.statistics.inputs.total_datasets +
