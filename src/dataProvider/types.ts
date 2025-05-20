@@ -125,6 +125,7 @@ interface OperationResponseV1 extends RaRecord {
     position: string | null;
     group: string | null;
     description: string | null;
+    sql_query: string | null;
     status: StatusResponseV1;
     started_at: string | null;
     ended_at: string | null;
