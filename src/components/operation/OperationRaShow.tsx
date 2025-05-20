@@ -93,8 +93,11 @@ const OperationRaShow = (): ReactElement => {
                     <Stack
                         direction="row"
                         spacing={3}
-                        height="10rem"
-                        overflow-y="auto"
+                        sx={{
+                            height: "10rem",
+                            overflowY: "auto",
+                            overflowX: "auto",
+                        }}
                     >
                         <TextField source="data.sql_query" component="pre" />
                     </Stack>
