@@ -90,7 +90,12 @@ const OperationRaShow = (): ReactElement => {
                 </Labeled>
 
                 <Labeled label="resources.operations.sections.sql_query">
-                    <Stack direction="row" spacing={3}>
+                    <Stack
+                        direction="row"
+                        spacing={3}
+                        height="10rem"
+                        overflow-y="auto"
+                    >
                         <TextField source="data.sql_query" component="pre" />
                     </Stack>
                 </Labeled>
