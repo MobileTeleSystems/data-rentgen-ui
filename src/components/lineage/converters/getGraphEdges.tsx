@@ -7,8 +7,11 @@ import {
     IndirectColumnLineageRelationLineageResponseV1,
     LineageResponseV1,
     RelationEndpointLineageResponseV1,
+    IORelationSchemaV1,
+    IORelationSchemaFieldV1,
 } from "@/dataProvider/types";
 import { Edge, MarkerType } from "@xyflow/react";
+import { flattenFields } from "../nodes/dataset_node/utils";
 
 const STOKE_THICK = 3;
 const STOKE_MEDIUM = 1;
@@ -187,47 +190,9 @@ const getInputEdge = (
 
 const getSymlinkEdge = (
     relation: SymlinkRelationLineageResponseV1,
-    raw_response: LineageResponseV1,
-): Edge | null => {
-    if (relation.type == "WAREHOUSE") {
-        // having 2 edges between same nodes leads to confusing cross links like those:
-        //
-        // >HDFS<
-        //  \  /
-        //   \/
-        //   /\
-        //  /  \
-        // >Hive<
-        //
-        // To avoid that, keep only one symlink, at least for now.
-        return null;
-    }
-
-    // if target node has only outputs (e.g. Hive is a source for all jobs/runs/... in this graph),
-    // draw symlink on the left, to replace complex graphs like these:
-    //
-    //     /--> Job
-    // Hive
-    //     \
-    //      <-> HDFS
-    //
-    // with more simple graphs, like these:
-    //
-    // HDFS <-> Hive -> Job
-    const anyTargetInput = raw_response.relations.inputs.find(
-        (r) => r.from.id == relation.to.id,
-    );
-    const anyTargetOutput = raw_response.relations.outputs.find(
-        (r) => r.to.id == relation.to.id,
-    );
-    const anyTargetSymlink = raw_response.relations.symlinks.find(
-        (r) => r.to.id == relation.to.id || r.from.id == relation.to.id,
-    );
-    const targetHasOnlyOutputs =
-        (!!anyTargetOutput || !!anyTargetSymlink) && !anyTargetInput;
-
+    targetHasOnlyOutputs: boolean,
+): Edge => {
     const color = "purple";
-
     return {
         ...getMinimalEdge(relation),
         label: "SYMLINK",
@@ -259,72 +224,169 @@ const getSymlinkEdge = (
     };
 };
 
+const getSymlinkEdges = (
+    relation: SymlinkRelationLineageResponseV1,
+    raw_response: LineageResponseV1,
+): Edge[] => {
+    if (relation.type == "WAREHOUSE") {
+        // having 2 edges between same nodes leads to confusing cross links like those:
+        //
+        // >HDFS<
+        //  \  /
+        //   \/
+        //   /\
+        //  /  \
+        // >Hive<
+        //
+        // To avoid that, keep only one symlink, at least for now.
+        return [];
+    }
+
+    // if target node has only outputs (e.g. Hive is a source for all jobs/runs/... in this graph),
+    // draw symlink on the left, to replace complex graphs like these:
+    //
+    //     /--> Job
+    // Hive
+    //     \
+    //      <-> HDFS
+    //
+    // with more simple graphs, like these:
+    //
+    // HDFS <-> Hive -> Job
+    const anyTargetSymlink = raw_response.relations.symlinks.find(
+        (r) => r.to.id == relation.to.id || r.from.id == relation.to.id,
+    );
+    const targetInputs = raw_response.relations.inputs.filter(
+        (r) => r.from.id == relation.to.id,
+    );
+    const targetOutputs = raw_response.relations.outputs.filter(
+        (r) => r.to.id == relation.to.id,
+    );
+
+    const targetHasOnlyOutputs =
+        (!!targetInputs.length || !!anyTargetSymlink) && !targetOutputs.length;
+
+    const results: Edge[] = [getSymlinkEdge(relation, targetHasOnlyOutputs)];
+
+    /*
+    Connect each field of SYMLINK source to each field of target:
+
+        dataset1      dataset2  -  SYMLINK -  dataset3  -  dataset4
+        [column1]  - [column1]  ------------  [column1] -  [column1]
+                        [column2]  ------------  [column2] -  [column2]
+
+    Without this column lineage is fractured:
+
+        dataset1      dataset2  -  SYMLINK -  dataset3  -  dataset4
+        [column1]  - [column1]                [column1] -  [column1]
+                        [column2]                [column2] -  [column2]
+    */
+    const sourceInputs = raw_response.relations.inputs.filter(
+        (r) => r.from.id == relation.from.id,
+    );
+    const sourceOutputs = raw_response.relations.outputs.filter(
+        (r) => r.to.id == relation.from.id,
+    );
+
+    const allSchemas = [
+        ...targetOutputs,
+        ...sourceOutputs,
+        ...targetInputs,
+        ...sourceInputs,
+    ]
+        .map((io) => io.schema)
+        .filter((schema) => schema !== null);
+
+    const fieldsSet = new Set<string>();
+    for (const schema of allSchemas) {
+        for (const field of flattenFields(schema.fields)) {
+            fieldsSet.add(field.name);
+        }
+    }
+    const fields = Array.from(fieldsSet);
+
+    if (fields.length) {
+        results.push(
+            ...fields.map((field) =>
+                getColumnLineageEdge(
+                    relation,
+                    "DIRECT_COLUMN_LINEAGE",
+                    ["IDENTITY"],
+                    field,
+                    field,
+                ),
+            ),
+        );
+    }
+
+    return results;
+};
+
+const getColumnLineageEdge = (
+    relation: BaseRelationLineageResponseV1,
+    kind: "DIRECT_COLUMN_LINEAGE" | "INDIRECT_COLUMN_LINEAGE",
+    types: string[],
+    sourceFieldName: string,
+    targetFieldName: string | null,
+): Edge => {
+    const color = "gray";
+    return {
+        ...getMinimalEdge(relation),
+        id: `${getNodeId(relation.from)}:${sourceFieldName}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:${targetFieldName ?? "*"}`,
+        sourceHandle: sourceFieldName,
+        targetHandle: targetFieldName,
+        type: "columnLineageEdge",
+        data: {
+            source_field: sourceFieldName,
+            target_field: targetFieldName,
+            types: types,
+            kind: kind,
+        },
+        markerEnd: {
+            type: MarkerType.ArrowClosed,
+            color: color,
+        },
+        style: {
+            strokeWidth: STOKE_THIN,
+            stroke: color,
+        },
+        labelStyle: {
+            // label is shown only then edge is selected, so color is different from stroke
+            backgroundColor: "#89b2f3",
+        },
+    };
+};
+
 const getDirectColumnLineageEdges = (
     relation: DirectColumnLineageRelationLineageResponseV1,
 ): Edge[] => {
-    const color = "gray";
     return Object.keys(relation.fields).flatMap((target_field_name) => {
-        return relation.fields[target_field_name].map((source_field) => {
-            return {
-                ...getMinimalEdge(relation),
-                id: `${getNodeId(relation.from)}:${source_field.field}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:${target_field_name}`,
-                sourceHandle: source_field.field,
-                targetHandle: target_field_name,
-                type: "columnLineageEdge",
-                data: {
-                    source_field: source_field.field,
-                    target_field: target_field_name,
-                    types: source_field.types,
-                    kind: "DIRECT_COLUMN_LINEAGE",
-                },
-                markerEnd: {
-                    type: MarkerType.ArrowClosed,
-                    color: color,
-                },
-                style: {
-                    strokeWidth: STOKE_THIN,
-                    stroke: color,
-                },
-                labelStyle: {
-                    // label is shown only then edge is selected, so color is different from stroke
-                    backgroundColor: "#89b2f3",
-                },
-            };
-        });
+        return relation.fields[target_field_name].map((source_field) =>
+            getColumnLineageEdge(
+                relation,
+                "DIRECT_COLUMN_LINEAGE",
+                source_field.types,
+                source_field.field,
+                target_field_name,
+            ),
+        );
     });
 };
 
 const getIndirectColumnLineageEdges = (
     relation: IndirectColumnLineageRelationLineageResponseV1,
 ): Edge[] => {
-    const color = "gray";
     return relation.fields.map((source_field) => {
-        return {
-            ...getMinimalEdge(relation),
-            id: `${getNodeId(relation.from)}:${source_field.field}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:*`,
-            sourceHandle: source_field.field,
-            type: "columnLineageEdge",
-            data: {
-                source_field: source_field.field,
-                target_field: null,
-                types: source_field.types,
-                kind: "INDIRECT_COLUMN_LINEAGE",
-            },
-            markerEnd: {
-                type: MarkerType.ArrowClosed,
-                color: color,
-            },
-            style: {
-                strokeWidth: STOKE_THIN,
-                stroke: color,
-            },
-            labelStyle: {
-                // label is shown only then edge is selected, so color is different from stroke
-                backgroundColor: "#89b2f3",
-            },
-        };
+        return getColumnLineageEdge(
+            relation,
+            "INDIRECT_COLUMN_LINEAGE",
+            source_field.types,
+            source_field.field,
+            null,
+        );
     });
 };
+
 const getGraphEdges = (raw_response: LineageResponseV1): Edge[] => {
     return [
         ...raw_response.relations.inputs.map((relation) =>
@@ -333,13 +395,13 @@ const getGraphEdges = (raw_response: LineageResponseV1): Edge[] => {
         ...raw_response.relations.outputs.map((relation) =>
             getOutputEdge(relation, raw_response),
         ),
-        ...raw_response.relations.symlinks
-            .map((relation) => getSymlinkEdge(relation, raw_response))
-            .filter((edge) => edge !== null),
-        ...(raw_response.relations.direct_column_lineage ?? []).flatMap(
+        ...raw_response.relations.symlinks.flatMap((relation) =>
+            getSymlinkEdges(relation, raw_response),
+        ),
+        ...raw_response.relations.direct_column_lineage.flatMap(
             getDirectColumnLineageEdges,
         ),
-        ...(raw_response.relations.indirect_column_lineage ?? []).flatMap(
+        ...raw_response.relations.indirect_column_lineage.flatMap(
             getIndirectColumnLineageEdges,
         ),
     ];
