@@ -226,9 +226,8 @@ interface LineageRelationsResponseV1 {
     inputs: InputRelationLineageResponseV1[];
     outputs: OutputRelationLineageResponseV1[];
     symlinks: SymlinkRelationLineageResponseV1[];
-    // TODO: remove undefined after implementing these fields in backend API
-    direct_column_lineage?: DirectColumnLineageRelationLineageResponseV1[];
-    indirect_column_lineage?: IndirectColumnLineageRelationLineageResponseV1[];
+    direct_column_lineage: DirectColumnLineageRelationLineageResponseV1[];
+    indirect_column_lineage: IndirectColumnLineageRelationLineageResponseV1[];
 }
 
 interface LineageNodesResponseV1 {

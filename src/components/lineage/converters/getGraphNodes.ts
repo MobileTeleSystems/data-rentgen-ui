@@ -78,12 +78,12 @@ const getDataseNode = (
     }
 
     let hasColumnLineage = false;
-    if (raw_response.relations.direct_column_lineage?.length) {
+    if (raw_response.relations.direct_column_lineage.length) {
         hasColumnLineage = raw_response.relations.direct_column_lineage.some(
             (relation) =>
                 relation.from.id == node.id || relation.to.id == node.id,
         );
-    } else if (raw_response.relations.indirect_column_lineage?.length) {
+    } else if (raw_response.relations.indirect_column_lineage.length) {
         hasColumnLineage = raw_response.relations.indirect_column_lineage.some(
             (relation) =>
                 relation.from.id == node.id || relation.to.id == node.id,
