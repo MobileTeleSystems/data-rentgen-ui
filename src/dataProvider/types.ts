@@ -190,7 +190,7 @@ type OutputRelationTypeLineageResponseV1 =
 interface OutputRelationLineageResponseV1
     extends BaseRelationLineageResponseV1 {
     last_interaction_at: string;
-    type: OutputRelationTypeLineageResponseV1 | null;
+    types: OutputRelationTypeLineageResponseV1[];
     num_rows: number | null;
     num_bytes: number | null;
     num_files: number | null;
