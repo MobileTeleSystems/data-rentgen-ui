@@ -44,6 +44,22 @@ const getMinimalEdge = (relation: BaseRelationLineageResponseV1): Edge => {
     };
 };
 
+const getOutputEdgeColor = (
+    relation: OutputRelationLineageResponseV1,
+): string => {
+    for (const type of relation.types) {
+        switch (type) {
+            case "DROP":
+            case "TRUNCATE":
+                return "red";
+            case "ALTER":
+            case "RENAME":
+                return "yellow";
+        }
+    }
+    return "green";
+};
+
 const getOutputEdge = (
     relation: OutputRelationLineageResponseV1,
     raw_response: LineageResponseV1,
@@ -79,19 +95,7 @@ const getOutputEdge = (
         }
     }
 
-    let color = "green";
-    switch (relation.type) {
-        case "DROP":
-        case "TRUNCATE":
-            color = "red";
-            break;
-        case "ALTER":
-        case "RENAME":
-            color = "yellow";
-            break;
-        default:
-            color = "green";
-    }
+    const color = getOutputEdgeColor(relation);
 
     // Too many animated edges is heavy load for browser
     const totalIOEdges =
