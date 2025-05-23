@@ -131,7 +131,7 @@ const RunNode = ({
                 props.data.operations.length > 0 ? (
                     <>
                         <Typography sx={{ textAlign: "center" }}>
-                            {translate("resources.runs.operations", {
+                            {translate("resources.operations.name", {
                                 smart_count: 2,
                             })}
                         </Typography>
