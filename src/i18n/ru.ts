@@ -112,6 +112,7 @@ const customRussianMessages: TranslationMessages = {
                 airflow_dag: "Airflow DAG",
                 spark_application: "Spark Application",
                 flink_job: "Flink Job",
+                dbt_job: "DBT Job",
             },
             fields: {
                 id: "Внутренний идентификатор",

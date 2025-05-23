@@ -5,6 +5,7 @@ import ApacheHiveIcon from "@assets/icons/apache-hive.svg?react";
 import ApacheKafkaIcon from "@assets/icons/apache-kafka.svg?react";
 import ApacheSparkIcon from "@assets/icons/apache-spark.svg?react";
 import ClickhouseIcon from "@assets/icons/clickhouse.svg?react";
+import DBTIcon from "@assets/icons/dbt.svg?react";
 import GreenplumIcon from "@assets/icons/greenplum.svg?react";
 import MSSQLServerIcon from "@assets/icons/microsoft-sql-server.svg?react";
 import MongoDBIcon from "@assets/icons/mongodb.svg?react";
@@ -23,6 +24,7 @@ export {
     ApacheKafkaIcon,
     ApacheSparkIcon,
     ClickhouseIcon,
+    DBTIcon,
     GreenplumIcon,
     MSSQLServerIcon,
     MongoDBIcon,

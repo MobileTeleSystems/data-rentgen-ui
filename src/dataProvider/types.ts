@@ -47,6 +47,7 @@ type JobTypeResponseV1 =
     | "AIRFLOW_DAG"
     | "AIRFLOW_TASK"
     | "FLINK_JOB"
+    | "DBT_JOB"
     | "UNKNOWN";
 
 interface JobResponseV1 extends RaRecord {
