@@ -39,6 +39,10 @@ const IOEdge = ({
         return <ReactFlowBaseEdge id={id} path={edgePath} {...props} />;
     }
 
+    const types = ((data.types ?? []) as string[]).map((type) =>
+        translate(`edges.ioTypes.${type}`, { _: type }),
+    );
+
     return (
         <>
             <ReactFlowBaseEdge id={id} path={edgePath} {...props} />
@@ -53,13 +57,11 @@ const IOEdge = ({
                     }}
                     className={`nodrag nopan ${selected ? "selected" : ""}`}
                 >
-                    {data.type ? (
+                    {types.length ? (
                         <Chip
                             size="small"
                             color="secondary"
-                            label={translate(`edges.ioTypes.${data.type}`, {
-                                _: data.type,
-                            })}
+                            label={types.join(", ")}
                             style={props.labelStyle}
                         />
                     ) : null}
