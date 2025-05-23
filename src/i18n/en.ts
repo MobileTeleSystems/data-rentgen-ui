@@ -111,6 +111,7 @@ const customEnglishMessages: TranslationMessages = {
                 airflow_task: "Airflow Task",
                 airflow_dag: "Airflow DAG",
                 spark_application: "Spark Application",
+                flink_job: "Flink Job",
             },
             fields: {
                 id: "Internal ID",

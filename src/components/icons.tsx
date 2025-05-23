@@ -1,4 +1,5 @@
 import ApacheAirflowIcon from "@assets/icons/apache-airflow.svg?react";
+import ApacheFlinkIcon from "@assets/icons/apache-flink.svg?react";
 import ApacheHadoopIcon from "@assets/icons/apache-hadoop.svg?react";
 import ApacheHiveIcon from "@assets/icons/apache-hive.svg?react";
 import ApacheKafkaIcon from "@assets/icons/apache-kafka.svg?react";
@@ -16,6 +17,7 @@ import DataRentgenIcon from "@assets/icons/data-rentgen.svg?react";
 
 export {
     ApacheAirflowIcon,
+    ApacheFlinkIcon,
     ApacheHadoopIcon,
     ApacheHiveIcon,
     ApacheKafkaIcon,
