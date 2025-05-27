@@ -33,7 +33,7 @@ const customRussianMessages: TranslationMessages = {
                 mongodb: "MongoDB",
                 mysql: "MySQL",
                 oracle: "Oracle",
-                postgresql: "PostgreSQL",
+                postgres: "PostgreSQL",
                 sqlserver: "SQL Server",
                 teradata: "Teradata",
                 ftp: "FTP",
