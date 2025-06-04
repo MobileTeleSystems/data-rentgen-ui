@@ -301,6 +301,7 @@ const customEnglishMessages: TranslationMessages = {
             granularity: {
                 label: "Granularity",
                 helperText: "Summarize lineage for specified node type",
+                dataset: "Datasets",
                 job: "Jobs",
                 run: "Runs",
                 operation: "Operations",
