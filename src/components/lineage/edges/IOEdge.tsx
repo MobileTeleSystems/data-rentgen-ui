@@ -33,7 +33,7 @@ const IOEdge = ({
     const [edgePath, labelX, labelY] = getBezierPath(props);
 
     const hasContent =
-        data.type || data.num_rows || data.num_bytes || data.num_files;
+        data.types || data.num_rows || data.num_bytes || data.num_files;
 
     if (!hasContent) {
         return <ReactFlowBaseEdge id={id} path={edgePath} {...props} />;
