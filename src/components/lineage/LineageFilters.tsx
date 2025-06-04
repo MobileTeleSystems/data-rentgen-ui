@@ -55,6 +55,10 @@ const LineageFilters = ({
 
     const granularityChoises = [
         {
+            id: "DATASET",
+            name: "lineage.filters.granularity.dataset",
+        },
+        {
             id: "JOB",
             name: "lineage.filters.granularity.job",
         },
