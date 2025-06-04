@@ -12,7 +12,7 @@ const DatasetRaLineage = () => {
             <LineageView
                 resource="datasets"
                 recordId={record.id}
-                granularities={["JOB", "RUN"]}
+                granularities={["DATASET", "JOB", "RUN"]}
             />
         </ReactFlowProvider>
     );

@@ -296,6 +296,7 @@ const customRussianMessages: TranslationMessages = {
             granularity: {
                 label: "Детализация",
                 helperText: "Суммировать линедж до указанного типа узлов",
+                dataset: "Датасеты",
                 job: "Джобы",
                 run: "Запуски",
                 operation: "Операции",
