@@ -32,16 +32,16 @@ const IOEdge = ({
     const translate = useTranslate();
     const [edgePath, labelX, labelY] = getBezierPath(props);
 
+    const types = ((data.types ?? []) as string[]).map((type) =>
+        translate(`edges.ioTypes.${type}`, { _: type }),
+    );
+
     const hasContent =
-        data.types || data.num_rows || data.num_bytes || data.num_files;
+        types.length || data.num_rows || data.num_bytes || data.num_files;
 
     if (!hasContent) {
         return <ReactFlowBaseEdge id={id} path={edgePath} {...props} />;
     }
-
-    const types = ((data.types ?? []) as string[]).map((type) =>
-        translate(`edges.ioTypes.${type}`, { _: type }),
-    );
 
     return (
         <>
