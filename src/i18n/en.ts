@@ -162,7 +162,7 @@ const customEnglishMessages: TranslationMessages = {
                 started: "Started",
                 ended: "Ended",
                 external: "External",
-                external_id: "External",
+                external_id: "External ID",
                 when: "When",
                 how: "How",
                 for_job: "For Job",
