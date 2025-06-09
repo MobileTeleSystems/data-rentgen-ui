@@ -40,6 +40,9 @@ const DurationField = ({
         );
     }
 
+    if (parts.length === 0) {
+        return "0" + translate("units.time.seconds", { _: "s" });
+    }
     return parts.join(" ");
 };
 
