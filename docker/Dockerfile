@@ -2,7 +2,7 @@
 # use amd64 for building .js and .css (which are platform agnostic),
 # and then copy to platform-specific nginx image
 
-FROM --platform=linux/amd64 node:24.1.0 AS build
+FROM --platform=linux/amd64 node:24.2.0 AS build
 
 WORKDIR /app
 
