@@ -110,9 +110,10 @@ const customEnglishMessages: TranslationMessages = {
             types: {
                 airflow_task: "Airflow Task",
                 airflow_dag: "Airflow DAG",
-                spark_application: "Spark Application",
                 flink_job: "Flink Job",
                 dbt_job: "DBT Job",
+                hive_session: "Hive Session",
+                spark_application: "Spark Application",
             },
             fields: {
                 id: "Internal ID",

@@ -15,6 +15,61 @@ import PostgreSQLIcon from "@assets/icons/postgresql.svg?react";
 import TeradataIcon from "@assets/icons/teradata.svg?react";
 import DatasetIcon from "@assets/icons/dataset.svg?react";
 import DataRentgenIcon from "@assets/icons/data-rentgen.svg?react";
+import { ReactElement } from "react";
+import { Cloud, Computer, Public, QuestionMark } from "@mui/icons-material";
+
+const IconByName = ({ name }: { name: string }): ReactElement => {
+    const nameLower = name.toLowerCase().split(/[^a-z]/)[0];
+
+    switch (nameLower) {
+        case "airflow":
+            return <ApacheAirflowIcon />;
+        case "clickhouse":
+            return <ClickhouseIcon />;
+        case "dbt":
+            return <DBTIcon />;
+        case "flink":
+            return <ApacheFlinkIcon />;
+        case "greenplum":
+            return <GreenplumIcon />;
+        case "hive":
+            return <ApacheHiveIcon />;
+        case "kafka":
+            return <ApacheKafkaIcon />;
+        case "mongodb":
+            return <MongoDBIcon />;
+        case "mysql":
+            return <MySQLIcon />;
+        case "oracle":
+            return <OracleIcon />;
+        case "postgres":
+            return <PostgreSQLIcon />;
+        case "spark":
+            return <ApacheSparkIcon />;
+        case "sqlserver":
+            return <MSSQLServerIcon />;
+        case "teradata":
+            return <TeradataIcon />;
+        case "hdfs":
+        case "yarn":
+            return <ApacheHadoopIcon />;
+        case "ftp":
+        case "ftps":
+        case "sftp":
+        case "s3":
+        case "samba":
+        case "webdav":
+            return <Cloud />;
+        case "local":
+        case "file":
+            return <Computer />;
+        case "http":
+        case "https":
+            return <Public />;
+        default:
+            return <QuestionMark />;
+    }
+};
 
 export {
     ApacheAirflowIcon,
@@ -34,4 +89,5 @@ export {
     TeradataIcon,
     DatasetIcon,
     DataRentgenIcon,
+    IconByName,
 };
