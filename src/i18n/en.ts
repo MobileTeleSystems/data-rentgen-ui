@@ -71,14 +71,8 @@ const customEnglishMessages: TranslationMessages = {
                 name: "Dataset name",
                 format: "Format",
                 schema: {
-                    input: {
-                        exact_match: "Input schema projection",
-                        latest_known: "Input schema projection (latest)",
-                    },
-                    output: {
-                        exact_match: "Output schema",
-                        latest_known: "Output schema (latest)",
-                    },
+                    exact_match: "Schema projection",
+                    latest_known: "Schema projection (latest)",
                     field: {
                         name: "Field",
                         type: "Type",

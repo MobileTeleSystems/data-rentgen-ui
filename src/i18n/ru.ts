@@ -71,14 +71,8 @@ const customRussianMessages: TranslationMessages = {
                 name: "Имя датасета",
                 format: "Формат",
                 schema: {
-                    input: {
-                        exact_match: "Проекция схемы на чтение",
-                        latest_known: "Проекция схемы на чтение (последняя)",
-                    },
-                    output: {
-                        exact_match: "Схема на запись",
-                        latest_known: "Схема на запись (последняя)",
-                    },
+                    exact_match: "Проекция схемы",
+                    latest_known: "Проекция схемы (последняя)",
                     field: {
                         name: "Поле",
                         type: "Тип",
