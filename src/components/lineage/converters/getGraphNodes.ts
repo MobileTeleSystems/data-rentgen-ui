@@ -31,52 +31,6 @@ const getDataseNode = (
         title = ".../" + title.split("/").slice(-2).join("/");
     }
 
-    const outputSchemas = raw_response.relations.outputs
-        .filter((output) => output.to.id == node.id && output.schema !== null)
-        // sort by last_interaction_at descending
-        .toSorted((a, b) =>
-            a.last_interaction_at < b.last_interaction_at ? 1 : -1,
-        )
-        .map((output) => output.schema)
-        .filter((schema) => schema !== null)
-        // keep unique schemas only
-        .filter(
-            (schema, index, array) =>
-                array.findIndex((item) => item.id == schema.id) == index,
-        );
-
-    const inputSchemas = raw_response.relations.inputs
-        .filter((input) => input.from.id == node.id && input.schema !== null)
-        // sort by last_interaction_at descending
-        .toSorted((a, b) =>
-            a.last_interaction_at < b.last_interaction_at ? 1 : -1,
-        )
-        .map((input) => input.schema)
-        .filter((schema) => schema !== null)
-        // keep unique schemas only
-        .filter(
-            (schema, index, array) =>
-                array.findIndex((item) => item.id == schema.id) == index,
-        );
-
-    // prefer output schema as there is high chance that it describes all the columns properly.
-    // read interactions may select only a subset of columns.
-    let schema: IORelationSchemaV1 | undefined = undefined;
-    let schemaFrom: string = "output";
-    if (outputSchemas.length > 0) {
-        schema = outputSchemas[0];
-        schemaFrom = "output";
-        if (outputSchemas.length > 1) {
-            schema.relevance_type = "LATEST_KNOWN";
-        }
-    } else if (inputSchemas.length > 0) {
-        schema = inputSchemas[0];
-        schemaFrom = "input";
-        if (inputSchemas.length > 1) {
-            schema.relevance_type = "LATEST_KNOWN";
-        }
-    }
-
     let hasColumnLineage = false;
     if (raw_response.relations.direct_column_lineage.length) {
         hasColumnLineage = raw_response.relations.direct_column_lineage.some(
@@ -97,8 +51,8 @@ const getDataseNode = (
     );
 
     let maxHeight = BASE_NODE_HEIGHT;
-    if (schema && hasColumnLineage) {
-        maxHeight += BASE_NODE_HEIGHT * Math.min(schema.fields.length, 10);
+    if (node.schema && hasColumnLineage) {
+        maxHeight += BASE_NODE_HEIGHT * Math.min(node.schema.fields.length, 10);
     }
 
     return {
@@ -113,8 +67,6 @@ const getDataseNode = (
             title: title,
             subheader: subheader,
             expanded: hasColumnLineage,
-            schema: schema,
-            schemaFrom: schemaFrom,
         },
     };
 };
