@@ -277,29 +277,19 @@ const getSymlinkEdges = (
 
         dataset1      dataset2  -  SYMLINK -  dataset3  -  dataset4
         [column1]  - [column1]  ------------  [column1] -  [column1]
-                        [column2]  ------------  [column2] -  [column2]
+                     [column2]  ------------  [column2] -  [column2]
 
     Without this column lineage is fractured:
 
         dataset1      dataset2  -  SYMLINK -  dataset3  -  dataset4
         [column1]  - [column1]                [column1] -  [column1]
-                        [column2]                [column2] -  [column2]
+                     [column2]                [column2] -  [column2]
     */
-    const sourceInputs = raw_response.relations.inputs.filter(
-        (r) => r.from.id == relation.from.id,
-    );
-    const sourceOutputs = raw_response.relations.outputs.filter(
-        (r) => r.to.id == relation.from.id,
-    );
 
     const allSchemas = [
-        ...targetOutputs,
-        ...sourceOutputs,
-        ...targetInputs,
-        ...sourceInputs,
-    ]
-        .map((io) => io.schema)
-        .filter((schema) => schema !== null);
+        raw_response.nodes.datasets[relation.from.id].schema,
+        raw_response.nodes.datasets[relation.to.id].schema,
+    ].filter((schema) => schema !== null);
 
     const fieldsSet = new Set<string>();
     for (const schema of allSchemas) {
