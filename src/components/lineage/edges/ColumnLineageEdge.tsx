@@ -31,7 +31,7 @@ const ColumnLineageEdge = ({
     return (
         <>
             <ReactFlowBaseEdge id={id} path={edgePath} {...props} />
-            {selected ? (
+            {types.length && selected ? (
                 <EdgeLabelRenderer>
                     <div
                         style={{
