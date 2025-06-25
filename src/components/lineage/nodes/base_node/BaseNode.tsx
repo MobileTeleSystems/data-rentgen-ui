@@ -20,15 +20,15 @@ import ShowMoreButton from "./ShowMoreButton";
 
 const BaseNode = ({
     nodeId,
-    icon,
     header,
+    icon = null,
     expandableContent = null,
     defaultExpanded = false,
     ...props
 }: {
     nodeId: string;
-    icon: ReactNode;
     header: ReactNode;
+    icon?: ReactNode | null;
     expandableContent?: ReactNode | null;
     defaultExpanded?: boolean;
 } & CardProps): ReactElement => {
@@ -64,7 +64,7 @@ const BaseNode = ({
                     />
                 )}
                 {icon}
-                <Divider orientation="vertical" flexItem />
+                {icon && <Divider orientation="vertical" flexItem />}
                 {header}
                 {expandableContent && (
                     <CardActions disableSpacing>

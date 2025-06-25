@@ -10,7 +10,7 @@ import {
     Edge,
     Node,
 } from "@xyflow/react";
-import { DatasetNode, JobNode } from "./nodes";
+import { DatasetContainerNode, JobNode } from "./nodes";
 import { MouseEvent, useLayoutEffect } from "react";
 import { BaseEdge, IOEdge, ColumnLineageEdge } from "./edges";
 import useLineageSelectionProvider from "./selection/useLineageSelectionProvider";
@@ -32,7 +32,7 @@ const edgeTypes = {
 };
 
 const nodeTypes = {
-    datasetNode: DatasetNode,
+    datasetContainerNode: DatasetContainerNode,
     jobNode: JobNode,
 };
 
