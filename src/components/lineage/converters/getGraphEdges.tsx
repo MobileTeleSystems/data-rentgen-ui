@@ -1,17 +1,14 @@
 import {
     OutputRelationLineageResponseV1,
-    SymlinkRelationLineageResponseV1,
     InputRelationLineageResponseV1,
     BaseRelationLineageResponseV1,
     DirectColumnLineageRelationLineageResponseV1,
     IndirectColumnLineageRelationLineageResponseV1,
     LineageResponseV1,
     RelationEndpointLineageResponseV1,
-    IORelationSchemaV1,
-    IORelationSchemaFieldV1,
 } from "@/dataProvider/types";
 import { Edge, MarkerType } from "@xyflow/react";
-import { flattenFields } from "../nodes/dataset_node/utils";
+import { getDatasetIdToRelatedDatasetIdsMapping } from "./getGraphNodes";
 
 const STOKE_THICK = 3;
 const STOKE_MEDIUM = 1;
@@ -62,35 +59,41 @@ const getOutputEdgeColor = (
 
 const getOutputEdge = (
     relation: OutputRelationLineageResponseV1,
-    raw_response: LineageResponseV1,
+    datasetIdToContainerIdMapping: Map<string, string>,
+    rawResponse: LineageResponseV1,
 ): Edge => {
     let source: string = getNodeId(relation.from);
     let sourceHandle: string | null = null;
     let strokeWidth = STOKE_THICK;
 
+    if (relation.from.kind == "DATASET") {
+        source = datasetIdToContainerIdMapping.get(relation.from.id)!;
+        sourceHandle = "DATASET-" + relation.from.id;
+    }
+
     if (relation.from.kind == "OPERATION") {
-        const operation = raw_response.nodes.operations[relation.from.id];
-        const run = raw_response.nodes.runs[operation.run_id];
+        const operation = rawResponse.nodes.operations[relation.from.id];
+        const run = rawResponse.nodes.runs[operation.run_id];
 
         source = getNodeId({ kind: "JOB", id: run.job_id });
         sourceHandle = "OPERATION-" + operation.id;
     }
 
     if (relation.from.kind == "RUN") {
-        const run = raw_response.nodes.runs[relation.from.id];
+        const run = rawResponse.nodes.runs[relation.from.id];
 
         source = getNodeId({ kind: "JOB", id: run.job_id });
         sourceHandle = "RUN-" + run.id;
 
-        if (Object.keys(raw_response.nodes.operations).length > 0) {
+        if (Object.keys(rawResponse.nodes.operations).length > 0) {
             strokeWidth = STOKE_MEDIUM;
         }
     }
 
     if (relation.from.kind == "JOB") {
-        if (Object.keys(raw_response.nodes.operations).length > 0) {
+        if (Object.keys(rawResponse.nodes.operations).length > 0) {
             strokeWidth = STOKE_THIN;
-        } else if (Object.keys(raw_response.nodes.runs).length > 0) {
+        } else if (Object.keys(rawResponse.nodes.runs).length > 0) {
             strokeWidth = STOKE_MEDIUM;
         }
     }
@@ -99,15 +102,18 @@ const getOutputEdge = (
 
     // Too many animated edges is heavy load for browser
     const totalIOEdges =
-        raw_response.relations.outputs.length +
-        raw_response.relations.inputs.length;
+        rawResponse.relations.outputs.length +
+        rawResponse.relations.inputs.length;
     const animated = totalIOEdges <= MAX_ANIMATED_EDGES;
 
+    const containerTo = datasetIdToContainerIdMapping.get(relation.to.id)!;
     return {
         ...getMinimalEdge(relation),
-        id: `${source}:${sourceHandle ?? "*"}->${getNodeId(relation.to)}`,
+        id: `${source}:${sourceHandle ?? "*"}->${containerTo}`,
         source: source,
         sourceHandle: sourceHandle,
+        target: containerTo,
+        targetHandle: getNodeId(relation.to),
         type: "ioEdge",
         data: {
             ...relation,
@@ -130,46 +136,56 @@ const getOutputEdge = (
 
 const getInputEdge = (
     relation: InputRelationLineageResponseV1,
-    raw_response: LineageResponseV1,
+    datasetIdToContainerIdMapping: Map<string, string>,
+    rawResponse: LineageResponseV1,
 ): Edge => {
     let target: string = getNodeId(relation.to);
     let targetHandle: string | null = null;
     let strokeWidth = STOKE_THICK;
 
     if (relation.to.kind == "OPERATION") {
-        const operation = raw_response.nodes.operations[relation.to.id];
-        const run = raw_response.nodes.runs[operation.run_id];
+        const operation = rawResponse.nodes.operations[relation.to.id];
+        const run = rawResponse.nodes.runs[operation.run_id];
 
         target = getNodeId({ kind: "JOB", id: run.job_id });
         targetHandle = "OPERATION-" + operation.id;
     }
     if (relation.to.kind == "RUN") {
-        const run = raw_response.nodes.runs[relation.to.id];
+        const run = rawResponse.nodes.runs[relation.to.id];
 
         target = getNodeId({ kind: "JOB", id: run.job_id });
         targetHandle = "RUN-" + run.id;
 
-        if (Object.keys(raw_response.nodes.operations).length > 0) {
+        if (Object.keys(rawResponse.nodes.operations).length > 0) {
             strokeWidth = STOKE_MEDIUM;
         }
     }
     if (relation.to.kind == "JOB") {
-        if (Object.keys(raw_response.nodes.operations).length > 0) {
+        if (Object.keys(rawResponse.nodes.operations).length > 0) {
             strokeWidth = STOKE_THIN;
-        } else if (Object.keys(raw_response.nodes.runs).length > 0) {
+        } else if (Object.keys(rawResponse.nodes.runs).length > 0) {
             strokeWidth = STOKE_MEDIUM;
         }
     }
+    if (relation.to.kind == "DATASET") {
+        target = datasetIdToContainerIdMapping.get(relation.to.id)!;
+        targetHandle = "DATASET-" + relation.to.id;
+    }
+
     const color = "green";
 
     // Too many animated edges is heavy load for browser
     const totalIOEdges =
-        raw_response.relations.outputs.length +
-        raw_response.relations.inputs.length;
+        rawResponse.relations.outputs.length +
+        rawResponse.relations.inputs.length;
     const animated = totalIOEdges <= MAX_ANIMATED_EDGES;
+
+    const containerFrom = datasetIdToContainerIdMapping.get(relation.from.id)!;
     return {
         ...getMinimalEdge(relation),
-        id: `${getNodeId(relation.from)}->${target}:${targetHandle ?? "*"}`,
+        id: `${containerFrom}->${target}:${targetHandle ?? "*"}`,
+        source: containerFrom,
+        sourceHandle: getNodeId(relation.from),
         target: target,
         targetHandle: targetHandle,
         type: "ioEdge",
@@ -192,142 +208,23 @@ const getInputEdge = (
     };
 };
 
-const getSymlinkEdge = (
-    relation: SymlinkRelationLineageResponseV1,
-    targetHasOnlyOutputs: boolean,
-): Edge => {
-    const color = "purple";
-    return {
-        ...getMinimalEdge(relation),
-        label: "SYMLINK",
-        source: targetHasOnlyOutputs
-            ? getNodeId(relation.to)
-            : getNodeId(relation.from),
-        target: targetHasOnlyOutputs
-            ? getNodeId(relation.from)
-            : getNodeId(relation.to),
-        data: {
-            ...relation,
-            kind: "SYMLINK",
-        },
-        markerStart: {
-            type: MarkerType.ArrowClosed,
-            color: color,
-        },
-        markerEnd: {
-            type: MarkerType.ArrowClosed,
-            color: color,
-        },
-        style: {
-            strokeWidth: STOKE_MEDIUM,
-            stroke: color,
-        },
-        labelStyle: {
-            backgroundColor: color,
-        },
-    };
-};
-
-const getSymlinkEdges = (
-    relation: SymlinkRelationLineageResponseV1,
-    raw_response: LineageResponseV1,
-): Edge[] => {
-    if (relation.type == "WAREHOUSE") {
-        // having 2 edges between same nodes leads to confusing cross links like those:
-        //
-        // >HDFS<
-        //  \  /
-        //   \/
-        //   /\
-        //  /  \
-        // >Hive<
-        //
-        // To avoid that, keep only one symlink, at least for now.
-        return [];
-    }
-
-    // if target node has only outputs (e.g. Hive is a source for all jobs/runs/... in this graph),
-    // draw symlink on the left, to replace complex graphs like these:
-    //
-    //     /--> Job
-    // Hive
-    //     \
-    //      <-> HDFS
-    //
-    // with more simple graphs, like these:
-    //
-    // HDFS <-> Hive -> Job
-    const anyTargetSymlink = raw_response.relations.symlinks.find(
-        (r) => r.to.id == relation.to.id || r.from.id == relation.to.id,
-    );
-    const targetInputs = raw_response.relations.inputs.filter(
-        (r) => r.from.id == relation.to.id,
-    );
-    const targetOutputs = raw_response.relations.outputs.filter(
-        (r) => r.to.id == relation.to.id,
-    );
-
-    const targetHasOnlyOutputs =
-        (!!targetInputs.length || !!anyTargetSymlink) && !targetOutputs.length;
-
-    const results: Edge[] = [getSymlinkEdge(relation, targetHasOnlyOutputs)];
-
-    /*
-    Connect each field of SYMLINK source to each field of target:
-
-        dataset1      dataset2  -  SYMLINK -  dataset3  -  dataset4
-        [column1]  - [column1]  ------------  [column1] -  [column1]
-                     [column2]  ------------  [column2] -  [column2]
-
-    Without this column lineage is fractured:
-
-        dataset1      dataset2  -  SYMLINK -  dataset3  -  dataset4
-        [column1]  - [column1]                [column1] -  [column1]
-                     [column2]                [column2] -  [column2]
-    */
-
-    const allSchemas = [
-        raw_response.nodes.datasets[relation.from.id].schema,
-        raw_response.nodes.datasets[relation.to.id].schema,
-    ].filter((schema) => schema !== null);
-
-    const fieldsSet = new Set<string>();
-    for (const schema of allSchemas) {
-        for (const field of flattenFields(schema.fields)) {
-            fieldsSet.add(field.name);
-        }
-    }
-    const fields = Array.from(fieldsSet);
-
-    if (fields.length) {
-        results.push(
-            ...fields.map((field) =>
-                getColumnLineageEdge(
-                    relation,
-                    "DIRECT_COLUMN_LINEAGE",
-                    ["IDENTITY"],
-                    field,
-                    field,
-                ),
-            ),
-        );
-    }
-
-    return results;
-};
-
 const getColumnLineageEdge = (
     relation: BaseRelationLineageResponseV1,
+    datasetIdToContainerIdMapping: Map<string, string>,
     kind: "DIRECT_COLUMN_LINEAGE" | "INDIRECT_COLUMN_LINEAGE",
     types: string[],
     sourceFieldName: string,
     targetFieldName: string | null,
 ): Edge => {
     const color = "gray";
+    const containerFrom = datasetIdToContainerIdMapping.get(relation.from.id)!;
+    const containerTo = datasetIdToContainerIdMapping.get(relation.to.id)!;
     return {
         ...getMinimalEdge(relation),
-        id: `${getNodeId(relation.from)}:${sourceFieldName}--COLUMN-LINEAGE-->${getNodeId(relation.to)}:${targetFieldName ?? "*"}`,
+        id: `${containerFrom}:${sourceFieldName}--COLUMN-LINEAGE-->${containerTo}:${targetFieldName ?? "*"}`,
+        source: containerFrom,
         sourceHandle: sourceFieldName,
+        target: containerTo,
         targetHandle: targetFieldName,
         type: "columnLineageEdge",
         data: {
@@ -351,13 +248,28 @@ const getColumnLineageEdge = (
     };
 };
 
+const combineTypes = (
+    existingTypes: string[],
+    newTypes: string[],
+): string[] => {
+    const types = [...existingTypes];
+    for (const type of newTypes) {
+        if (!types.includes(type)) {
+            types.push(type);
+        }
+    }
+    return types;
+};
+
 const getDirectColumnLineageEdges = (
     relation: DirectColumnLineageRelationLineageResponseV1,
+    datasetIdToContainerIdMapping: Map<string, string>,
 ): Edge[] => {
     return Object.keys(relation.fields).flatMap((target_field_name) => {
         return relation.fields[target_field_name].map((source_field) =>
             getColumnLineageEdge(
                 relation,
+                datasetIdToContainerIdMapping,
                 "DIRECT_COLUMN_LINEAGE",
                 source_field.types,
                 source_field.field,
@@ -369,10 +281,12 @@ const getDirectColumnLineageEdges = (
 
 const getIndirectColumnLineageEdges = (
     relation: IndirectColumnLineageRelationLineageResponseV1,
+    datasetIdToContainerIdMapping: Map<string, string>,
 ): Edge[] => {
     return relation.fields.map((source_field) => {
         return getColumnLineageEdge(
             relation,
+            datasetIdToContainerIdMapping,
             "INDIRECT_COLUMN_LINEAGE",
             source_field.types,
             source_field.field,
@@ -381,24 +295,61 @@ const getIndirectColumnLineageEdges = (
     });
 };
 
-const getGraphEdges = (raw_response: LineageResponseV1): Edge[] => {
-    return [
-        ...raw_response.relations.inputs.map((relation) =>
-            getInputEdge(relation, raw_response),
+const mergeColumnLineageEdges = (edges: Edge[]): Edge[] => {
+    const grouped: Map<string, Edge> = new Map();
+
+    edges.forEach((edge) => {
+        if (!grouped.has(edge.id)) {
+            grouped.set(edge.id, edge);
+            return;
+        }
+
+        const existingEdge = grouped.get(edge.id)!;
+        const existingTypes = existingEdge.data!.types as string[];
+        const newTypes = edge.data!.types as string[];
+        existingEdge.data!.types = combineTypes(existingTypes, newTypes);
+        grouped.set(edge.id, existingEdge);
+    });
+
+    return Array.from(grouped.values());
+};
+
+const getGraphEdges = (rawResponse: LineageResponseV1): Edge[] => {
+    const datasetIdToContainerIdMapping: Map<string, string> = new Map();
+    getDatasetIdToRelatedDatasetIdsMapping(rawResponse).forEach(
+        (allDatasetIds, datasetId) => {
+            datasetIdToContainerIdMapping.set(
+                datasetId,
+                "DATASET-CONTAINER-" + allDatasetIds.join("_"),
+            );
+        },
+    );
+
+    const ioEdges: Edge[] = [
+        ...rawResponse.relations.inputs.map((relation) =>
+            getInputEdge(relation, datasetIdToContainerIdMapping, rawResponse),
         ),
-        ...raw_response.relations.outputs.map((relation) =>
-            getOutputEdge(relation, raw_response),
-        ),
-        ...raw_response.relations.symlinks.flatMap((relation) =>
-            getSymlinkEdges(relation, raw_response),
-        ),
-        ...raw_response.relations.direct_column_lineage.flatMap(
-            getDirectColumnLineageEdges,
-        ),
-        ...raw_response.relations.indirect_column_lineage.flatMap(
-            getIndirectColumnLineageEdges,
+        ...rawResponse.relations.outputs.map((relation) =>
+            getOutputEdge(relation, datasetIdToContainerIdMapping, rawResponse),
         ),
     ];
+
+    const columnLineage: Edge[] = [
+        ...rawResponse.relations.direct_column_lineage.flatMap((relation) =>
+            getDirectColumnLineageEdges(
+                relation,
+                datasetIdToContainerIdMapping,
+            ),
+        ),
+        ...rawResponse.relations.indirect_column_lineage.flatMap((relation) =>
+            getIndirectColumnLineageEdges(
+                relation,
+                datasetIdToContainerIdMapping,
+            ),
+        ),
+    ];
+
+    return [...ioEdges, ...mergeColumnLineageEdges(columnLineage)];
 };
 
 export default getGraphEdges;
