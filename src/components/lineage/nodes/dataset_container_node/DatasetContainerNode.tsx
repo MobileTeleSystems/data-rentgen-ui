@@ -29,11 +29,7 @@ const DatasetContainerNode = (
         <BaseNode
             nodeId={props.id}
             header={
-                <Stack
-                    direction="column"
-                    justifyContent={"flex-end"}
-                    className="nodrag nopan"
-                >
+                <Stack direction="column" justifyContent={"flex-end"}>
                     {props.data.datasets.map((dataset) => (
                         <DatasetNode
                             containerNodeId={props.id}
