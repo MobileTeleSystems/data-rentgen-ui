@@ -106,7 +106,7 @@ const OperationRaShow = (): ReactElement => {
                                 spacing={5}
                                 sx={{
                                     maxHeight: "30rem",
-                                    maxWidth: "80rem",
+                                    maxWidth: "50rem",
                                     overflowY: "auto",
                                     overflowX: "auto",
                                 }}
