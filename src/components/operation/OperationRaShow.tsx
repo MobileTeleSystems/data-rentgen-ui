@@ -98,15 +98,15 @@ const OperationRaShow = (): ReactElement => {
                     </SimpleShowLayout>
                 </Grid>
 
-                <Grid item>
+                <Grid item flexGrow={3}>
                     <SimpleShowLayout>
                         <Labeled label="resources.operations.sections.sql_query">
                             <Stack
                                 direction="row"
-                                spacing={3}
+                                spacing={5}
                                 sx={{
                                     maxHeight: "30rem",
-                                    maxWidth: "35rem",
+                                    maxWidth: "80rem",
                                     overflowY: "auto",
                                     overflowX: "auto",
                                 }}
