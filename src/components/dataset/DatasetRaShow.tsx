@@ -33,13 +33,6 @@ const DatasetRaShow = (): ReactElement => {
                     source="data.name"
                     label="resources.datasets.fields.name"
                 />
-                <WithRecord
-                    render={(record) =>
-                        record.format && (
-                            <TextField source="data.format" label="format" />
-                        )
-                    }
-                />
 
                 <TabbedShowLayout>
                     <TabbedShowLayout.Tab label="resources.datasets.tabs.lineage">

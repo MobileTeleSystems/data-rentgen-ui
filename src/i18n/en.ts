@@ -69,7 +69,6 @@ const customEnglishMessages: TranslationMessages = {
             fields: {
                 id: "Internal ID",
                 name: "Dataset name",
-                format: "Format",
                 schema: {
                     exact_match: "Schema projection",
                     latest_known: "Schema projection (latest)",
