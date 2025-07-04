@@ -16,6 +16,7 @@ import {
     StatusRaField,
 } from "@/components/base";
 import OperationRaLineage from "./OperationRaLineage";
+import SqlText from "./SqlText";
 import { OperationDetailedResponseV1 } from "@/dataProvider/types";
 
 const OperationRaShow = (): ReactElement => {
@@ -104,15 +105,22 @@ const OperationRaShow = (): ReactElement => {
                                 direction="row"
                                 spacing={3}
                                 sx={{
-                                    maxHeight: "35en",
-                                    maxWidth: "35em",
+                                    maxHeight: "30rem",
+                                    maxWidth: "35rem",
                                     overflowY: "auto",
                                     overflowX: "auto",
                                 }}
                             >
-                                <TextField
-                                    source="data.sql_query"
-                                    component="pre"
+                                <FunctionField
+                                    render={(
+                                        record: OperationDetailedResponseV1,
+                                    ) => {
+                                        return (
+                                            <SqlText
+                                                query={record.data.sql_query}
+                                            />
+                                        );
+                                    }}
                                 />
                             </Stack>
                         </Labeled>

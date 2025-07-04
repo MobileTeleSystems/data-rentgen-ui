@@ -1,12 +1,12 @@
 import { defaultTheme } from "react-admin";
-
+import { ThemeOptions } from "@mui/material";
 /**
  * Soft: A gentle theme for apps with rich content (images, charts, maps, etc).
  *
  * Uses white app bar, rounder corners, light colors.
  */
 
-export const mainDarkTheme = {
+export const mainDarkTheme: ThemeOptions = {
     palette: {
         primary: {
             main: "#90caf9",
@@ -48,7 +48,7 @@ export const mainDarkTheme = {
     },
 };
 
-export const mainLightTheme = {
+export const mainLightTheme: ThemeOptions = {
     palette: {
         primary: {
             main: "#4f3cc9",
