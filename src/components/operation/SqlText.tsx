@@ -4,7 +4,7 @@ import {
     stackoverflowLight,
     hybrid,
 } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import sqlMore from "highlight.js";
+import sqlMore from "react-syntax-highlighter/dist/esm/languages/hljs/sql_more";
 
 SyntaxHighlighter.registerLanguage("sql", sqlMore);
 
