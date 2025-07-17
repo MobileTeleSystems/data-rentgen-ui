@@ -51,7 +51,7 @@ const getOutputEdgeColor = (
                 return "red";
             case "ALTER":
             case "RENAME":
-                return "yellow";
+                return "orange";
         }
     }
     return "green";
