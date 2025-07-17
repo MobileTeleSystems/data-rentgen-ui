@@ -446,7 +446,7 @@ const getGraphEdges = (rawResponse: LineageResponseV1): Edge[] => {
     ];
 
     return [
-        ...mergeInputEdges(outputs),
+        ...mergeInputEdges(inputs),
         ...mergeOutputEdges(outputs),
         ...mergeColumnLineageEdges(columnLineage),
     ];
