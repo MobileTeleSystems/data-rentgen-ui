@@ -6,6 +6,9 @@ import {
     IndirectColumnLineageRelationLineageResponseV1,
     LineageResponseV1,
     RelationEndpointLineageResponseV1,
+    ColumnLineageFieldResponseV1,
+    OutputRelationTypeLineageResponseV1,
+    ColumnLineageTransformationTypeLineageResponseV1,
 } from "@/dataProvider/types";
 import { Edge, MarkerType } from "@xyflow/react";
 import { getDatasetIdToRelatedDatasetIdsMapping } from "./getGraphNodes";
@@ -295,6 +298,93 @@ const getIndirectColumnLineageEdges = (
     });
 };
 
+const mergeInputEdges = (edges: Edge[]): Edge[] => {
+    const grouped: Map<string, Edge> = new Map();
+
+    edges.forEach((edge) => {
+        if (!grouped.has(edge.id)) {
+            grouped.set(edge.id, edge);
+            return;
+        }
+
+        const existingEdge = grouped.get(edge.id)!;
+        const existingEdgeData =
+            existingEdge.data! as unknown as InputRelationLineageResponseV1;
+
+        const edgeData =
+            edge.data! as unknown as InputRelationLineageResponseV1;
+        if (edgeData.num_rows != null) {
+            if (existingEdgeData.num_rows == null) {
+                existingEdgeData.num_rows = 0;
+            }
+            existingEdgeData.num_rows += edgeData.num_rows;
+        }
+        if (edgeData.num_bytes != null) {
+            if (existingEdgeData.num_bytes == null) {
+                existingEdgeData.num_bytes = 0;
+            }
+            existingEdgeData.num_bytes += edgeData.num_bytes;
+        }
+        if (edgeData.num_files != null) {
+            if (existingEdgeData.num_files == null) {
+                existingEdgeData.num_files = 0;
+            }
+            existingEdgeData.num_files += edgeData.num_files;
+        }
+
+        grouped.set(edge.id, existingEdge);
+    });
+
+    return Array.from(grouped.values());
+};
+
+const mergeOutputEdges = (edges: Edge[]): Edge[] => {
+    const grouped: Map<string, Edge> = new Map();
+
+    edges.forEach((edge) => {
+        if (!grouped.has(edge.id)) {
+            grouped.set(edge.id, edge);
+            return;
+        }
+
+        const existingEdge = grouped.get(edge.id)!;
+        const existingEdgeData =
+            existingEdge.data! as unknown as OutputRelationLineageResponseV1;
+        const existingTypes = existingEdgeData.types as string[];
+
+        const edgeData =
+            edge.data! as unknown as OutputRelationLineageResponseV1;
+        const newTypes = edgeData.types as string[];
+        existingEdgeData.types = combineTypes(
+            existingTypes,
+            newTypes,
+        ) as OutputRelationTypeLineageResponseV1[];
+
+        if (edgeData.num_rows != null) {
+            if (existingEdgeData.num_rows == null) {
+                existingEdgeData.num_rows = 0;
+            }
+            existingEdgeData.num_rows += edgeData.num_rows;
+        }
+        if (edgeData.num_bytes != null) {
+            if (existingEdgeData.num_bytes == null) {
+                existingEdgeData.num_bytes = 0;
+            }
+            existingEdgeData.num_bytes += edgeData.num_bytes;
+        }
+        if (edgeData.num_files != null) {
+            if (existingEdgeData.num_files == null) {
+                existingEdgeData.num_files = 0;
+            }
+            existingEdgeData.num_files += edgeData.num_files;
+        }
+
+        grouped.set(edge.id, existingEdge);
+    });
+
+    return Array.from(grouped.values());
+};
+
 const mergeColumnLineageEdges = (edges: Edge[]): Edge[] => {
     const grouped: Map<string, Edge> = new Map();
 
@@ -305,9 +395,16 @@ const mergeColumnLineageEdges = (edges: Edge[]): Edge[] => {
         }
 
         const existingEdge = grouped.get(edge.id)!;
-        const existingTypes = existingEdge.data!.types as string[];
-        const newTypes = edge.data!.types as string[];
-        existingEdge.data!.types = combineTypes(existingTypes, newTypes);
+        const existingEdgeData =
+            existingEdge.data! as unknown as ColumnLineageFieldResponseV1;
+        const existingTypes = existingEdgeData.types as string[];
+
+        const edgeData = edge.data! as unknown as ColumnLineageFieldResponseV1;
+        const newTypes = edgeData.types as string[];
+        existingEdgeData.types = combineTypes(
+            existingTypes,
+            newTypes,
+        ) as ColumnLineageTransformationTypeLineageResponseV1[];
         grouped.set(edge.id, existingEdge);
     });
 
@@ -325,14 +422,13 @@ const getGraphEdges = (rawResponse: LineageResponseV1): Edge[] => {
         },
     );
 
-    const ioEdges: Edge[] = [
-        ...rawResponse.relations.inputs.map((relation) =>
-            getInputEdge(relation, datasetIdToContainerIdMapping, rawResponse),
-        ),
-        ...rawResponse.relations.outputs.map((relation) =>
-            getOutputEdge(relation, datasetIdToContainerIdMapping, rawResponse),
-        ),
-    ];
+    const inputs = rawResponse.relations.inputs.map((relation) =>
+        getInputEdge(relation, datasetIdToContainerIdMapping, rawResponse),
+    );
+
+    const outputs = rawResponse.relations.outputs.map((relation) =>
+        getOutputEdge(relation, datasetIdToContainerIdMapping, rawResponse),
+    );
 
     const columnLineage: Edge[] = [
         ...rawResponse.relations.direct_column_lineage.flatMap((relation) =>
@@ -349,7 +445,11 @@ const getGraphEdges = (rawResponse: LineageResponseV1): Edge[] => {
         ),
     ];
 
-    return [...ioEdges, ...mergeColumnLineageEdges(columnLineage)];
+    return [
+        ...mergeInputEdges(outputs),
+        ...mergeOutputEdges(outputs),
+        ...mergeColumnLineageEdges(columnLineage),
+    ];
 };
 
 export default getGraphEdges;

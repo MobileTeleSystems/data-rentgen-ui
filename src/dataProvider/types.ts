@@ -202,9 +202,23 @@ interface ParentRelationLineageResponseV1
 
 type SymlinkRelationTypeLineageResponseV1 = "METASTORE" | "WAREHOUSE";
 
+type ColumnLineageTransformationTypeLineageResponseV1 =
+    | "UNKNOWN"
+    | "IDENTITY"
+    | "TRANSFORMATION"
+    | "TRANSFORMATION_MASKING"
+    | "AGGREGATION"
+    | "AGGREGATION_MASKING"
+    | "FILTER"
+    | "JOIN"
+    | "GROUP_BY"
+    | "SORT"
+    | "WINDOW"
+    | "CONDITIONAL";
+
 interface ColumnLineageFieldResponseV1 {
     field: string;
-    types: string[];
+    types: ColumnLineageTransformationTypeLineageResponseV1[];
 }
 
 interface DirectColumnLineageRelationLineageResponseV1
@@ -282,6 +296,7 @@ export type {
     LineageRelationsResponseV1,
     LineageResponseV1,
     ColumnLineageFieldResponseV1,
+    ColumnLineageTransformationTypeLineageResponseV1,
     DirectColumnLineageRelationLineageResponseV1,
     IndirectColumnLineageRelationLineageResponseV1,
 };
