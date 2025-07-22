@@ -15,6 +15,7 @@ import PostgreSQLIcon from "@assets/icons/postgresql.svg?react";
 import TeradataIcon from "@assets/icons/teradata.svg?react";
 import DatasetIcon from "@assets/icons/dataset.svg?react";
 import DataRentgenIcon from "@assets/icons/data-rentgen.svg?react";
+import ReplickIcon from "@assets/icons/replick.svg?react";
 import { ReactElement } from "react";
 import { Cloud, Computer, Public, QuestionMark } from "@mui/icons-material";
 
@@ -44,6 +45,8 @@ const IconByName = ({ name }: { name: string }): ReactElement => {
             return <OracleIcon />;
         case "postgres":
             return <PostgreSQLIcon />;
+        case "replick":
+            return <ReplickIcon />;
         case "spark":
             return <ApacheSparkIcon />;
         case "sqlserver":
