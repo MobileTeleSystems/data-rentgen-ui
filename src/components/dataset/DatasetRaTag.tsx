@@ -9,8 +9,14 @@ const DatasetRaTag = () => {
     }
     return (
         <Stack spacing={1}>
-            {record.data.tags.map(
-                (tag: { name: string; value: string }, index: Key) => (
+            {record.data.tags
+                .sort(
+                    (
+                        a: { name: string; value: string },
+                        b: { name: string; value: string },
+                    ) => a.name.localeCompare(b.name),
+                )
+                .map((tag: { name: string; value: string }, index: Key) => (
                     <Box key={index} sx={{ width: "fit-content" }}>
                         <Chip
                             label={`${tag.name}: ${tag.value}`}
@@ -19,8 +25,7 @@ const DatasetRaTag = () => {
                             sx={{ fontSize: "0.7rem" }}
                         ></Chip>
                     </Box>
-                ),
-            )}
+                ))}
         </Stack>
     );
 };
