@@ -4,13 +4,14 @@ import {
     SimpleShowLayout,
     TextField,
     TabbedShowLayout,
-    WithRecord,
+    ArrayField,
 } from "react-admin";
 import {
     LocationRaNameWithLinkField,
     LocationRaTypeWithIconField,
 } from "@/components/location";
 import DatasetRaLineage from "./DatasetRaLineage";
+import DatasetRaTag from "./DatasetRaTag";
 
 const DatasetRaShow = (): ReactElement => {
     return (
@@ -33,6 +34,12 @@ const DatasetRaShow = (): ReactElement => {
                     source="data.name"
                     label="resources.datasets.fields.name"
                 />
+                <ArrayField
+                    source="data.tags"
+                    label="resources.datasets.fields.tags"
+                >
+                    <DatasetRaTag />
+                </ArrayField>
 
                 <TabbedShowLayout>
                     <TabbedShowLayout.Tab label="resources.datasets.tabs.lineage">

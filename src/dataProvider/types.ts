@@ -29,10 +29,16 @@ interface LocationDetailedResponseV1 {
     statistics: LocationStatisticsResponseV1;
 }
 
+interface TagsResponseV1 {
+    name: string;
+    value: string;
+}
+
 interface DatasetResponseV1 extends RaRecord {
     id: string;
     type: string;
     name: string;
+    tags: TagsResponseV1[];
     location: LocationResponseV1;
 }
 
