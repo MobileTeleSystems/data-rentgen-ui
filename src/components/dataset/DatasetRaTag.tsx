@@ -1,22 +1,17 @@
 import { useRecordContext } from "react-admin";
+import { DatasetDetailedResponseV1 } from "@/dataProvider/types";
 import { Stack, Chip, Box } from "@mui/material";
-import { Key } from "react";
 
 const DatasetRaTag = () => {
-    const record = useRecordContext();
+    const record: DatasetDetailedResponseV1 | undefined = useRecordContext();
     if (!record) {
         return null;
     }
     return (
         <Stack spacing={1}>
             {record.data.tags
-                .sort(
-                    (
-                        a: { name: string; value: string },
-                        b: { name: string; value: string },
-                    ) => a.name.localeCompare(b.name),
-                )
-                .map((tag: { name: string; value: string }, index: Key) => (
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((tag, index) => (
                     <Box key={index} sx={{ width: "fit-content" }}>
                         <Chip
                             label={`${tag.name}: ${tag.value}`}
