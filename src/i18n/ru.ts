@@ -198,7 +198,7 @@ const customRussianMessages: TranslationMessages = {
             },
         },
         operations: {
-            name: "Операция |||| Операци",
+            name: "Операция |||| Операции",
             amount: "%{smart_count} операция |||| %{smart_count} операции |||| %{smart_count} операций",
             title: "Операция %{reference}",
             fields: {
@@ -260,6 +260,41 @@ const customRussianMessages: TranslationMessages = {
             },
             pagination: {
                 all: "Все",
+            },
+        },
+        personalTokens: {
+            name: "Персональный токен |||| Personal Tokens",
+            amount: "%{smart_count} персональный токен |||| %{smart_count} персональных токена |||| %{smart_count} персональных токенов",
+            title: "Персональный токен %{reference}",
+            fields: {
+                id: "Внутренний идентификатор",
+                name: "Имя",
+                scopes: "Права",
+                since: "Выдан",
+                until: "Истекает",
+                status: "Статус",
+            },
+            helperText: {
+                name: "Уникальное имя токена",
+                scopes: "На данный момент права невозможно изменить",
+                since: "Токен валиден с этой даты",
+                until: "Токен валиден до этой даты (включительно)",
+            },
+            scopes: {
+                "all:read": "Чтение всех объектов",
+                "all:write": "Запись всех объектов",
+            },
+            status: {
+                active: "АКТИВЕН",
+                expired: "ИСТЁК",
+            },
+            actions: {
+                refresh: "Перевыпустить",
+                revoke: "Отозвать",
+            },
+            notification: {
+                tokenCreated:
+                    "Текстовое представление токена копировано в буфер обмена. Обязательно сохраните его, иначе токен будет потерян!",
             },
         },
     },
