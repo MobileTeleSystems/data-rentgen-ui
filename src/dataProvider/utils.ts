@@ -11,10 +11,14 @@ const parseResponse = (response: any): Promise<any> =>
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const parseJSON = (status: number, body: string): any => {
+    if (status == 204) {
+        return {};
+    }
+
     const json = JSON.parse(body);
 
     if (status < 200 || status >= 400) {
-        throw new HttpError((json && json.message) || body, status, json);
+        throw new HttpError(json?.error?.message ?? body, status, json);
     }
     return json;
 };
