@@ -263,6 +263,27 @@ interface LineageResponseV1 {
     relations: LineageRelationsResponseV1;
 }
 
+type PersonalTokenScopeV1 = "all:read" | "all:write";
+
+interface PersonalTokenResponseV1 {
+    id: string;
+    name: string;
+    since: string;
+    until: string;
+    scopes: PersonalTokenScopeV1[];
+}
+
+interface PersonalTokenDetailedResponseV1 {
+    id: string;
+    data: PersonalTokenResponseV1;
+}
+
+interface PersonalTokenCreateDetailedResponseV1 {
+    id: string;
+    data: PersonalTokenResponseV1;
+    content: string;
+}
+
 export type {
     LocationResponseV1,
     LocationDatasetStatisticsResponseV1,
@@ -305,4 +326,8 @@ export type {
     ColumnLineageTransformationTypeLineageResponseV1,
     DirectColumnLineageRelationLineageResponseV1,
     IndirectColumnLineageRelationLineageResponseV1,
+    PersonalTokenResponseV1,
+    PersonalTokenScopeV1,
+    PersonalTokenDetailedResponseV1,
+    PersonalTokenCreateDetailedResponseV1,
 };
