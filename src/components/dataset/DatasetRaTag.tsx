@@ -18,7 +18,7 @@ const DatasetRaTag = () => {
                             size="small"
                             variant="outlined"
                             sx={{ fontSize: "0.7rem" }}
-                        ></Chip>
+                        />
                     </Box>
                 ))}
         </Stack>

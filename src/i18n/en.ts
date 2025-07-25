@@ -263,6 +263,37 @@ const customEnglishMessages: TranslationMessages = {
                 all: "All",
             },
         },
+        personalTokens: {
+            name: "Personal Token |||| Personal Tokens",
+            amount: "1 personal token |||| %{smart_count} personal tokens",
+            title: "Personal Token %{reference}",
+            fields: {
+                id: "Internal ID",
+                name: "Name",
+                scopes: "Scopes",
+                since: "Since",
+                until: "Until",
+                jwt: "JWT",
+            },
+            helperText: {
+                name: "Unique token name",
+                scopes: "Currently scopes are fixed",
+                since: "Token is valid since this date",
+                until: "Token is valid until this date (inclusive)",
+            },
+            scopes: {
+                "all:read": "Read all objects",
+                "all:write": "Write all objects",
+            },
+            actions: {
+                refresh: "Refresh",
+                revoke: "Revoke",
+            },
+            notification: {
+                jwtCreated:
+                    "Token in text form is copied to your clipboard. You should save it somewhere - it will be lost when you leave this page!",
+            },
+        },
     },
     errors: {
         fetch: "Cannot fetch %{resource}",
