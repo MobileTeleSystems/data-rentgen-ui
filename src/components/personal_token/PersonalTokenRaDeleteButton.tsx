@@ -5,6 +5,7 @@ const PersonalTokenRaDeleteButton = () => {
         <DeleteButton
             redirect="list"
             label="resources.personalTokens.actions.revoke"
+            mutationMode="pessimistic"
         />
     );
 };

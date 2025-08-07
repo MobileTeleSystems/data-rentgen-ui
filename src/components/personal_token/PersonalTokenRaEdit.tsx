@@ -21,6 +21,7 @@ const PersonalTokenRaEditToolbar = () => {
             <SaveButton label="resources.personalTokens.actions.refresh" />
             <DeleteButton
                 redirect="list"
+                mutationMode="pessimistic"
                 label="resources.personalTokens.actions.revoke"
             />
         </Toolbar>
