@@ -9,18 +9,19 @@ const DatasetRaTag = () => {
     }
     return (
         <Stack spacing={1}>
-            {record.data.tags
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((tag, index) => (
-                    <Box key={index} sx={{ width: "fit-content" }}>
+            {record.tags?.map((tag, tag_index) => (
+                <Box key={tag_index} sx={{ width: "fit-content" }}>
+                    {tag.values.map((tag_value, tag_value_index) => (
                         <Chip
-                            label={`${tag.name}: ${tag.value}`}
+                            key={tag_value_index}
+                            label={`${tag.name}: ${tag_value.value}`}
                             size="small"
                             variant="outlined"
                             sx={{ fontSize: "0.7rem" }}
                         />
-                    </Box>
-                ))}
+                    ))}
+                </Box>
+            ))}
         </Stack>
     );
 };
