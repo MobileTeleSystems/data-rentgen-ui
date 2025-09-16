@@ -374,12 +374,16 @@ const customRussianMessages: TranslationMessages = {
     },
     edges: {
         ioTypes: {
-            ALTER: "МОДИЦИФИРОВАН",
-            CREATE: "СОЗДАН",
-            DROP: "УДАЛЕН",
-            OVERWRITE: "ЗАМЕНЕН",
-            RENAME: "ПЕРЕИМЕНОВАН",
-            TRUNCATE: "ОЧИЩЕН",
+            ALTER: "ИЗМЕНЕНИЕ",
+            APPEND: "ДОБАВЛЕНИЕ",
+            CREATE: "СОЗДАНИЕ",
+            DELETE: "УДАЛЕНИЕ",
+            DROP: "УНИЧТОЖЕНИЕ",
+            MERGE: "ВСТАВКА",
+            OVERWRITE: "ПЕРЕЗАПИСЬ",
+            RENAME: "ПЕРЕИМЕНОВАНИЕ",
+            TRUNCATE: "СТЕРАНИЕ",
+            UPDATE: "ОБНОВЛЕНИЕ",
         },
         columnLineageTypes: {
             UNKNOWN: "НЕИЗВЕСТНО",

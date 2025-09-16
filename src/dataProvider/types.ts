@@ -192,11 +192,15 @@ interface InputRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {
 
 type OutputRelationTypeLineageResponseV1 =
     | "ALTER"
+    | "APPEND"
     | "CREATE"
+    | "DELETE"
     | "DROP"
+    | "MERGE"
     | "OVERWRITE"
     | "RENAME"
-    | "TRUNCATE";
+    | "TRUNCATE"
+    | "UPDATE";
 
 interface OutputRelationLineageResponseV1
     extends BaseRelationLineageResponseV1 {

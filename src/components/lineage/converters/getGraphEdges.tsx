@@ -46,6 +46,7 @@ const getOutputEdgeColor = (
 ): string => {
     for (const type of relation.types) {
         switch (type) {
+            case "DELETE":
             case "DROP":
             case "TRUNCATE":
                 return "red";
