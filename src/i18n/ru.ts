@@ -382,7 +382,7 @@ const customRussianMessages: TranslationMessages = {
             MERGE: "ВСТАВКА",
             OVERWRITE: "ПЕРЕЗАПИСЬ",
             RENAME: "ПЕРЕИМЕНОВАНИЕ",
-            TRUNCATE: "СТЕРАНИЕ",
+            TRUNCATE: "СТИРАНИЕ",
             UPDATE: "ОБНОВЛЕНИЕ",
         },
         columnLineageTypes: {
