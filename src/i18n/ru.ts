@@ -375,11 +375,11 @@ const customRussianMessages: TranslationMessages = {
     edges: {
         ioTypes: {
             ALTER: "ИЗМЕНЕНИЕ",
-            APPEND: "ДОБАВЛЕНИЕ",
+            APPEND: "ВСТАВКА",
             CREATE: "СОЗДАНИЕ",
             DELETE: "УДАЛЕНИЕ",
             DROP: "УНИЧТОЖЕНИЕ",
-            MERGE: "ВСТАВКА",
+            MERGE: "СЛИЯНИЕ",
             OVERWRITE: "ПЕРЕЗАПИСЬ",
             RENAME: "ПЕРЕИМЕНОВАНИЕ",
             TRUNCATE: "СТИРАНИЕ",
