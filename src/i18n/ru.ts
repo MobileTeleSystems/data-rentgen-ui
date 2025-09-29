@@ -61,6 +61,10 @@ const customRussianMessages: TranslationMessages = {
                     placeholder: "Фильтр по имени или адресу",
                 },
             },
+            tabs: {
+                datasets: "Датасеты",
+                jobs: "Джобы",
+            },
         },
         datasets: {
             name: "Датасет |||| Датасеты",

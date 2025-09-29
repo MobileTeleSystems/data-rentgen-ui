@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import {
+    TabbedShowLayout,
     ArrayField,
     Datagrid,
     Show,
@@ -10,6 +11,8 @@ import {
     WrapperField,
 } from "react-admin";
 import LocationIconWithType from "./LocationIconWithType";
+import { JobRaListForLocation } from "@/components/job";
+import { DatasetRaListForLocation } from "@/components/dataset";
 
 const LocationRaShow = (): ReactElement => {
     return (
@@ -43,6 +46,24 @@ const LocationRaShow = (): ReactElement => {
                         <UrlField source="url" label="URL" target="_blank" />
                     </Datagrid>
                 </ArrayField>
+                <TabbedShowLayout>
+                    <TabbedShowLayout.Tab label="resources.locations.tabs.datasets">
+                        <WithRecord
+                            render={(record) => (
+                                <DatasetRaListForLocation
+                                    locationId={record.id}
+                                />
+                            )}
+                        />
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="resources.locations.tabs.jobs">
+                        <WithRecord
+                            render={(record) => (
+                                <JobRaListForLocation locationId={record.id} />
+                            )}
+                        />
+                    </TabbedShowLayout.Tab>
+                </TabbedShowLayout>
             </SimpleShowLayout>
         </Show>
     );
