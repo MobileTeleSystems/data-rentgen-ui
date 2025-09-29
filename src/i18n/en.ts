@@ -61,6 +61,10 @@ const customEnglishMessages: TranslationMessages = {
                     placeholder: "Filter by name or address",
                 },
             },
+            tabs: {
+                datasets: "Datasets",
+                jobs: "Jobs",
+            },
         },
         datasets: {
             name: "Dataset |||| Datasets",
