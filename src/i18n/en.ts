@@ -186,15 +186,24 @@ const customEnglishMessages: TranslationMessages = {
             filters: {
                 since: {
                     label: "Since",
-                    helperText: "Include only runs created after",
+                    helperText: "Minimal created_at",
                 },
                 until: {
                     label: "Until",
-                    helperText: "Include only runs created before",
+                    helperText: "Maximum created_at",
+                },
+                status: {
+                    label: "Status",
+                    helperText: "Only selected",
+                },
+                started_by_user: {
+                    label: "Started by user",
+                    helperText: "Username (exact match)",
                 },
                 search_query: {
                     label: "Search",
-                    helperText: "Filter by applicationId",
+                    helperText:
+                        "Filter by external ID (including partial match)",
                 },
                 apply_button: "Apply",
             },
@@ -251,17 +260,18 @@ const customEnglishMessages: TranslationMessages = {
             filters: {
                 since: {
                     label: "Since",
-                    helperText: "Include only operations created after",
+                    helperText: "Minimal created_at",
                 },
                 until: {
                     label: "Until",
-                    helperText: "Include only operations created before",
+                    helperText: "Maximum created_at",
                 },
-                apply_button: "Apply",
                 search_query: {
                     label: "Search",
-                    helperText: "Filter by name, group or description",
+                    helperText:
+                        "Filter by name, group or description (partial match)",
                 },
+                apply_button: "Apply",
             },
             pagination: {
                 all: "All",
@@ -314,11 +324,11 @@ const customEnglishMessages: TranslationMessages = {
         filters: {
             since: {
                 label: "Since",
-                helperText: "Include only events created after",
+                helperText: "Only events created after",
             },
             until: {
                 label: "Until",
-                helperText: "Include only events created before",
+                helperText: "Only events created before",
             },
             depth: {
                 label: "Depth",

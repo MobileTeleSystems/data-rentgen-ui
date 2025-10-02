@@ -184,16 +184,24 @@ const customRussianMessages: TranslationMessages = {
             },
             filters: {
                 since: {
-                    label: "Дата начала",
-                    helperText: "Запуски, созданные после указанной даты",
+                    label: "Начало диапазона",
+                    helperText: "Минимальная дата запуска",
                 },
                 until: {
-                    label: "Дата окончания",
-                    helperText: "Запуски, созданные до указанной даты",
+                    label: "Конец диапазона",
+                    helperText: "Максимальная дата запуска",
+                },
+                status: {
+                    label: "Статус",
+                    helperText: "Только выбранные",
+                },
+                started_by_user: {
+                    label: "Запущен пользователем",
+                    helperText: "Имя пользователя (точное совпадение)",
                 },
                 search_query: {
                     label: "Поиск",
-                    helperText: "Фильтр по applicationId и т.п.",
+                    helperText: "Фильтр по внешнему ID (частичное совпадение)",
                 },
                 apply_button: "Применить",
             },
@@ -249,12 +257,12 @@ const customRussianMessages: TranslationMessages = {
             },
             filters: {
                 since: {
-                    label: "Дата начала",
-                    helperText: "Операции, созданные после указанной даты",
+                    label: "Начало диапазона",
+                    helperText: "Минимальная дата запуска",
                 },
                 until: {
-                    label: "Дата окончания",
-                    helperText: "Операции, созданные до указанной даты",
+                    label: "Конец диапазона",
+                    helperText: "Максимальная дата запуска",
                 },
                 search_query: {
                     label: "Поиск",
@@ -308,11 +316,11 @@ const customRussianMessages: TranslationMessages = {
     lineage: {
         filters: {
             since: {
-                label: "Дата начала",
+                label: "Начало диапазона",
                 helperText: "События, созданные после указанной даты",
             },
             until: {
-                label: "Дата окончания",
+                label: "Конец диапазона",
                 helperText: "События, созданные до указанной даты",
             },
             depth: {
@@ -370,7 +378,6 @@ const customRussianMessages: TranslationMessages = {
     },
     statuses: {
         STARTED: "ЗАПУЩЕН",
-        RUNNING: "РАБОТАЕТ",
         SUCCEEDED: "УСПЕХ",
         FAILED: "ОШИБКА",
         KILLED: "УБИТ",

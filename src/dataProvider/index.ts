@@ -47,6 +47,13 @@ const defaultDataProvider: DataProvider = {
 
         if (params.filter) {
             for (const field in params.filter) {
+                const value = params.filter[field];
+                if (Array.isArray(value)) {
+                    value.forEach((v) => {
+                        url.searchParams.append(field, v);
+                    });
+                    continue;
+                }
                 url.searchParams.append(field, params.filter[field]);
             }
         }
