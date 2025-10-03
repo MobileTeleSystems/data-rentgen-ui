@@ -75,7 +75,7 @@ const RunRaListFilters = () => {
                         />
                     </Box>
 
-                    <Box component="span" mr={2} sx={{ flex: 1 }}>
+                    <Box component="span" mr={2} sx={{ flex: "0.5 1 1" }}>
                         {/* Not using SearchInput here because it doesn't match styles with other filters */}
                         <TextInput
                             source="search_query"
