@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { FieldProps, useRecordContext } from "react-admin";
-import JobIconWithType from "./JobIconWithType";
+import JobTypeRepr from "./JobTypeRepr";
 import { JobDetailedResponseV1 } from "@/dataProvider/types";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -9,7 +9,7 @@ const JobRaTypeField = (props: FieldProps): ReactElement | null => {
     if (!record) {
         return null;
     }
-    return <JobIconWithType job={record.data} />;
+    return <JobTypeRepr jobType={record.data.type} />;
 };
 
 export default JobRaTypeField;

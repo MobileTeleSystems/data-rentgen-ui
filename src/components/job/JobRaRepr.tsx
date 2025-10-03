@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { Stack } from "@mui/material";
 import { useRecordContext } from "react-admin";
-import JobIcon from "./JobIcon";
+import JobTypeIcon from "./JobTypeIcon";
 import { JobDetailedResponseV1 } from "@/dataProvider/types";
 
 const JobRaRepr = (): ReactElement | null => {
@@ -19,7 +19,7 @@ const JobRaRepr = (): ReactElement | null => {
                 textDecoration: "underline",
             }}
         >
-            <JobIcon job={job.data} />
+            <JobTypeIcon jobType={job.data.type} />
             <span>{job.data.name}</span>
         </Stack>
     );

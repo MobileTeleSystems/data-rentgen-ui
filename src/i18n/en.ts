@@ -123,10 +123,15 @@ const customEnglishMessages: TranslationMessages = {
                 lineage: "Lineage",
             },
             filters: {
+                job_type: {
+                    label: "Job Type",
+                    helperText: "Only selected",
+                },
                 search_query: {
                     label: "Search",
-                    placeholder: "Filter by name or address",
+                    helperText: "Filter by name or address",
                 },
+                apply_button: "Apply",
             },
         },
         runs: {
