@@ -1,22 +1,25 @@
 import { ReactElement } from "react";
-import { List, TextField, DatagridConfigurable } from "react-admin";
+
 import { ListActions } from "@/components/base";
-import {
-    LocationRaNameWithLinkField,
-    LocationRaTypeWithIconField,
-} from "@/components/location";
+import { List, TextField, DatagridConfigurable } from "react-admin";
 import JobRaTypeField from "./JobRaTypeField";
 import JobRaListFilters from "./JobRaListFilters";
 
-const JobRaList = (): ReactElement => {
+const JobRaListForLocation = ({
+    locationId,
+}: {
+    locationId: number;
+}): ReactElement => {
     return (
         <List
+            resource="jobs"
             actions={
                 <ListActions>
                     <JobRaListFilters />
                 </ListActions>
             }
-            resource="jobs"
+            filter={{ location_id: locationId }}
+            title={false}
             storeKey={false}
         >
             <DatagridConfigurable bulkActionButtons={false}>
@@ -29,18 +32,9 @@ const JobRaList = (): ReactElement => {
                     label="resources.jobs.fields.name"
                     sortable={false}
                 />
-
-                <LocationRaTypeWithIconField
-                    source="data.location.type"
-                    label="resources.locations.fields.type"
-                />
-                <LocationRaNameWithLinkField
-                    source="data.location.name"
-                    label="resources.locations.fields.name"
-                />
             </DatagridConfigurable>
         </List>
     );
 };
 
-export default JobRaList;
+export default JobRaListForLocation;

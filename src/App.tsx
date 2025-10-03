@@ -28,6 +28,12 @@ import { RunRaList, RunRaShow } from "@/components/run";
 import { OperationRaShow } from "@/components/operation";
 import { PlayArrow, Public, Settings } from "@mui/icons-material";
 import { DatasetIcon } from "@/components/icons";
+import {
+    PersonalTokenRaCreate,
+    PersonalTokenRaEdit,
+    PersonalTokenRaList,
+    PersonalTokenRaShow,
+} from "./components/personal_token";
 
 const store = localStorageStore(undefined, "DataRentgen");
 
@@ -97,6 +103,13 @@ const App = () => {
                         show={RunRaShow}
                     />
                     <Resource name="operations" show={OperationRaShow} />
+                    <Resource
+                        name="personalTokens"
+                        list={PersonalTokenRaList}
+                        show={PersonalTokenRaShow}
+                        create={PersonalTokenRaCreate}
+                        edit={PersonalTokenRaEdit}
+                    />
                 </Admin>
             </StoreContextProvider>
         </BrowserRouter>

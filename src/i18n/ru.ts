@@ -61,6 +61,10 @@ const customRussianMessages: TranslationMessages = {
                     placeholder: "Фильтр по имени или адресу",
                 },
             },
+            tabs: {
+                datasets: "Датасеты",
+                jobs: "Джобы",
+            },
         },
         datasets: {
             name: "Датасет |||| Датасеты",
@@ -69,6 +73,7 @@ const customRussianMessages: TranslationMessages = {
             fields: {
                 id: "Внутренний идентификатор",
                 name: "Имя датасета",
+                tags: "Теги",
                 schema: {
                     exact_match: "Проекция схемы",
                     latest_known: "Проекция схемы (последняя)",
@@ -118,10 +123,15 @@ const customRussianMessages: TranslationMessages = {
                 lineage: "Линедж",
             },
             filters: {
+                job_type: {
+                    label: "Тип джобы",
+                    helperText: "Только выбранные",
+                },
                 search_query: {
                     label: "Поиск",
-                    placeholder: "Фильтр по имени или адресу",
+                    helperText: "Фильтр по имени или адресу",
                 },
+                apply_button: "Применить",
             },
         },
         runs: {
@@ -179,16 +189,24 @@ const customRussianMessages: TranslationMessages = {
             },
             filters: {
                 since: {
-                    label: "Дата начала",
-                    helperText: "Запуски, созданные после указанной даты",
+                    label: "Начало диапазона",
+                    helperText: "Минимальная дата запуска",
                 },
                 until: {
-                    label: "Дата окончания",
-                    helperText: "Запуски, созданные до указанной даты",
+                    label: "Конец диапазона",
+                    helperText: "Максимальная дата запуска",
+                },
+                status: {
+                    label: "Статус",
+                    helperText: "Только выбранные",
+                },
+                started_by_user: {
+                    label: "Запущен пользователем",
+                    helperText: "Имя пользователя (точное совпадение)",
                 },
                 search_query: {
                     label: "Поиск",
-                    helperText: "Фильтр по applicationId и т.п.",
+                    helperText: "Фильтр по внешнему ID (частичное совпадение)",
                 },
                 apply_button: "Применить",
             },
@@ -197,7 +215,7 @@ const customRussianMessages: TranslationMessages = {
             },
         },
         operations: {
-            name: "Операция |||| Операци",
+            name: "Операция |||| Операции",
             amount: "%{smart_count} операция |||| %{smart_count} операции |||| %{smart_count} операций",
             title: "Операция %{reference}",
             fields: {
@@ -244,12 +262,12 @@ const customRussianMessages: TranslationMessages = {
             },
             filters: {
                 since: {
-                    label: "Дата начала",
-                    helperText: "Операции, созданные после указанной даты",
+                    label: "Начало диапазона",
+                    helperText: "Минимальная дата запуска",
                 },
                 until: {
-                    label: "Дата окончания",
-                    helperText: "Операции, созданные до указанной даты",
+                    label: "Конец диапазона",
+                    helperText: "Максимальная дата запуска",
                 },
                 search_query: {
                     label: "Поиск",
@@ -261,6 +279,41 @@ const customRussianMessages: TranslationMessages = {
                 all: "Все",
             },
         },
+        personalTokens: {
+            name: "Персональный токен |||| Personal Tokens",
+            amount: "%{smart_count} персональный токен |||| %{smart_count} персональных токена |||| %{smart_count} персональных токенов",
+            title: "Персональный токен %{reference}",
+            fields: {
+                id: "Внутренний идентификатор",
+                name: "Имя",
+                scopes: "Права",
+                since: "Выдан",
+                until: "Истекает",
+                status: "Статус",
+            },
+            helperText: {
+                name: "Уникальное имя токена",
+                scopes: "На данный момент права невозможно изменить",
+                since: "Токен валиден с этой даты",
+                until: "Токен валиден до этой даты (включительно)",
+            },
+            scopes: {
+                "all:read": "Чтение всех объектов",
+                "all:write": "Запись всех объектов",
+            },
+            status: {
+                active: "АКТИВЕН",
+                expired: "ИСТЁК",
+            },
+            actions: {
+                refresh: "Перевыпустить",
+                revoke: "Отозвать",
+            },
+            notification: {
+                tokenCreated:
+                    "Текстовое представление токена копировано в буфер обмена. Обязательно сохраните его, иначе токен будет потерян!",
+            },
+        },
     },
     errors: {
         fetch: "Невозможно получить %{resource}",
@@ -268,11 +321,11 @@ const customRussianMessages: TranslationMessages = {
     lineage: {
         filters: {
             since: {
-                label: "Дата начала",
+                label: "Начало диапазона",
                 helperText: "События, созданные после указанной даты",
             },
             until: {
-                label: "Дата окончания",
+                label: "Конец диапазона",
                 helperText: "События, созданные до указанной даты",
             },
             depth: {
@@ -330,7 +383,6 @@ const customRussianMessages: TranslationMessages = {
     },
     statuses: {
         STARTED: "ЗАПУЩЕН",
-        RUNNING: "РАБОТАЕТ",
         SUCCEEDED: "УСПЕХ",
         FAILED: "ОШИБКА",
         KILLED: "УБИТ",
@@ -338,12 +390,16 @@ const customRussianMessages: TranslationMessages = {
     },
     edges: {
         ioTypes: {
-            ALTER: "МОДИЦИФИРОВАН",
-            CREATE: "СОЗДАН",
-            DROP: "УДАЛЕН",
-            OVERWRITE: "ЗАМЕНЕН",
-            RENAME: "ПЕРЕИМЕНОВАН",
-            TRUNCATE: "ОЧИЩЕН",
+            ALTER: "ИЗМЕНЕНИЕ",
+            APPEND: "ВСТАВКА",
+            CREATE: "СОЗДАНИЕ",
+            DELETE: "УДАЛЕНИЕ",
+            DROP: "УНИЧТОЖЕНИЕ",
+            MERGE: "СЛИЯНИЕ",
+            OVERWRITE: "ПЕРЕЗАПИСЬ",
+            RENAME: "ПЕРЕИМЕНОВАНИЕ",
+            TRUNCATE: "СТИРАНИЕ",
+            UPDATE: "ОБНОВЛЕНИЕ",
         },
         columnLineageTypes: {
             UNKNOWN: "НЕИЗВЕСТНО",

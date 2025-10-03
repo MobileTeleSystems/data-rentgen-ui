@@ -1,5 +1,7 @@
 import {
+    CreateParams,
     DataProvider,
+    DeleteParams,
     GetListParams,
     GetManyParams,
     GetOneParams,
@@ -16,17 +18,20 @@ type GetLineageParams = {
     meta?: any;
 };
 
+const camelCaseToKebabCase = (str: string): string =>
+    str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+
+const camelCaseToSnakeCase = (str: string): string =>
+    str.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase();
+
 const defaultDataProvider: DataProvider = {
-    // @ts-expect-error Not implemented
-    create: () => Promise.resolve({ data: { id: 0 } }),
-    // @ts-expect-error Not implemented
-    delete: () => Promise.resolve({ data: {} }),
     deleteMany: () => Promise.resolve({}),
+    updateMany: () => Promise.resolve({}),
     getList: (
         resource: string,
         params: GetListParams & QueryFunctionContext,
     ) => {
-        const url = getURL(`/v1/${resource}`);
+        const url = getURL(`/v1/${camelCaseToKebabCase(resource)}`);
 
         for (const k in params.meta) {
             url.searchParams.append(k, params.meta[k]);
@@ -42,6 +47,13 @@ const defaultDataProvider: DataProvider = {
 
         if (params.filter) {
             for (const field in params.filter) {
+                const value = params.filter[field];
+                if (Array.isArray(value)) {
+                    value.forEach((v) => {
+                        url.searchParams.append(field, v);
+                    });
+                    continue;
+                }
                 url.searchParams.append(field, params.filter[field]);
             }
         }
@@ -72,7 +84,7 @@ const defaultDataProvider: DataProvider = {
         resource: string,
         params: GetManyParams & QueryFunctionContext,
     ) => {
-        const url = getURL(`/v1/${resource}`);
+        const url = getURL(`/v1/${camelCaseToKebabCase(resource)}`);
 
         for (const k in params.meta) {
             url.searchParams.append(k, params.meta[k]);
@@ -81,7 +93,10 @@ const defaultDataProvider: DataProvider = {
         // datasets -> dataset_id
         const resourceOne = resource.slice(0, -1);
         params.ids.forEach((id) => {
-            url.searchParams.append(`${resourceOne}_id`, id.toString());
+            url.searchParams.append(
+                `${camelCaseToSnakeCase(resourceOne)}_id`,
+                id.toString(),
+            );
         });
 
         let headers = new Headers();
@@ -103,7 +118,7 @@ const defaultDataProvider: DataProvider = {
     },
     getManyReference: () => Promise.resolve({ data: [], total: 0 }),
     getOne: (resource: string, params: GetOneParams & QueryFunctionContext) => {
-        const url = getURL(`/v1/${resource}`);
+        const url = getURL(`/v1/${camelCaseToKebabCase(resource)}`);
 
         for (const k in params.meta) {
             url.searchParams.append(k, params.meta[k]);
@@ -111,7 +126,10 @@ const defaultDataProvider: DataProvider = {
 
         // datasets -> dataset_id
         const resourceOne = resource.slice(0, -1);
-        url.searchParams.append(`${resourceOne}_id`, params.id.toString());
+        url.searchParams.append(
+            `${camelCaseToSnakeCase(resourceOne)}_id`,
+            params.id.toString(),
+        );
 
         let headers = new Headers();
         headers = addTokenHeader(headers);
@@ -135,7 +153,7 @@ const defaultDataProvider: DataProvider = {
         resource: string,
         params: GetLineageParams & QueryFunctionContext,
     ) => {
-        const url = getURL(`/v1/${resource}/lineage`);
+        const url = getURL(`/v1/${camelCaseToKebabCase(resource)}/lineage`);
         url.searchParams.append("start_node_id", params.id.toString());
 
         for (const k in params.meta) {
@@ -164,8 +182,45 @@ const defaultDataProvider: DataProvider = {
             .then(parseResponse)
             .then(({ status, body }) => parseJSON(status, body));
     },
+    getJobTypes: (params: QueryFunctionContext) => {
+        const url = getURL(`/v1/jobs/types`);
+
+        let headers = new Headers();
+        headers = addTokenHeader(headers);
+
+        return fetch(url.toString(), {
+            method: "GET",
+            signal: params.signal,
+            headers: headers,
+            credentials: "include",
+        })
+            .then(parseResponse)
+            .then(({ status, body }) => parseJSON(status, body));
+    },
+    create: (resource: string, params: CreateParams) => {
+        const url = getURL(`/v1/${camelCaseToKebabCase(resource)}`);
+
+        let headers = new Headers();
+        headers = addTokenHeader(headers);
+        headers.set("Content-Type", "application/json");
+
+        return fetch(url.toString(), {
+            method: "POST",
+            body: JSON.stringify(params.data),
+            headers: headers,
+            credentials: "include",
+        })
+            .then(parseResponse)
+            .then(({ status, body }) => {
+                return {
+                    data: parseJSON(status, body),
+                };
+            });
+    },
     update: (resource: string, params: UpdateParams) => {
-        const url = getURL(`/v1/${resource}/${params.id}`);
+        const url = getURL(
+            `/v1/${camelCaseToKebabCase(resource)}/${params.id}`,
+        );
 
         let headers = new Headers();
         headers = addTokenHeader(headers);
@@ -184,7 +239,27 @@ const defaultDataProvider: DataProvider = {
                 };
             });
     },
-    updateMany: () => Promise.resolve({}),
+    delete: (resource: string, params: DeleteParams) => {
+        const url = getURL(
+            `/v1/${camelCaseToKebabCase(resource)}/${params.id}`,
+        );
+
+        let headers = new Headers();
+        headers = addTokenHeader(headers);
+        headers.set("Content-Type", "application/json");
+
+        return fetch(url.toString(), {
+            method: "DELETE",
+            headers: headers,
+            credentials: "include",
+        })
+            .then(parseResponse)
+            .then(({ status, body }) => {
+                return {
+                    data: parseJSON(status, body),
+                };
+            });
+    },
 };
 
 export default defaultDataProvider;

@@ -5,6 +5,8 @@ import { Box, Button, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { TextInput, useListContext } from "react-admin";
 import { useEffect } from "react";
+import RunRaStatusFilter from "./RunRaStatusFilter";
+import { JobTypeRaFilter } from "../job";
 
 const weekAgo = (): Date => {
     const result = new Date();
@@ -58,6 +60,22 @@ const RunRaListFilters = () => {
                     </Box>
 
                     <Box component="span" mr={2}>
+                        <RunRaStatusFilter />
+                    </Box>
+
+                    <Box component="span" mr={2}>
+                        <JobTypeRaFilter />
+                    </Box>
+
+                    <Box component="span" mr={2}>
+                        <TextInput
+                            source="started_by_user"
+                            label="resources.runs.filters.started_by_user.label"
+                            helperText="resources.runs.filters.started_by_user.helperText"
+                        />
+                    </Box>
+
+                    <Box component="span" mr={2} sx={{ flex: "0.5 1 1" }}>
                         {/* Not using SearchInput here because it doesn't match styles with other filters */}
                         <TextInput
                             source="search_query"
@@ -74,7 +92,7 @@ const RunRaListFilters = () => {
                         />
                     </Box>
 
-                    <Box component="span" mr={2} mb={4}>
+                    <Box component="span" mb={4}>
                         <Button
                             variant="outlined"
                             color="primary"

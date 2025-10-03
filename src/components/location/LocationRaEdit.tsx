@@ -11,8 +11,8 @@ const LocationRaEditToolbar = () => {
 };
 
 const LocationRaEdit = (): ReactElement => {
-    const transform = (data: { external_id?: string }) => ({
-        external_id: data.external_id,
+    const transform = (payload: { data: { external_id?: string } }) => ({
+        external_id: payload.data.external_id,
         // Other fields are not updatable, exclude from the payload
     });
 

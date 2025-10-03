@@ -61,6 +61,10 @@ const customEnglishMessages: TranslationMessages = {
                     placeholder: "Filter by name or address",
                 },
             },
+            tabs: {
+                datasets: "Datasets",
+                jobs: "Jobs",
+            },
         },
         datasets: {
             name: "Dataset |||| Datasets",
@@ -69,6 +73,7 @@ const customEnglishMessages: TranslationMessages = {
             fields: {
                 id: "Internal ID",
                 name: "Dataset name",
+                tags: "Tags",
                 schema: {
                     exact_match: "Schema projection",
                     latest_known: "Schema projection (latest)",
@@ -118,10 +123,15 @@ const customEnglishMessages: TranslationMessages = {
                 lineage: "Lineage",
             },
             filters: {
+                job_type: {
+                    label: "Job Type",
+                    helperText: "Only selected",
+                },
                 search_query: {
                     label: "Search",
-                    placeholder: "Filter by name or address",
+                    helperText: "Filter by name or address",
                 },
+                apply_button: "Apply",
             },
         },
         runs: {
@@ -181,15 +191,24 @@ const customEnglishMessages: TranslationMessages = {
             filters: {
                 since: {
                     label: "Since",
-                    helperText: "Include only runs created after",
+                    helperText: "Minimal created_at",
                 },
                 until: {
                     label: "Until",
-                    helperText: "Include only runs created before",
+                    helperText: "Maximum created_at",
+                },
+                status: {
+                    label: "Status",
+                    helperText: "Only selected",
+                },
+                started_by_user: {
+                    label: "Started by user",
+                    helperText: "Username (exact match)",
                 },
                 search_query: {
                     label: "Search",
-                    helperText: "Filter by applicationId",
+                    helperText:
+                        "Filter by external ID (including partial match)",
                 },
                 apply_button: "Apply",
             },
@@ -246,20 +265,56 @@ const customEnglishMessages: TranslationMessages = {
             filters: {
                 since: {
                     label: "Since",
-                    helperText: "Include only operations created after",
+                    helperText: "Minimal created_at",
                 },
                 until: {
                     label: "Until",
-                    helperText: "Include only operations created before",
+                    helperText: "Maximum created_at",
                 },
-                apply_button: "Apply",
                 search_query: {
                     label: "Search",
-                    helperText: "Filter by name, group or description",
+                    helperText:
+                        "Filter by name, group or description (partial match)",
                 },
+                apply_button: "Apply",
             },
             pagination: {
                 all: "All",
+            },
+        },
+        personalTokens: {
+            name: "Personal Token |||| Personal Tokens",
+            amount: "1 personal token |||| %{smart_count} personal tokens",
+            title: "Personal Token %{reference}",
+            fields: {
+                id: "Internal ID",
+                name: "Name",
+                scopes: "Scopes",
+                since: "Since",
+                until: "Until",
+                status: "State",
+            },
+            helperText: {
+                name: "Unique token name",
+                scopes: "Currently scopes are fixed",
+                since: "Token is valid since this date",
+                until: "Token is valid until this date (inclusive)",
+            },
+            scopes: {
+                "all:read": "Read all objects",
+                "all:write": "Write all objects",
+            },
+            status: {
+                active: "ACTIVE",
+                expired: "EXPIRED",
+            },
+            actions: {
+                refresh: "Refresh",
+                revoke: "Revoke",
+            },
+            notification: {
+                tokenCreated:
+                    "Token in text form is copied to your clipboard. You should save it somewhere - it will be lost when you leave this page!",
             },
         },
     },
@@ -274,11 +329,11 @@ const customEnglishMessages: TranslationMessages = {
         filters: {
             since: {
                 label: "Since",
-                helperText: "Include only events created after",
+                helperText: "Only events created after",
             },
             until: {
                 label: "Until",
-                helperText: "Include only events created before",
+                helperText: "Only events created before",
             },
             depth: {
                 label: "Depth",

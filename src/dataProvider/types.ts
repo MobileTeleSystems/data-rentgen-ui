@@ -29,6 +29,17 @@ interface LocationDetailedResponseV1 {
     statistics: LocationStatisticsResponseV1;
 }
 
+interface TagValueResponseV1 {
+    id: string;
+    value: string;
+}
+
+interface TagResponseV1 {
+    id: string;
+    name: string;
+    values: TagValueResponseV1[];
+}
+
 interface DatasetResponseV1 extends RaRecord {
     id: string;
     type: string;
@@ -39,19 +50,12 @@ interface DatasetResponseV1 extends RaRecord {
 interface DatasetDetailedResponseV1 {
     id: string;
     data: DatasetResponseV1;
+    tags: TagResponseV1[];
 }
-
-type JobTypeResponseV1 =
-    | "SPARK_APPLICATION"
-    | "AIRFLOW_DAG"
-    | "AIRFLOW_TASK"
-    | "FLINK_JOB"
-    | "DBT_JOB"
-    | "UNKNOWN";
 
 interface JobResponseV1 extends RaRecord {
     id: string;
-    type: JobTypeResponseV1;
+    type: string;
     name: string;
     location: LocationResponseV1;
 }
@@ -59,6 +63,10 @@ interface JobResponseV1 extends RaRecord {
 interface JobDetailedResponseV1 {
     id: string;
     data: JobResponseV1;
+}
+
+interface JobTypesResponseV1 {
+    job_types: string[];
 }
 
 interface UserResponseV1 extends RaRecord {
@@ -180,11 +188,15 @@ interface InputRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {
 
 type OutputRelationTypeLineageResponseV1 =
     | "ALTER"
+    | "APPEND"
     | "CREATE"
+    | "DELETE"
     | "DROP"
+    | "MERGE"
     | "OVERWRITE"
     | "RENAME"
-    | "TRUNCATE";
+    | "TRUNCATE"
+    | "UPDATE";
 
 interface OutputRelationLineageResponseV1
     extends BaseRelationLineageResponseV1 {
@@ -202,9 +214,23 @@ interface ParentRelationLineageResponseV1
 
 type SymlinkRelationTypeLineageResponseV1 = "METASTORE" | "WAREHOUSE";
 
+type ColumnLineageTransformationTypeLineageResponseV1 =
+    | "UNKNOWN"
+    | "IDENTITY"
+    | "TRANSFORMATION"
+    | "TRANSFORMATION_MASKING"
+    | "AGGREGATION"
+    | "AGGREGATION_MASKING"
+    | "FILTER"
+    | "JOIN"
+    | "GROUP_BY"
+    | "SORT"
+    | "WINDOW"
+    | "CONDITIONAL";
+
 interface ColumnLineageFieldResponseV1 {
     field: string;
-    types: string[];
+    types: ColumnLineageTransformationTypeLineageResponseV1[];
 }
 
 interface DirectColumnLineageRelationLineageResponseV1
@@ -243,6 +269,27 @@ interface LineageResponseV1 {
     relations: LineageRelationsResponseV1;
 }
 
+type PersonalTokenScopeV1 = "all:read" | "all:write";
+
+interface PersonalTokenResponseV1 {
+    id: string;
+    name: string;
+    since: string;
+    until: string;
+    scopes: PersonalTokenScopeV1[];
+}
+
+interface PersonalTokenDetailedResponseV1 {
+    id: string;
+    data: PersonalTokenResponseV1;
+}
+
+interface PersonalTokenCreateDetailedResponseV1 {
+    id: string;
+    data: PersonalTokenResponseV1;
+    content: string;
+}
+
 export type {
     LocationResponseV1,
     LocationDatasetStatisticsResponseV1,
@@ -253,6 +300,7 @@ export type {
     DatasetDetailedResponseV1,
     JobResponseV1,
     JobDetailedResponseV1,
+    JobTypesResponseV1,
     RunResponseV1,
     IOStatisticsResponseV1,
     RunOperationStatisticsResponseV1,
@@ -264,7 +312,6 @@ export type {
     UserResponseV1,
     StatusResponseV1,
     StartReasonResponseV1,
-    JobTypeResponseV1,
     OperationTypeResponseV1,
     EntityTypeLineageResponseV1,
     RelationEndpointLineageResponseV1,
@@ -282,6 +329,11 @@ export type {
     LineageRelationsResponseV1,
     LineageResponseV1,
     ColumnLineageFieldResponseV1,
+    ColumnLineageTransformationTypeLineageResponseV1,
     DirectColumnLineageRelationLineageResponseV1,
     IndirectColumnLineageRelationLineageResponseV1,
+    PersonalTokenResponseV1,
+    PersonalTokenScopeV1,
+    PersonalTokenDetailedResponseV1,
+    PersonalTokenCreateDetailedResponseV1,
 };

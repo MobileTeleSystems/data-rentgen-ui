@@ -46,12 +46,13 @@ const getOutputEdgeColor = (
 ): string => {
     for (const type of relation.types) {
         switch (type) {
+            case "DELETE":
             case "DROP":
             case "TRUNCATE":
                 return "red";
             case "ALTER":
             case "RENAME":
-                return "yellow";
+                return "orange";
         }
     }
     return "green";
@@ -109,7 +110,7 @@ const getOutputEdge = (
     const containerTo = datasetIdToContainerIdMapping.get(relation.to.id)!;
     return {
         ...getMinimalEdge(relation),
-        id: `${source}:${sourceHandle ?? "*"}->${containerTo}`,
+        id: `${source}:${sourceHandle ?? "*"}->${getNodeId(relation.to)}`,
         source: source,
         sourceHandle: sourceHandle,
         target: containerTo,
@@ -183,7 +184,7 @@ const getInputEdge = (
     const containerFrom = datasetIdToContainerIdMapping.get(relation.from.id)!;
     return {
         ...getMinimalEdge(relation),
-        id: `${containerFrom}->${target}:${targetHandle ?? "*"}`,
+        id: `${getNodeId(relation.from)}->${target}:${targetHandle ?? "*"}`,
         source: containerFrom,
         sourceHandle: getNodeId(relation.from),
         target: target,
