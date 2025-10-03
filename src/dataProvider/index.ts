@@ -182,6 +182,21 @@ const defaultDataProvider: DataProvider = {
             .then(parseResponse)
             .then(({ status, body }) => parseJSON(status, body));
     },
+    getJobTypes: (params: QueryFunctionContext) => {
+        const url = getURL(`/v1/jobs/types`);
+
+        let headers = new Headers();
+        headers = addTokenHeader(headers);
+
+        return fetch(url.toString(), {
+            method: "GET",
+            signal: params.signal,
+            headers: headers,
+            credentials: "include",
+        })
+            .then(parseResponse)
+            .then(({ status, body }) => parseJSON(status, body));
+    },
     create: (resource: string, params: CreateParams) => {
         const url = getURL(`/v1/${camelCaseToKebabCase(resource)}`);
 

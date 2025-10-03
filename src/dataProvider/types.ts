@@ -53,17 +53,9 @@ interface DatasetDetailedResponseV1 {
     tags: TagResponseV1[];
 }
 
-type JobTypeResponseV1 =
-    | "SPARK_APPLICATION"
-    | "AIRFLOW_DAG"
-    | "AIRFLOW_TASK"
-    | "FLINK_JOB"
-    | "DBT_JOB"
-    | "UNKNOWN";
-
 interface JobResponseV1 extends RaRecord {
     id: string;
-    type: JobTypeResponseV1;
+    type: string;
     name: string;
     location: LocationResponseV1;
 }
@@ -71,6 +63,10 @@ interface JobResponseV1 extends RaRecord {
 interface JobDetailedResponseV1 {
     id: string;
     data: JobResponseV1;
+}
+
+interface JobTypesResponseV1 {
+    job_types: string[];
 }
 
 interface UserResponseV1 extends RaRecord {
@@ -304,6 +300,7 @@ export type {
     DatasetDetailedResponseV1,
     JobResponseV1,
     JobDetailedResponseV1,
+    JobTypesResponseV1,
     RunResponseV1,
     IOStatisticsResponseV1,
     RunOperationStatisticsResponseV1,
@@ -315,7 +312,6 @@ export type {
     UserResponseV1,
     StatusResponseV1,
     StartReasonResponseV1,
-    JobTypeResponseV1,
     OperationTypeResponseV1,
     EntityTypeLineageResponseV1,
     RelationEndpointLineageResponseV1,

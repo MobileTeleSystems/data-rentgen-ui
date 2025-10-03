@@ -1,38 +1,21 @@
 import { ReactElement } from "react";
-import {
-    List,
-    TextField,
-    SearchInput,
-    minLength,
-    DatagridConfigurable,
-    useTranslate,
-} from "react-admin";
+import { List, TextField, DatagridConfigurable } from "react-admin";
 import { ListActions } from "@/components/base";
 import {
     LocationRaNameWithLinkField,
     LocationRaTypeWithIconField,
 } from "@/components/location";
 import JobRaTypeField from "./JobRaTypeField";
+import JobRaListFilters from "./JobRaListFilters";
 
 const JobRaList = (): ReactElement => {
-    const translate = useTranslate();
-
-    const jobFilters = [
-        <SearchInput
-            key="search_query"
-            source="search_query"
-            alwaysOn
-            validate={minLength(3)}
-            placeholder={translate(
-                "resources.jobs.filters.search_query.placeholder",
-            )}
-        />,
-    ];
-
     return (
         <List
-            actions={<ListActions />}
-            filters={jobFilters}
+            actions={
+                <ListActions>
+                    <JobRaListFilters />
+                </ListActions>
+            }
             resource="jobs"
             storeKey={false}
         >

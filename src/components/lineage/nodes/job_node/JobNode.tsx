@@ -6,7 +6,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { JobResponseV1 } from "@/dataProvider/types";
 import { Button, CardHeader, Typography } from "@mui/material";
 import BaseNode from "../base_node/BaseNode";
-import { JobIconWithType } from "@/components/job";
+import { JobTypeRepr } from "@/components/job";
 import RunNodeList from "../run_node/RunNodeList";
 
 import "./JobNode.css";
@@ -27,8 +27,8 @@ const JobNode = (props: NodeProps<JobNode>): ReactElement => {
         <BaseNode
             nodeId={props.id}
             icon={
-                <JobIconWithType
-                    job={props.data}
+                <JobTypeRepr
+                    jobType={props.data.type}
                     sx={{ minWidth: "10em", alignItems: "center" }}
                 />
             }

@@ -1,18 +1,21 @@
 import { useTranslate } from "react-admin";
-import { JobResponseV1 } from "@/dataProvider/types";
 
-const JobType = ({ job }: { job: JobResponseV1 }): string => {
+export const getDefaultJobType = (jobType: string): string => {
+    return jobType
+        .split("_")
+        .map(
+            (s) =>
+                s.charAt(0).toLocaleUpperCase() +
+                s.substring(1).toLocaleLowerCase(),
+        )
+        .join(" ");
+};
+
+const JobType = ({ jobType }: { jobType: string }): string => {
     const translate = useTranslate();
 
-    return translate(`resources.jobs.types.${job.type.toLocaleLowerCase()}`, {
-        _: job.type
-            .split("_")
-            .map(
-                (s) =>
-                    s.charAt(0).toLocaleUpperCase() +
-                    s.substring(1).toLocaleLowerCase(),
-            )
-            .join(" "),
+    return translate(`resources.jobs.types.${jobType.toLocaleLowerCase()}`, {
+        _: getDefaultJobType(jobType),
     });
 };
 
