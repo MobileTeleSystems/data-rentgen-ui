@@ -337,19 +337,18 @@ const customEnglishMessages: TranslationMessages = {
             },
             depth: {
                 label: "Depth",
-                helperText:
-                    "Dive down or climb up the graph for specific number of nodes",
+                helperText: "Number of node → edge → node hops (up an down)",
             },
             direction: {
                 label: "Direction",
-                helperText: "Include only events with specific direction",
+                helperText: "Only events with specific direction",
                 both: "Upstream & downstream",
                 downstream: "Downstream",
                 upstream: "Upstream",
             },
             granularity: {
                 label: "Granularity",
-                helperText: "Summarize lineage for specified node type",
+                helperText: "Max node type to include",
                 dataset: "Datasets",
                 job: "Jobs",
                 run: "Runs",
