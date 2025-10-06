@@ -80,7 +80,7 @@ jobs:
                   sbom: true
 
             - name: Update DockerHub Description
-              uses: peter-evans/dockerhub-description@v4
+              uses: peter-evans/dockerhub-description@v5
               if: github.ref_type == 'tag'
               with:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
