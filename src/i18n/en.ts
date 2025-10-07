@@ -127,6 +127,10 @@ const customEnglishMessages: TranslationMessages = {
                 lineage: "Lineage",
             },
             filters: {
+                location_type: {
+                    label: "Location Type",
+                    helperText: "Only selected",
+                },
                 job_type: {
                     label: "Job Type",
                     helperText: "Only selected",
@@ -135,7 +139,6 @@ const customEnglishMessages: TranslationMessages = {
                     label: "Search",
                     helperText: "Filter by name or address",
                 },
-                apply_button: "Apply",
             },
         },
         runs: {

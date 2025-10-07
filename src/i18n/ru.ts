@@ -127,6 +127,10 @@ const customRussianMessages: TranslationMessages = {
                 lineage: "Линедж",
             },
             filters: {
+                location_type: {
+                    label: "Тип расположения",
+                    helperText: "Только выбранные",
+                },
                 job_type: {
                     label: "Тип джобы",
                     helperText: "Только выбранные",
@@ -135,7 +139,6 @@ const customRussianMessages: TranslationMessages = {
                     label: "Поиск",
                     helperText: "Фильтр по имени или адресу",
                 },
-                apply_button: "Применить",
             },
         },
         runs: {
