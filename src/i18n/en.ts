@@ -99,9 +99,13 @@ const customEnglishMessages: TranslationMessages = {
                 lineage: "Lineage",
             },
             filters: {
+                location_type: {
+                    label: "Location Type",
+                    helperText: "Only selected",
+                },
                 search_query: {
                     label: "Search",
-                    placeholder: "Filter by name or address",
+                    helperText: "Filter by name or address",
                 },
             },
         },

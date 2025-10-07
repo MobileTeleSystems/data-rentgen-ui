@@ -99,9 +99,13 @@ const customRussianMessages: TranslationMessages = {
                 lineage: "Линедж",
             },
             filters: {
+                location_type: {
+                    label: "Тип расположения",
+                    helperText: "Только выбранные",
+                },
                 search_query: {
                     label: "Поиск",
-                    placeholder: "Фильтр по имени или адресу",
+                    helperText: "Фильтр по имени или адресу",
                 },
             },
         },
