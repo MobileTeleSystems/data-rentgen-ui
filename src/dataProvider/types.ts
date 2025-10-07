@@ -29,6 +29,10 @@ interface LocationDetailedResponseV1 {
     statistics: LocationStatisticsResponseV1;
 }
 
+interface LocationTypesResponseV1 {
+    location_types: string[];
+}
+
 interface TagValueResponseV1 {
     id: string;
     value: string;
@@ -296,6 +300,7 @@ export type {
     LocationJobStatisticsResponseV1,
     LocationStatisticsResponseV1,
     LocationDetailedResponseV1,
+    LocationTypesResponseV1,
     DatasetResponseV1,
     DatasetDetailedResponseV1,
     JobResponseV1,
