@@ -18,19 +18,38 @@ const weekAgo = (): Date => {
 type RunRaListFilterValues = {
     since?: string;
     until?: string;
+    status?: string;
+    job_type?: string;
+    started_by_user?: string;
     search_query?: string;
 };
+type RunRaListFilterKeys = keyof RunRaListFilterValues;
+const filterKeys: RunRaListFilterKeys[] = [
+    "since",
+    "until",
+    "status",
+    "job_type",
+    "started_by_user",
+];
 
 const RunRaListFilters = () => {
     const translate = useTranslate();
     const { filterValues, setFilters } = useListContext();
     const form = useForm({ defaultValues: filterValues });
 
-    const submit = form.handleSubmit((formValues: RunRaListFilterValues) => {
-        if (Object.keys(formValues).length > 0) {
-            setFilters(formValues);
-        }
-    });
+    const submit = form.handleSubmit(
+        (formValues: RunRaListFilterValues & { [key: string]: any }) => {
+            const keys = Object.keys(formValues);
+            const validKeys = filterKeys.filter((key) => keys.includes(key));
+            if (validKeys.length > 0) {
+                const validValues = validKeys.reduce(
+                    (acc, key) => ({ ...acc, [key]: formValues[key] }),
+                    {},
+                );
+                setFilters(validValues);
+            }
+        },
+    );
 
     // fill up filters just after opening the page
     useEffect(() => {

@@ -9,6 +9,8 @@ type OperationRaListFilterValues = {
     since?: string;
     until?: string;
 };
+type OperationRaListFilterKeys = keyof OperationRaListFilterValues;
+const filterKeys: OperationRaListFilterKeys[] = ["since", "until"];
 
 const OperationRaListFilters = () => {
     const translate = useTranslate();
@@ -16,9 +18,15 @@ const OperationRaListFilters = () => {
     const form = useForm({ defaultValues: filterValues });
 
     const submit = form.handleSubmit(
-        (formValues: OperationRaListFilterValues) => {
-            if (Object.keys(formValues).length > 0) {
-                setFilters(formValues);
+        (formValues: OperationRaListFilterValues & { [key: string]: any }) => {
+            const keys = Object.keys(formValues);
+            const validKeys = filterKeys.filter((key) => keys.includes(key));
+            if (validKeys.length > 0) {
+                const validValues = validKeys.reduce(
+                    (acc, key) => ({ ...acc, [key]: formValues[key] }),
+                    {},
+                );
+                setFilters(validValues);
             }
         },
     );

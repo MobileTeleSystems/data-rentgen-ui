@@ -56,9 +56,13 @@ const customEnglishMessages: TranslationMessages = {
                 addresses: "Addresses",
             },
             filters: {
+                location_type: {
+                    label: "Location Type",
+                    helperText: "Only selected",
+                },
                 search_query: {
                     label: "Search",
-                    placeholder: "Filter by name or address",
+                    helperText: "Filter by name or address",
                 },
             },
             tabs: {
@@ -95,9 +99,13 @@ const customEnglishMessages: TranslationMessages = {
                 lineage: "Lineage",
             },
             filters: {
+                location_type: {
+                    label: "Location Type",
+                    helperText: "Only selected",
+                },
                 search_query: {
                     label: "Search",
-                    placeholder: "Filter by name or address",
+                    helperText: "Filter by name or address",
                 },
             },
         },
@@ -123,6 +131,10 @@ const customEnglishMessages: TranslationMessages = {
                 lineage: "Lineage",
             },
             filters: {
+                location_type: {
+                    label: "Location Type",
+                    helperText: "Only selected",
+                },
                 job_type: {
                     label: "Job Type",
                     helperText: "Only selected",
@@ -131,7 +143,6 @@ const customEnglishMessages: TranslationMessages = {
                     label: "Search",
                     helperText: "Filter by name or address",
                 },
-                apply_button: "Apply",
             },
         },
         runs: {
@@ -337,19 +348,18 @@ const customEnglishMessages: TranslationMessages = {
             },
             depth: {
                 label: "Depth",
-                helperText:
-                    "Dive down or climb up the graph for specific number of nodes",
+                helperText: "Number of node → edge → node hops (up an down)",
             },
             direction: {
                 label: "Direction",
-                helperText: "Include only events with specific direction",
+                helperText: "Only events with specific direction",
                 both: "Upstream & downstream",
                 downstream: "Downstream",
                 upstream: "Upstream",
             },
             granularity: {
                 label: "Granularity",
-                helperText: "Summarize lineage for specified node type",
+                helperText: "Max node type to include",
                 dataset: "Datasets",
                 job: "Jobs",
                 run: "Runs",
