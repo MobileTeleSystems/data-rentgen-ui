@@ -27,6 +27,15 @@ type LineageFilterValues = {
     granularity?: string;
     include_column_lineage?: boolean;
 };
+type LineageFilterKeys = keyof LineageFilterValues;
+const lineageFilterKeys: LineageFilterKeys[] = [
+    "since",
+    "until",
+    "depth",
+    "direction",
+    "granularity",
+    "include_column_lineage",
+];
 
 type LineageFiltersProps = {
     onSubmit: (values: LineageFilterValues) => void;
@@ -76,10 +85,20 @@ const LineageFilters = ({
         granularities.includes(choice.id),
     );
 
-    const submit = form.handleSubmit((formValues: LineageFilterValues) => {
-        listParamsActions.setFilters(formValues);
-        onSubmit(formValues);
-    });
+    const submit = form.handleSubmit(
+        (formValues: LineageFilterValues & { [key: string]: any }) => {
+            const keys = Object.keys(formValues);
+            const validKeys = lineageFilterKeys.filter((key) =>
+                keys.includes(key),
+            );
+            const validValues = validKeys.reduce(
+                (acc, key) => ({ ...acc, [key]: formValues[key] }),
+                {},
+            );
+            listParamsActions.setFilters(validValues);
+            onSubmit(validValues);
+        },
+    );
 
     // draw lineage just after opening the page
     useEffect(() => {
