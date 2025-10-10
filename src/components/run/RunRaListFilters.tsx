@@ -30,6 +30,7 @@ const filterKeys: RunRaListFilterKeys[] = [
     "status",
     "job_type",
     "started_by_user",
+    "search_query",
 ];
 
 const RunRaListFilters = () => {

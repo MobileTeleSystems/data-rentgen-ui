@@ -1,14 +1,12 @@
-import { FilterLiveForm, minLength, useTranslate } from "react-admin";
+import { FilterLiveForm, minLength } from "react-admin";
 
-import { Box, Button, InputAdornment } from "@mui/material";
+import { Box, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { TextInput } from "react-admin";
 import JobTypeRaFilter from "./JobRaTypeFilter";
 import { LocationRaTypeFilter } from "../location";
 
 const JobRaListFilters = () => {
-    const translate = useTranslate();
-
     return (
         <FilterLiveForm>
             <Box display="flex" alignItems="flex-end">
