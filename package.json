@@ -42,7 +42,7 @@
         "@rollup/plugin-alias": "^5.1.1",
         "@svgr/plugin-svgo": "^8.1.0",
         "@types/jest": "^29.5.14",
-        "@types/node": "^20.19.17",
+        "@types/node": "^20.19.21",
         "@types/react": "^18.3.18",
         "@types/react-dom": "^18.3.5",
         "@types/react-syntax-highlighter": "^15.5.13",
