@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es2015",
         "baseUrl": ".",
         "paths": {
             "@/*": ["src/*"],
@@ -14,8 +14,8 @@
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
-        "module": "esnext",
-        "moduleResolution": "node",
+        "module": "es2015",
+        "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
@@ -25,11 +25,7 @@
         "./src/**/*.ts",
         "./src/**/*.d.ts",
         "./src/**/*.tsx",
-        "./src/**/*.d.tsx"
-    ],
-    "references": [
-        {
-            "path": "./tsconfig.node.json"
-        }
+        "./src/**/*.d.tsx",
+        "./vite.config.ts"
     ]
 }
