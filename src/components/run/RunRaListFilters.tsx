@@ -4,16 +4,9 @@ import { useForm, FormProvider } from "react-hook-form";
 import { Box, Button, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { TextInput, useListContext } from "react-admin";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import RunRaStatusFilter from "./RunRaStatusFilter";
 import { JobTypeRaFilter } from "../job";
-
-const weekAgo = (): Date => {
-    const result = new Date();
-    result.setDate(result.getDate() - 7);
-    result.setHours(0, 0, 0, 0);
-    return result;
-};
 
 type RunRaListFilterValues = {
     since?: string;
@@ -33,12 +26,19 @@ const filterKeys: RunRaListFilterKeys[] = [
     "search_query",
 ];
 
+export const weekAgo = (): Date => {
+    const result = new Date();
+    result.setDate(result.getDate() - 7);
+    result.setHours(0, 0, 0, 0);
+    return result;
+};
+
 const RunRaListFilters = () => {
     const translate = useTranslate();
     const { filterValues, setFilters } = useListContext();
     const form = useForm({ defaultValues: filterValues });
 
-    const submit = form.handleSubmit(
+    const onSubmit = useCallback(
         (formValues: RunRaListFilterValues & { [key: string]: any }) => {
             const keys = Object.keys(formValues);
             const validKeys = filterKeys.filter((key) => keys.includes(key));
@@ -50,12 +50,15 @@ const RunRaListFilters = () => {
                 setFilters(validValues);
             }
         },
+        [setFilters],
     );
+
+    const submit = form.handleSubmit(onSubmit);
 
     // fill up filters just after opening the page
     useEffect(() => {
         submit();
-    }, []);
+    }, [submit]);
 
     return (
         <FormProvider {...form}>
@@ -65,7 +68,6 @@ const RunRaListFilters = () => {
                         <DateTimeInput
                             source="since"
                             validate={required()}
-                            defaultValue={weekAgo()}
                             label="resources.runs.filters.since.label"
                             helperText="resources.runs.filters.since.helperText"
                         />
