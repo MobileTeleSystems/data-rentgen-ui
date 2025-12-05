@@ -1,0 +1,3 @@
+*.html
+!public/upload*.html
+build

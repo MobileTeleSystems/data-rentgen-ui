@@ -32,7 +32,7 @@
         "lint-check": "eslint src/**/*.tsx src/**/*.ts",
         "type-check": "tsc",
         "preview": "vite preview",
-        "prettier-format": "prettier 'src/**/*.{ts,tsx,js,json}' --write --list-different",
+        "prettier": "prettier 'src/**/*.{ts,tsx,js,json}' --write --list-different",
         "prettier-check": "prettier 'src/**/*.{ts,tsx,js,json}' --check --list-different",
         "pre-commit-install": "husky"
     },
@@ -63,11 +63,8 @@
     },
     "lint-staged": {
         "public/*": "prettier --write --list-different",
-        "src/**/*": [
-            "prettier --write --list-different",
-            "tsc -p tsconfig.json --noEmit",
-            "eslint --fix"
-        ]
+        "src/**/*": "prettier --write --list-different",
+        "src/**/*.{ts,tsx}": "eslint --fix"
     },
     "browserslist": {
         "production": [
