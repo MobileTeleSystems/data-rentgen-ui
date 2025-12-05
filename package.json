@@ -28,12 +28,12 @@
         "dev": "vite",
         "prod": "vite --host 0.0.0.0",
         "build": "tsc && vite build",
-        "lint": "eslint --fix src/**/*.tsx src/**/*.ts",
-        "lint-check": "eslint src/**/*.tsx src/**/*.ts",
+        "lint": "eslint --fix src/**/*.{ts,tsx}",
+        "lint-check": "eslint src/**/*.{ts,tsx}",
         "type-check": "tsc",
         "preview": "vite preview",
-        "prettier": "prettier 'src/**/*.{ts,tsx,js,json}' --write --list-different",
-        "prettier-check": "prettier 'src/**/*.{ts,tsx,js,json}' --check --list-different",
+        "prettier": "prettier 'src' 'public' --write --list-different",
+        "prettier-check": "prettier 'src' 'public' --check",
         "pre-commit-install": "husky"
     },
     "devDependencies": {
@@ -62,7 +62,7 @@
         "vite-plugin-webfont-dl": "^3.11.1"
     },
     "lint-staged": {
-        "public/*": "prettier --write --list-different",
+        "public/**/*": "prettier --write --list-different",
         "src/**/*": "prettier --write --list-different",
         "src/**/*.{ts,tsx}": "eslint --fix"
     },
