@@ -27,11 +27,10 @@
     "scripts": {
         "dev": "vite",
         "prod": "vite --host 0.0.0.0",
-        "build": "tsc && vite build",
+        "build": "vite build",
         "lint": "eslint --fix src",
         "lint-check": "eslint src",
         "type-check": "tsc",
-        "preview": "vite preview",
         "prettier": "prettier 'src' 'public' --write --list-different",
         "prettier-check": "prettier 'src' 'public' --check",
         "pre-commit-install": "husky"

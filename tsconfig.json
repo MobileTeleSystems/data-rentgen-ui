@@ -22,10 +22,7 @@
         "jsx": "react-jsx"
     },
     "include": [
-        "./src/**/*.ts",
-        "./src/**/*.d.ts",
-        "./src/**/*.tsx",
-        "./src/**/*.d.tsx",
-        "./vite.config.ts"
+        "src",
+        "./vite.config.mts"
     ]
 }
