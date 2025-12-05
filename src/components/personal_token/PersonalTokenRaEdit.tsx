@@ -3,7 +3,6 @@ import {
     DateInput,
     DeleteButton,
     Edit,
-    ListButton,
     minValue,
     SaveButton,
     SimpleForm,

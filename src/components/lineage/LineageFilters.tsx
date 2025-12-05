@@ -86,6 +86,7 @@ const LineageFilters = ({
     );
 
     const submit = form.handleSubmit(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (formValues: LineageFilterValues & { [key: string]: any }) => {
             const keys = Object.keys(formValues);
             const validKeys = lineageFilterKeys.filter((key) =>

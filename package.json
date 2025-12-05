@@ -63,11 +63,15 @@
         "vite-plugin-webfont-dl": "^3.11.1"
     },
     "lint-staged": {
-        "**/*": "prettier --write --ignore-unknown"
+        "public/*": "prettier --write --list-different",
+        "src/**/*": [
+            "prettier --write --list-different",
+            "eslint --fix"
+        ]
     },
     "browserslist": {
         "production": [
-            ">0.2%",
+            ">0.5%",
             "chrome 81",
             "firefox 88",
             "not dead"

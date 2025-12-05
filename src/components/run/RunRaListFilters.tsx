@@ -39,6 +39,7 @@ const RunRaListFilters = () => {
     const form = useForm({ defaultValues: filterValues });
 
     const onSubmit = useCallback(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (formValues: RunRaListFilterValues & { [key: string]: any }) => {
             const keys = Object.keys(formValues);
             const validKeys = filterKeys.filter((key) => keys.includes(key));

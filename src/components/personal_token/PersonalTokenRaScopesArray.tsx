@@ -2,6 +2,7 @@ import { FieldProps, useRecordContext, useTranslate } from "react-admin";
 import { PersonalTokenDetailedResponseV1 } from "@/dataProvider/types";
 import { Stack, Chip, Box } from "@mui/material";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const PersonalTokenRaScopesArray = (props: FieldProps) => {
     const translate = useTranslate();
     const record: PersonalTokenDetailedResponseV1 | undefined =

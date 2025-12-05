@@ -47,7 +47,6 @@ const locales = [
     { locale: "ru", name: "Русский" },
 ];
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const i18nProvider = polyglotI18nProvider(
     (locale) => messages[locale as keyof typeof messages],
     "en",

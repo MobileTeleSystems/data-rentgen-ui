@@ -18,6 +18,7 @@ const OperationRaListFilters = () => {
     const form = useForm({ defaultValues: filterValues });
 
     const submit = form.handleSubmit(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (formValues: OperationRaListFilterValues & { [key: string]: any }) => {
             const keys = Object.keys(formValues);
             const validKeys = filterKeys.filter((key) => keys.includes(key));
