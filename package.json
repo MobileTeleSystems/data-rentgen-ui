@@ -66,6 +66,7 @@
         "public/*": "prettier --write --list-different",
         "src/**/*": [
             "prettier --write --list-different",
+            "tsc -p tsconfig.json --noEmit",
             "eslint --fix"
         ]
     },
