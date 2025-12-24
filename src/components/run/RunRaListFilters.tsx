@@ -36,7 +36,7 @@ export const weekAgo = (): Date => {
 const RunRaListFilters = () => {
     const translate = useTranslate();
     const { filterValues, setFilters } = useListContext();
-    const form = useForm({ defaultValues: filterValues });
+    const form = useForm();
 
     const onSubmit = useCallback(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,7 +58,7 @@ const RunRaListFilters = () => {
 
     // fill up filters just after opening the page
     useEffect(() => {
-        submit();
+        onSubmit({ defaultValues: filterValues });
     }, [submit]);
 
     return (
