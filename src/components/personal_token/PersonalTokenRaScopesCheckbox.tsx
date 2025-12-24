@@ -1,7 +1,9 @@
 import { CheckboxGroupInput, InputProps } from "react-admin";
 
 const PersonalTokenRaScopesCheckbox = ({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     source,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     label,
     ...props
 }: InputProps) => {

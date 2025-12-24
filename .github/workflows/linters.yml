@@ -22,13 +22,13 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
 
             - name: Install Node.JS
               uses: actions/setup-node@v6
 
             - name: Cache modules
-              uses: actions/cache@v4
+              uses: actions/cache@v5
               with:
                   path: ./node_modules
                   key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}

@@ -6,6 +6,7 @@ const LineageSelectionValue = {
         nodeWithHandles: new Map<string, Set<string>>(),
         edges: new Set<string>(),
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setSelection: (newValue: LineageSelection): void => {},
     resetSelection: (): void => {},
 };

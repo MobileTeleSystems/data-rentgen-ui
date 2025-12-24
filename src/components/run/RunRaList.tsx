@@ -14,13 +14,14 @@ import {
     ListActions,
     IOStatisticsField,
 } from "@/components/base";
-import RunRaListFilters from "./RunRaListFilters";
+import RunRaListFilters, { weekAgo } from "./RunRaListFilters";
 import RunRaExternalId from "./RunRaExternalId";
 
 const RunRaList = (): ReactElement => {
     return (
         <List
             resource="runs"
+            filterDefaultValues={{ since: weekAgo().toISOString() }}
             actions={
                 <ListActions>
                     <RunRaListFilters />

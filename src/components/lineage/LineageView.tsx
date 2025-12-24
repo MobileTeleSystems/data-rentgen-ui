@@ -45,8 +45,8 @@ const LineageView = (props: LineageViewProps) => {
                     filter: values,
                 })
                 .then((data: LineageResponseV1) => {
-                    let initialNodes = getGraphNodes(data);
-                    let initialEdges = getGraphEdges(data);
+                    const initialNodes = getGraphNodes(data);
+                    const initialEdges = getGraphEdges(data);
 
                     initialNodes
                         .filter((node) => node.id == currentNodeId)

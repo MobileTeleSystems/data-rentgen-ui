@@ -4,6 +4,7 @@ import {
     stackoverflowLight,
     hybrid,
 } from "react-syntax-highlighter/dist/esm/styles/hljs";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import sqlMore from "react-syntax-highlighter/dist/esm/languages/hljs/sql_more";
 

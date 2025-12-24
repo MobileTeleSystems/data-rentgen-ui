@@ -152,6 +152,7 @@ const getDatasetContainerNode = (
 
 const getDataseNode = (
     node: DatasetResponseV1,
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     rawResponse: LineageResponseV1,
 ): Node => {
     let title = node.name;

@@ -23,7 +23,7 @@ const OperationRaShow = (): ReactElement => {
     return (
         <Show>
             <Grid container spacing={2}>
-                <Grid item>
+                <Grid>
                     <SimpleShowLayout>
                         <TextField
                             source="id"
@@ -98,7 +98,7 @@ const OperationRaShow = (): ReactElement => {
                     </SimpleShowLayout>
                 </Grid>
 
-                <Grid item flexGrow={3}>
+                <Grid flexGrow={3}>
                     <SimpleShowLayout>
                         <Labeled label="resources.operations.sections.sql_query">
                             <Stack

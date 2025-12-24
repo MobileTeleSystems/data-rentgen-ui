@@ -202,8 +202,7 @@ type OutputRelationTypeLineageResponseV1 =
     | "TRUNCATE"
     | "UPDATE";
 
-interface OutputRelationLineageResponseV1
-    extends BaseRelationLineageResponseV1 {
+interface OutputRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {
     last_interaction_at: string;
     types: OutputRelationTypeLineageResponseV1[];
     num_rows: number | null;
@@ -213,8 +212,7 @@ interface OutputRelationLineageResponseV1
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface ParentRelationLineageResponseV1
-    extends BaseRelationLineageResponseV1 {}
+interface ParentRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {}
 
 type SymlinkRelationTypeLineageResponseV1 = "METASTORE" | "WAREHOUSE";
 
@@ -237,18 +235,15 @@ interface ColumnLineageFieldResponseV1 {
     types: ColumnLineageTransformationTypeLineageResponseV1[];
 }
 
-interface DirectColumnLineageRelationLineageResponseV1
-    extends BaseRelationLineageResponseV1 {
+interface DirectColumnLineageRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {
     fields: { [target_field: string]: ColumnLineageFieldResponseV1[] };
 }
 
-interface IndirectColumnLineageRelationLineageResponseV1
-    extends BaseRelationLineageResponseV1 {
+interface IndirectColumnLineageRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {
     fields: ColumnLineageFieldResponseV1[];
 }
 
-interface SymlinkRelationLineageResponseV1
-    extends BaseRelationLineageResponseV1 {
+interface SymlinkRelationLineageResponseV1 extends BaseRelationLineageResponseV1 {
     type: SymlinkRelationTypeLineageResponseV1;
 }
 

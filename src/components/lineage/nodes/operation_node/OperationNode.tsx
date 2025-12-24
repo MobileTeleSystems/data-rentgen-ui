@@ -1,5 +1,5 @@
 import { NodeProps, Node, Handle, Position, useReactFlow } from "@xyflow/react";
-import { useCreatePath, useTranslate } from "react-admin";
+import { useCreatePath } from "react-admin";
 import { memo, MouseEvent, ReactElement, useContext } from "react";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 

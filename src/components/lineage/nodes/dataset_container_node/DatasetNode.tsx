@@ -12,6 +12,7 @@ export type DatasetNode = Node<DatasetResponseV1, "datasetNode">;
 export type DatasetNodeProps = NodeProps<DatasetNode>;
 
 const DatasetNode = ({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     containerNodeId,
     ...props
 }: { containerNodeId: string } & DatasetNodeProps): ReactElement => {
