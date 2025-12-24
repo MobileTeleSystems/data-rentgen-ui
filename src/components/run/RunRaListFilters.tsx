@@ -1,9 +1,15 @@
-import { required, minLength, DateTimeInput, useTranslate } from "react-admin";
+import {
+    TextInput,
+    required,
+    minLength,
+    DateTimeInput,
+    useTranslate,
+    useListContext,
+} from "react-admin";
 
 import { useForm, FormProvider } from "react-hook-form";
 import { Box, Button, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { TextInput, useListContext } from "react-admin";
 import { useCallback, useEffect } from "react";
 import RunRaStatusFilter from "./RunRaStatusFilter";
 import { JobTypeRaFilter } from "../job";
@@ -36,7 +42,7 @@ export const weekAgo = (): Date => {
 const RunRaListFilters = () => {
     const translate = useTranslate();
     const { filterValues, setFilters } = useListContext();
-    const form = useForm();
+    const form = useForm({ defaultValues: filterValues });
 
     const onSubmit = useCallback(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,10 +62,9 @@ const RunRaListFilters = () => {
 
     const submit = form.handleSubmit(onSubmit);
 
-    // fill up filters just after opening the page
     useEffect(() => {
-        onSubmit({ defaultValues: filterValues });
-    }, [submit]);
+        submit();
+    }, [form]);
 
     return (
         <FormProvider {...form}>
