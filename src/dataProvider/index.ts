@@ -99,6 +99,8 @@ const defaultDataProvider: DataProvider = {
             );
         });
 
+        url.searchParams.append("page_size", params.ids.length.toString());
+
         let headers = new Headers();
         headers = addTokenHeader(headers);
 
