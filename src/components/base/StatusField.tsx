@@ -7,7 +7,7 @@ const statusToColorMap = {
     RUNNING: "primary",
     SUCCEEDED: "success",
     FAILED: "error",
-    KILLED: "secondary",
+    KILLED: "error",
     UNKNOWN: "warning",
 } as const;
 
