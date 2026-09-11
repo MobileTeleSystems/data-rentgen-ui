@@ -1,6 +1,6 @@
 {
     "name": "data-rentgen",
-    "version": "0.7.2",
+    "version": "0.7.3",
     "private": true,
     "description": "Frontend for Data.Rentgen",
     "license": "Apache-2.0",
